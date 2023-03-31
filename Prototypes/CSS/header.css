@@ -30,7 +30,7 @@
     }
 }
 
-.dropdown-menu {
+:not(.dropup)>.dropdown-menu {
     animation-name: slideDown;
     animation-duration: 0.3s;
     animation-fill-mode: both;
