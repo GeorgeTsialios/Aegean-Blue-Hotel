@@ -1,3 +1,7 @@
+header, footer {
+    background-color: var(--brand-background);
+}
+
 /* li.dropdown selects only the dropdowns of the navbar, not the profile dropdown */
 @media (min-width: 992px) {
     li.dropdown:hover .dropdown-menu {
