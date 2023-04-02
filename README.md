@@ -1,1 +1,1 @@
-# HotelNow
+# Aegean Blue Hotel
