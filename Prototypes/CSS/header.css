@@ -34,7 +34,7 @@ header, footer {
     }
 }
 
-:not(.dropup)>.dropdown-menu {
+:not(.btn-group)>.dropdown-menu {
     animation-name: slideDown;
     animation-duration: 0.3s;
     animation-fill-mode: both;
