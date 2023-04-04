@@ -23,7 +23,7 @@
 
 @media (min-width: 992px) {
     .daterangepicker.show-calendar {
-        display: flex !important;
+        display: flex;
     }
 }
 
