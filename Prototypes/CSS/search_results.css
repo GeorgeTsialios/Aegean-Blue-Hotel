@@ -1,0 +1,122 @@
+@media (max-width: 992px) {
+
+    #daterange {
+        border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+        border-radius: unset;
+        border-top-left-radius: var(--bs-border-radius);
+        border-top-right-radius: var(--bs-border-radius);
+    }
+
+    #search {
+        border-radius: unset;
+        border-bottom-left-radius: var(--bs-border-radius);
+        border-bottom-right-radius: var(--bs-border-radius);
+    }
+
+    .cartCell {
+        display: none;
+    }
+
+    #RoomTypeColumn {
+        width: 50%;
+    }
+    
+    #PriceColumn, #RoomsColumn {
+        width: 25%;
+    }
+
+}
+.guests {
+    width: 40px;
+    height: 40px;
+    font-size: 35px !important;
+    padding: 0 !important;
+}
+
+.guests span {
+    position: relative;
+    top: -4px;
+}
+
+#adultsCount, #childrenCount, #infantsCount {
+    width: 10px; 
+}
+
+.age-description {
+    font-size: x-small;
+}
+
+@media (min-width: 992px) {
+    #daterange {
+        border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+        border-radius: unset;
+        border-bottom-left-radius: var(--bs-border-radius);
+        border-top-left-radius: var(--bs-border-radius);
+    }
+
+    #offcanvasCart>.offcanvas-header {
+        display: none;
+    }
+
+    #offcanvasCart>.offcanvas-body {
+        display: block;
+    }
+
+    #search_card {
+        width: 50%;
+    }
+
+    #offcanvasButton {
+        display: none !important;
+    }
+
+    #search {
+        border-radius: unset;
+        border-bottom-right-radius: var(--bs-border-radius);
+        border-top-right-radius: var(--bs-border-radius);
+    }
+
+    #RoomTypeColumn {
+        width: 40%;
+    }
+    
+    #PriceColumn {
+        width: 10%;
+    }
+
+    #RoomsColumn {
+        width: 15%;
+    }
+
+    #CartColumn {
+        width: 35%;
+    }
+    
+
+}
+
+
+#offcanvasCart {
+    --bs-offcanvas-height: auto !important;
+    /* background-color: rgb(255, 244, 210) !important; */
+    background-color:  #c0f1db !important;
+} 
+
+ #offcanvasButton {
+   font-size: 1.15rem;
+} 
+
+#results-header {
+    font-weight: 350;
+}
+
+#EXEDDCount, #DLXCount {
+    width: 10px; 
+}
+
+.modal img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
