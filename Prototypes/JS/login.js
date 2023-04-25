@@ -58,40 +58,56 @@ function changetoPwdForgot() {
 function validate(){
     form = document.querySelector("form");
     form.addEventListener('submit', (event) => {
-        resetCustomValidity();
-        if (!form.checkValidity() || !checkRepeatPasswordValidity() || !checkEmailValidity()) {
-            if (!checkRepeatPasswordValidity()) {
-                document.querySelector("#repeat_password").setCustomValidity("The password is not the same");
-                document.querySelector("#repeat_password").classList.remove("is-valid");
-                document.querySelector("#repeat_password").classList.add("is-invalid");
-            }
-            if (!checkEmailValidity()) {
-                document.querySelector("#e-mail").setCustomValidity("E-mail is not valid");
-                document.querySelector("#e-mail").classList.remove("is-valid");
-                document.querySelector("#e-mail").classList.add("is-invalid");
-            }
+
+        document.querySelector("#e-mail").addEventListener("keyup",validateEmail);
+        document.querySelector("#repeat_password").addEventListener("keyup",validateRepeatPassword);
+
+        if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
-        } 
+        }
+
+        validateRepeatPassword(event);
+        validateEmail(event);
+        
 
         form.classList.add('was-validated');
     }, false);
 }
 
-function checkRepeatPasswordValidity() {
-    if (document.querySelector("#repeat_password").required && document.querySelector("#repeat_password").value !== document.querySelector("#password").value)
-        return false;
-
-    return true;
+function validateRepeatPassword(event) {
+    if (document.querySelector("#repeat_password").required) {
+        if (document.querySelector("#repeat_password").value !== document.querySelector("#password").value) {
+            document.querySelector("#repeat_password").setCustomValidity("The password is not the same");
+            document.querySelector("#repeat_password").classList.remove("is-valid");
+            document.querySelector("#repeat_password").classList.add("is-invalid");
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        else {
+            document.querySelector("#repeat_password").setCustomValidity("");
+            document.querySelector("#repeat_password").classList.remove("is-invalid");
+            document.querySelector("#repeat_password").classList.add("is-valid");
+        }
+    }
 }
 
-function checkEmailValidity() {
+function validateEmail(event) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const email = document.querySelector("#e-mail");
 
-    if (!emailRegex.test(document.querySelector("#e-mail").value))
-        return false;
-
-    return true;
+    if (!emailRegex.test(email.value)) {
+        email.setCustomValidity("E-mail is not valid");
+        email.classList.remove("is-valid");
+        email.classList.add("is-invalid");
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    else {
+        email.setCustomValidity("");
+        email.classList.remove("is-invalid");
+        email.classList.add("is-valid");
+    }
 }
 
 function resetCustomValidity() {

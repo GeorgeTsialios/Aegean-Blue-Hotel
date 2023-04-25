@@ -36,3 +36,6 @@ label {
     display: block;
 }
   
+.links>a {
+    width: fit-content;
+}
