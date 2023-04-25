@@ -92,11 +92,17 @@
         width: 35%;
     }
     
+    #offcanvasCart .offcanvas-body{
+        position: sticky;
+        top: 64.5px;
+    }
 
 }
 
 
 #offcanvasCart {
+    /* position: sticky;
+    top: 0; */
     --bs-offcanvas-height: auto !important;
     /* background-color: rgb(255, 244, 210) !important; */
     background-color:  #c0f1db !important;
@@ -122,4 +128,11 @@
 
 .modal-body li {
     list-style-image: url("../../Assets/check-lg.svg");
-} 
+}
+
+.modal-body .btn-close {
+    z-index: 99;
+}
+
+
+
