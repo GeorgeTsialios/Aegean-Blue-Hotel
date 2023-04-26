@@ -101,10 +101,7 @@
 
 
 #offcanvasCart {
-    /* position: sticky;
-    top: 0; */
     --bs-offcanvas-height: auto !important;
-    /* background-color: rgb(255, 244, 210) !important; */
     background-color:  #c0f1db !important;
 } 
 

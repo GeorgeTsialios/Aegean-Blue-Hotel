@@ -152,8 +152,18 @@
                         <div class="form-floating mb-4 password">
                             <input type="password" class="form-control" id="password" placeholder=" " name="user_password" required>
                             <label for="password">Password</label>
-                            <div class="invalid-feedback">
-                                Please provide a valid password
+                            <div class=" invalid-feedback invalid-feedback-login">
+                                Password is incorrect    
+                            </div>
+                            <div class="invalid-feedback-register">
+                                Password must contain:
+                                <ul id="passwordList">
+                                    <li id="lengthMatch">8-32 characters</li>
+                                    <li id="numberMatch">a number</li>
+                                    <li id="lowerCaseMatch">a lower case letter</li>
+                                    <li id="upperCaseMatch">an upper case letter</li>
+                                    <li id="specialCharacterMatch">a special character</li>
+                                </ul>
                             </div>
                         </div>
                         <div class="form-floating mb-4 register-only" id="repeat_div">

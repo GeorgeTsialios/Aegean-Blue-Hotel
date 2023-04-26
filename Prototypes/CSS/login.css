@@ -28,6 +28,8 @@ label {
 .link-secondary {
     display: block;
 }
+
+
 .register-only {
     display: none;
 }
@@ -38,4 +40,19 @@ label {
   
 .links>a {
     width: fit-content;
+}
+
+
+#passwordList li.check {
+    list-style-image: url("../../Assets/check-lg-green.svg");
+    color: #198754;
+}
+
+#passwordList li.x {
+    list-style-image: url("../../Assets/x-lg.svg");
+    color: #dc3545;
+}
+
+.invalid-feedback-login, .invalid-feedback-register {
+    display: none;
 }
