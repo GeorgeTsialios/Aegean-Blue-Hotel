@@ -1,6 +1,6 @@
 .carousel-inner img {
     height: calc(100vh - 126px);
-    min-height: 620px;
+    min-height: 720px;
     object-fit: cover;
 }
 
