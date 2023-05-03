@@ -1,3 +1,23 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    height: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+main > *:first-child {
+    flex-grow: 1;
+}
+
 header, footer, .offcanvas {
     background-color: var(--brand-background);
 }
