@@ -121,78 +121,74 @@
     <main>
         <div>
             <h1 class="text-center my-3 display-5">Room Rack</h1>
-            <div class="container border rounded shadow my-3">
+            <div class="container border rounded shadow my-3" id="roomRackContainer">
                 <div class="d-flex align-items-center my-3">
-                    <button type="button" class="btn btn-light calendarControls mx-1">Today</button>
-                    <button type="button" class="btn btn-light calendarControls mx-1">
+                    <button type="button" class="btn btn-light calendarControls mx-1" id="calendarButtonToday">Today</button>
+                    <button type="button" class="btn btn-light calendarControls mx-1" id="calendarButtonPrev">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
                             <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
                         </svg>
                     </button>
-                    <button type="button" class="btn btn-light calendarControls mx-1">
+                    <button type="button" class="btn btn-light calendarControls mx-1" id="calendarButtonNext">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
                             <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                         </svg>
                     </button>
-                    <h4 class="ms-3 me-auto my-0">April 2023</h4>
-                    <button type="button" class="btn btn-primary me-3">Create booking</button>
+                    <h4 class="ms-3 me-auto my-0" id="calendarCurrentMonth"></h4>
+                    <!-- <button type="button" class="btn btn-primary me-3">Create booking</button> -->
                 </div>
-                <div class="row table-responsive m-lg-3">
-                    <table class="table table-sm">
+                <div class="table-responsive m-lg-3">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center roomHeader p-0 pb-1"></th>
                                 <th scope="col" class="text-center roomHeader p-0 pb-1 border-end"></th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Monday</div>
-                                    <div>03</div>
+                                    <div></div>
                                 </th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Tuesday</div>
-                                    <div>04</div>
+                                    <div></div>
                                 </th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Wednesday</div>
-                                    <div>05</div>
+                                    <div></div>
                                 </th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Thursday</div>
-                                    <div>06</div>
+                                    <div></div>
                                 </th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Friday</div>
-                                    <div class="bg-primary rounded-5 d-inline-block px-1 text-light">07</div>
+                                    <div></div>
                                 </th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Saturday</div>
-                                    <div>08</div>
+                                    <div></div>
                                 </th>
                                 <th scope="col" class="text-center dayHeader p-0 pb-1">
                                     <div>Sunday</div>
-                                    <div>09</div>
+                                    <div></div>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr id="room-101">
                                 <th scope="row" class="p-0">101</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">EXETW</th>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry1" style="width: 300%;" draggable="true">PAPANIKOLAOU, KONSTANTINOS</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-102">
                                 <th scope="row" class="p-0">102</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry extendsLeft" id="bookingEntry2" style="width: 450%;" draggable="true">PAPADOPOULOS, NIKOLAOS</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
@@ -200,68 +196,54 @@
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-103">
                                 <th scope="row" class="p-0">103</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">STA</th>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry3" style="width: 200%;" draggable="true">ANASTASIADOU, ELENI</div>
-                                </td>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry extendsRight" id="bookingEntry4" style="width: 250%;" draggable="true">KARAGIANNIS, STELIOS</div>
-                                </td>
+                                <td class="p-0"></td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-104">
                                 <th scope="row" class="p-0">104</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry5" style="width: 100%;" draggable="true">DIMITRIOU, STAVROS</div>
-                                </td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry6" style="width: 100%;" draggable="true">TRIANTAFYLLOU, KATERINA</div>
-                                </td>
+                                <td class="p-0"></td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-105">
                                 <th scope="row" class="p-0">105</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">DELTW</th>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry7" style="width: 400%;" draggable="true">ANDREOU, MARINA</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-106">
                                 <th scope="row" class="p-0">106</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">DELTW</th>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry8" style="width: 400%;" draggable="true">ANDREOU, MARINA</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-107">
                                 <th scope="row" class="p-0">107</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry extendsLeft" id="bookingEntry9" style="width: 150%;" draggable="true">KONTOGIANNIS, ALEXANDROS</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
@@ -269,12 +251,10 @@
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-108">
                                 <th scope="row" class="p-0">108</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">STA</th>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry extendsLeft extendsRight" id="bookingEntry10" style="width: 700%;" draggable="true">MAVROMMATI, ANNA</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
@@ -282,26 +262,22 @@
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-109">
                                 <th scope="row" class="p-0">109</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry11" style="width: 200%;" draggable="true">PETRIDIS, ALEXIS</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                             </tr>
-                            <tr>
+                            <tr id="room-110">
                                 <th scope="row" class="p-0">110</th>
                                 <th scope="row" class="text-secondary fw-light p-0 border-end">EXETW</th>
                                 <td class="p-0"></td>
-                                <td class="p-0">
-                                    <div data-bs-toggle="modal" data-bs-target="#bookingModal" class="bookingEntry" id="bookingEntry12" style="width: 400%;" draggable="true">SAKELLARIOU, ATHINA</div>
-                                </td>
+                                <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
                                 <td class="p-0"></td>
