@@ -63,7 +63,7 @@
     }
 
     #search_card {
-        width: 50%;
+        width: 55%;
     }
 
     #offcanvasButton {
@@ -81,7 +81,7 @@
     }
     
     #PriceColumn {
-        width: 10%;
+        width: 15%;
     }
 
     #RoomsColumn {
@@ -89,12 +89,16 @@
     }
 
     #CartColumn {
-        width: 35%;
+        width: 30%;
     }
     
     #offcanvasCart .offcanvas-body{
         position: sticky;
         top: 64.5px;
+    }
+
+    .sticky-lg-top {
+        z-index: unset;
     }
 
 }
@@ -131,5 +135,12 @@
     z-index: 99;
 }
 
+.form-check :hover {
+    cursor: pointer;
+}
 
+.custom-tooltip {
+    --bs-tooltip-bg: #212529;
+    --bs-tooltip-opacity:1;
+    }
 

@@ -131,14 +131,14 @@
             <div class="d-flex justify-content-center my-3 pb-3">
                 <div class="card container shadow" id="search_card">
                     <div class="row px-0">
-                        <div class="col-lg-6 px-0 btn-group">
+                        <div class="col-lg-5 px-0 btn-group">
                             <button id="daterange" type="button" class="btn btn-light">
-                                Apr 28, 2023 &#8211; May 1, 2023
+                                May 31, 2023 &#8211; Jun 2, 2023
                             </button>
                         </div>
                         <div class="col-lg-4 px-0 btn-group dropdown">
                             <button id="guests" type="button" class="btn btn-light rounded-0" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                1 adult &bull; 0 children &bull; 0 infants
+                                7 adult &bull; 0 children &bull; 0 infants
                             </button>
                             <div class="dropdown-menu container border">
                                 <div class="row align-items-center justify-content-between">
@@ -146,11 +146,11 @@
                                         Adults: <div class="age-description text-secondary">(age: 12+)</div>
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="adultsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
+                                        <button id="adultsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton" disabled>
                                             <span>-</span>
                                         </button>
                                         <p id="adultsCount" class="fw-semibold my-0 mx-3 text-center">1</p>
-                                        <button id="adultsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                        <button id="adultsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>+</span>
                                         </button>
                                     </div>
@@ -160,11 +160,11 @@
                                         Children: <div class="age-description text-secondary">(age: 2-11)</div>
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="childrenCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
+                                        <button id="childrenCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton" disabled>
                                             <span>-</span>
                                         </button>
                                         <p id="childrenCount" class="fw-semibold my-0 mx-3 text-center">0</p>
-                                        <button id="childrenCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                        <button id="childrenCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>+</span>
                                         </button>
                                     </div>
@@ -174,18 +174,18 @@
                                         Infants: <div class="age-description text-secondary">(age: 0-1)</div>
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="infantsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
+                                        <button id="infantsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton" disabled>
                                             <span>-</span>
                                         </button>
                                         <p id="infantsCount" class="fw-semibold my-0 mx-3 text-center">0</p>
-                                        <button id="infantsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                        <button id="infantsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>+</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 px-0">
+                        <div class="col-lg-3 px-0">
                             <a href="search_results.html">
                                 <button type="button" id="search" class="btn btn-primary w-100 h-100">
                                     Search
@@ -201,7 +201,7 @@
                         <thead>
                                 <tr class="table-dark">
                                     <th scope="col" id="RoomTypeColumn">Room Type</th>
-                                    <th scope="col" id="PriceColumn">Price</th>
+                                    <th scope="col" id="PriceColumn">Price per Night</th>
                                     <th scope="col" id="RoomsColumn">Rooms selected</th>
                                     <th scope="col" class="cartCell sticky-lg-top" id="CartColumn">My Cart</th>
                                 </tr>
@@ -239,7 +239,7 @@
                                                 <h5 class="offcanvas-title" id="offcanvasCartLabel">My Cart</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasCart" aria-label="Close"></button>
                                             </div>
-                                            <div class="offcanvas-body">
+                                            <div class="offcanvas-body d-flex flex-column">
                                                 <div class="form-check text-start form-switch ">
                                                     <label class="form-check-label" for="BreakfastIncluded">Breakfast included</label>
                                                     <input class="form-check-input" type="checkbox" role="switch" id="BreakfastIncluded">
@@ -251,7 +251,9 @@
                                                 <div class="text-center fs-5 mt-4 fw-semibold" id="totalPrice">
                                                     Total Price: 0&euro;
                                                 </div>
-                                                <button type="button" class="btn btn-lg btn-primary mt-4" id="BookButton" disabled>Book</button>
+                                                <div data-bs-toggle="tooltip" data-bs-title="" data-bs-custom-class="custom-tooltip" class="mt-4 mx-auto" id="BookButtonWrapper">
+                                                    <button type="button" class="btn btn-lg btn-primary " id="BookButton" disabled>Book</button>
+                                                </div>
                                                 <div class="fs-6 mt-4 text-start fst-italic">
                                                     All taxes are included in this price.<br>
                                                     Every customer is entitled to one free change of dates for their booking.
