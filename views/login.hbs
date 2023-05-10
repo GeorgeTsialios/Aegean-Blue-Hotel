@@ -1,0 +1,66 @@
+<main class="d-flex justify-content-center align-items-center login my-auto">
+    <div class="card d-inline-flex m-4" style="border-radius: 1rem;">
+        <div class="d-inline-flex p-5  justify-content-center text-black ">
+            <div class="d-flex align-items-center">
+                <form action="" method="get" class="needs-validation" novalidate>
+                    <h3 class="fw-semibold mb-3 pb-3" id="heading">Log into your account</h3>
+                    <div class="d-flex flex-column flex-lg-row">
+                        <div class="form-floating mb-4 me-lg-2 register-only">
+                            <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname">
+                            <label for="fname">First Name</label>
+                            <div class="invalid-feedback">
+                                Please provide a first name
+                            </div>
+                        </div>
+                        <div class="form-floating mb-4 ms-lg-2 register-only">
+                            <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname">
+                            <label for="lname">Last Name</label>
+                            <div class="invalid-feedback">
+                                Please provide a last name
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="email" class="form-control" id="e-mail" placeholder=" " name="user_email" required>
+                        <label for="e-mail">Email address</label>
+                        <div class="invalid-feedback">
+                            Please provide a valid email
+                        </div>
+                    </div>
+                    <div class="form-floating mb-4 password">
+                        <input type="password" class="form-control" id="password" placeholder=" " name="user_password" required>
+                        <label for="password">Password</label>
+                        <div class=" invalid-feedback invalid-feedback-login">
+                            Password is incorrect    
+                        </div>
+                        <div class="invalid-feedback-register">
+                            Password must contain:
+                            <ul id="passwordList">
+                                <li id="lengthMatch">8-32 characters</li>
+                                <li id="numberMatch">a number</li>
+                                <li id="lowerCaseMatch">a lower case letter</li>
+                                <li id="upperCaseMatch">an upper case letter</li>
+                                <li id="specialCharacterMatch">a special character</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-4 register-only" id="repeat_div">
+                        <input type="password" class="form-control" id="repeat_password" placeholder=" ">
+                        <label for="password">Repeat Password</label>
+                        <div class="invalid-feedback" id="repeat_password_message">
+                            The passwords don't match
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <button class="w-100 btn btn-dark btn-lg" type="submit">Login</button>
+                    </div>
+                    <div class="links">
+                        <a href="#" class="link-secondary login-only" id="toPwdForgot">Forgot your password?</a>
+                        <a href="#" class="link-secondary register-only" id="toLogin">Already have an account? Login</a>
+                        <a href="#" class="link-secondary login-only" id="toRegister">Don't have an account? Register</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

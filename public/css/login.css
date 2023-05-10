@@ -1,0 +1,58 @@
+body {
+    background: linear-gradient(45deg, rgba(141,189,255,1) 0%, #ff7f50 100%); 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+}
+
+label {
+    color: gray;
+}
+
+.btn-dark {
+    background-color: var(--brand-background-elements);
+}
+
+.btn-dark:hover {
+    background-color: var(--brand-background-elements-hover);
+}
+
+@media (min-width: 992px) {
+    #e-mail {
+        width: 428.8px;
+    }
+    .was-validated #e-mail {
+        width: 476.8px;
+    }
+}
+
+.link-secondary {
+    display: block;
+}
+
+
+.register-only {
+    display: none;
+}
+
+.login-only {
+    display: block;
+}
+  
+.links>a {
+    width: fit-content;
+}
+
+
+#passwordList li.check {
+    list-style-image: url("../../Assets/check-lg-green.svg");
+    color: #198754;
+}
+
+#passwordList li.x {
+    list-style-image: url("../../Assets/x-lg.svg");
+    color: #dc3545;
+}
+
+.invalid-feedback-login, .invalid-feedback-register {
+    display: none;
+}

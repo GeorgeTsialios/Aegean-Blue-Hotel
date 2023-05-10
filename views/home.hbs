@@ -1,0 +1,101 @@
+<main>
+    <div id="introCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-pause="false"> 
+        <div class="carousel-indicators">
+            {{#each hotel.photos}}
+            <button type="button" data-bs-target="#introCarousel" data-bs-slide-to="{{@index}}" {{#if this.isActiveOnCarousel}}class="active" aria-current="true"{{/if}} aria-label="Photo {{@index}}"></button>
+            {{/each}}
+        </div>
+        <div class="carousel-inner">
+            {{#each hotel.photos}}
+            <div class="carousel-item {{#if this.isActiveOnCarousel}}active{{/if}}">
+                <img src="{{this.source}}" class="d-block w-100" alt="{{this.description}}">
+            </div>
+            {{/each}}
+        </div>
+        <div class="carousel-caption d-flex flex-column">
+            <div class="px-4 py-5 my-5 text-center text-body bg-white rounded-4 border shadow-lg">
+                <h1 class="fw-bold">{{hotel.name}}</h1>
+                <p class="lead text-body-secondary fst-italic">{{hotel.tagline}}</p>
+
+                <div class="container">
+                    <div class="row">
+                        <h1 class="fs-4 my-3 fw-medium">Book your stay!</h1>
+                    </div>
+                    <form action="/searchResults">
+                        <div class="row px-0">
+                            <div class="col-lg-6 px-0 btn-group">
+                                <button id="daterange" type="button" class="btn btn-light">
+                                    Check-in date &#8211; Check-out date
+                                </button>
+                            </div>
+                            <div class="col-lg-4 px-0 btn-group dropup">
+                                <button id="guests" type="button" class="btn btn-light rounded-0" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    1 adult &bull; 0 children &bull; 0 infants
+                                </button>
+                                <div class="dropdown-menu container border">
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="col text-start ms-3 w-auto me-auto align-middle">
+                                            Adults: <div class="age-description text-secondary">(age: 12+)</div>
+                                        </div>
+                                        <div class="col d-flex align-items-center justify-content-end me-3 my-1">
+                                            <button id="adultsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
+                                                <span>-</span>
+                                            </button>
+                                            <p id="adultsCount" class="fw-semibold my-0 mx-3 text-center">1</p>
+                                            <button id="adultsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                                <span>+</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="col text-start ms-3 w-auto align-middle">
+                                            Children: <div class="age-description text-secondary">(age: 2-11)</div>
+                                        </div>
+                                        <div class="col d-flex align-items-center justify-content-end me-3 my-1">
+                                            <button id="childrenCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
+                                                <span>-</span>
+                                            </button>
+                                            <p id="childrenCount" class="fw-semibold my-0 mx-3 text-center">0</p>
+                                            <button id="childrenCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                                <span>+</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="col text-start ms-3 w-auto align-middle">
+                                            Infants: <div class="age-description text-secondary">(age: 0-1)</div>
+                                        </div>
+                                        <div class="col d-flex align-items-center justify-content-end me-3 my-1">
+                                            <button id="infantsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
+                                                <span>-</span>
+                                            </button>
+                                            <p id="infantsCount" class="fw-semibold my-0 mx-3 text-center">0</p>
+                                            <button id="infantsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                                <span>+</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 px-0">
+                                <a href="/searchResults">
+                                    <button id="search" class="btn btn-primary w-100 h-100">
+                                        Search
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> 
+        <button class="carousel-control-prev" type="button" data-bs-target="#introCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#introCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</main>

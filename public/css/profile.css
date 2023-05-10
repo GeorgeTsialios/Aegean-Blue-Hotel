@@ -1,0 +1,39 @@
+.bookingCode {
+    font-size: small;
+}
+
+.daterangepicker {
+    position: relative !important;
+    top: 0 !important;
+    width: fit-content !important;
+    border: unset !important;
+}
+
+.daterangepicker::before {
+    border: unset !important;
+}
+
+.daterangepicker.show-calendar .drp-calendar {
+    display: flex !important;
+}
+
+.daterangepicker>* {
+    float: unset !important;
+}
+
+@media (min-width: 992px) {
+    .daterangepicker.show-calendar {
+        display: flex;
+    }
+}
+
+#fileInputHidden {
+    display: none;
+}
+
+.profilePhotoImg {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}

@@ -1,0 +1,299 @@
+<main>
+    <div>
+        <h1 class="text-center my-3 display-5">Room Rack</h1>
+        <div class="container border rounded shadow my-3" id="roomRackContainer">
+            <div class="d-flex align-items-center my-3">
+                <button type="button" class="btn btn-light calendarControls mx-1" id="calendarButtonToday">Today</button>
+                <button type="button" class="btn btn-light calendarControls mx-1" id="calendarButtonPrev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                    </svg>
+                </button>
+                <button type="button" class="btn btn-light calendarControls mx-1" id="calendarButtonNext">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                    </svg>
+                </button>
+                <h4 class="ms-3 me-auto my-0" id="calendarCurrentMonth"></h4>
+                <!-- <button type="button" class="btn btn-primary me-3">Create booking</button> -->
+            </div>
+            <div class="table-responsive m-lg-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center roomHeader p-0 pb-1"></th>
+                            <th scope="col" class="text-center roomHeader p-0 pb-1 border-end"></th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Monday</div>
+                                <div></div>
+                            </th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Tuesday</div>
+                                <div></div>
+                            </th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Wednesday</div>
+                                <div></div>
+                            </th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Thursday</div>
+                                <div></div>
+                            </th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Friday</div>
+                                <div></div>
+                            </th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Saturday</div>
+                                <div></div>
+                            </th>
+                            <th scope="col" class="text-center dayHeader p-0 pb-1">
+                                <div>Sunday</div>
+                                <div></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="room-101">
+                            <th scope="row" class="p-0">101</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXETW</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-102">
+                            <th scope="row" class="p-0">102</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-103">
+                            <th scope="row" class="p-0">103</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">STA</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-104">
+                            <th scope="row" class="p-0">104</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-105">
+                            <th scope="row" class="p-0">105</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">DELTW</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-106">
+                            <th scope="row" class="p-0">106</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">DELTW</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-107">
+                            <th scope="row" class="p-0">107</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-108">
+                            <th scope="row" class="p-0">108</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">STA</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-109">
+                            <th scope="row" class="p-0">109</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                        <tr id="room-110">
+                            <th scope="row" class="p-0">110</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXETW</th>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                            <td class="p-0"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="bookingModalLabel">Booking information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-lg text-center justify-content-center my-3">
+                    <div class="text-start text-break">
+                        <div class="row align-items-center justify-content-center mt-3">
+                            <h6 class="col-lg-8">Booking information</h6>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Booking code</p>
+                            <p class="col-6 col-lg-4">NX7kEPpXqm</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Check-in date</p>
+                            <p class="col-6 col-lg-4">Apr 4, 2023</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Check-out date</p>
+                            <p class="col-6 col-lg-4">Apr 7, 2023</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Number of guests</p>
+                            <p class="col-6 col-lg-4">2 adults &bull; 0 children &bull; 0 infants</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Price</p>
+                            <p class="col-6 col-lg-4">237,00&euro;</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center mt-3">
+                            <h6 class="col-lg-8">Room types</h6>
+                        </div>
+                        <div class="row align-items-center justify-content-center mb-3">
+                            <img src="../../Assets/HotelPhotos/double.jpg" class="col-6 col-lg-3" alt="Executive Double Room">
+                            <p class="col-6 col-lg-4">Executive Double Room</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center mt-3">
+                            <h6 class="col-lg-8">Guest information</h6>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">First name</p>
+                            <p class="col-6 col-lg-4">Konstantinos</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Last name</p>
+                            <p class="col-6 col-lg-4">Papanikolaou</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Email</p>
+                            <p class="col-6 col-lg-4">k.papanikolaou@gmail.com</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Phone number</p>
+                            <p class="col-6 col-lg-4">+306944342414</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Travelling for work</p>
+                            <p class="col-6 col-lg-4">No</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center mt-3">
+                            <h6 class="col-lg-8">Billing address</h6>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Street</p>
+                            <p class="col-6 col-lg-4">Korinthou</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Street no.</p>
+                            <p class="col-6 col-lg-4">82</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">City</p>
+                            <p class="col-6 col-lg-4">Patras</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Postal code</p>
+                            <p class="col-6 col-lg-4">262 21</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Country</p>
+                            <p class="col-6 col-lg-4">Greece</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center mt-3">
+                            <h6 class="col-lg-8">Extra options</h6>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Breakfast included</p>
+                            <p class="col-6 col-lg-4">Yes</p>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <p class="col-6 col-lg-3 text-secondary">Free cancellation included</p>
+                            <p class="col-6 col-lg-4">Yes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Cancel booking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="confirmationModalLabel">Booking cancellation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel PAPANIKOLAOU, KONSTANTINOS's booking for Apr 4, 2023 &#8211; Apr 7, 2023?</p>
+                <p>They will get a full refund, since they are entitled to free cancellation.</p>
+                <p id="modalActionWarning" class="fw-bold mt-3">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#bookingModal">Close</button>
+                <button type="button" class="btn btn-danger" id="confirmationModalButton">Yes, cancel booking</button>
+            </div>
+        </div>
+    </div>
+</div>
