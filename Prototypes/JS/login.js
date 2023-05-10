@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded",() => {
     document.querySelector("#toPwdForgot").addEventListener("click",changetoPwdForgot);
 
     document.querySelectorAll("#passwordList>li").forEach((item) => item.classList.add("x"));
+
+    email.addEventListener("blur",validateEmail);
     validate();
     password.addEventListener("keyup",(event) => {
         validatePassword(event);
