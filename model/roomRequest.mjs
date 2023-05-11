@@ -1,7 +1,8 @@
 class RoomRequest {
-    constructor(bookingId, roomTypeCode) {
+    constructor(bookingId, roomType, howMany) {
         this.bookingId = bookingId;
-        this.roomTypeCode = roomTypeCode;
+        this.roomType = roomType;
+        this.howMany = howMany;
     }
 }
 

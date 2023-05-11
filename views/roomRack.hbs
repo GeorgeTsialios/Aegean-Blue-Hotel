@@ -54,9 +54,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="room-101">
-                            <th scope="row" class="p-0">101</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXETW</th>
+                        {{#each rooms}}
+                        <tr id="room-{{this.number}}">
+                            <th scope="row" class="p-0">{{this.number}}</th>
+                            <th scope="row" class="text-secondary fw-light p-0 border-end">{{this.roomType.code}}</th>
                             <td class="p-0"></td>
                             <td class="p-0"></td>
                             <td class="p-0"></td>
@@ -65,105 +66,7 @@
                             <td class="p-0"></td>
                             <td class="p-0"></td>
                         </tr>
-                        <tr id="room-102">
-                            <th scope="row" class="p-0">102</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-103">
-                            <th scope="row" class="p-0">103</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">STA</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-104">
-                            <th scope="row" class="p-0">104</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-105">
-                            <th scope="row" class="p-0">105</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">DELTW</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-106">
-                            <th scope="row" class="p-0">106</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">DELTW</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-107">
-                            <th scope="row" class="p-0">107</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-108">
-                            <th scope="row" class="p-0">108</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">STA</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-109">
-                            <th scope="row" class="p-0">109</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXEDD</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
-                        <tr id="room-110">
-                            <th scope="row" class="p-0">110</th>
-                            <th scope="row" class="text-secondary fw-light p-0 border-end">EXETW</th>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                            <td class="p-0"></td>
-                        </tr>
+                        {{/each}}
                     </tbody>
                 </table>
             </div>

@@ -6,6 +6,7 @@ class RoomType {
         this.price = price;
         this.amenities = amenities;
         this.photos = photos;
+        this.coverPhoto = this.photos[0];
     }
 }
 

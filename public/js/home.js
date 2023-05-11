@@ -1,14 +1,22 @@
+Date.prototype.addDays = function (days) {
+    const date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
 const guests = {
     "adultsCount": 1,
     "childrenCount": 0,
     "infantsCount": 0
 }
 const dates = {
-    "check-in": null,
-    "check-out": null
+    "check-in": new Date().addDays(1),
+    "check-out": new Date().addDays(2)
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("#searchForm").addEventListener("submit", () => sendForm());
+
     document.querySelector("#adultsCountMinus").addEventListener("click", () => updateGuests("adultsCount", "Minus"));
     document.querySelector("#adultsCountPlus").addEventListener("click", () => updateGuests("adultsCount", "Plus"));
     document.querySelector("#childrenCountMinus").addEventListener("click", () => updateGuests("childrenCount", "Minus"));
@@ -26,6 +34,14 @@ function updateGuests(elem, symbol) {
 
     document.querySelector(`#${elem}`).textContent = guests[elem];
     document.querySelector("#guests").innerHTML = `${guests['adultsCount']} ${(guests['adultsCount'] === 1) ? "adult" : "adults"} &bull; ${guests['childrenCount']} ${(guests['childrenCount'] === 1) ? "child" : "children"} &bull; ${guests['infantsCount']} ${(guests['infantsCount'] === 1) ? "infant" : "infants"}`;
+}
+
+function sendForm() {
+    document.querySelector("input[name=checkInDate]").value = dates['check-in'].toLocaleDateString();
+    document.querySelector("input[name=checkOutDate").value = dates['check-out'].toLocaleDateString();
+    document.querySelector("input[name=adultsCount]").value = guests['adultsCount'];
+    document.querySelector("input[name=childrenCount]").value = guests['childrenCount'];
+    document.querySelector("input[name=infantsCount]").value = guests['infantsCount'];
 }
 
 $(() => {

@@ -23,6 +23,28 @@ class Booking {
         this.guestAddressPostalCode = guestAddressPostalCode;
         this.guestAddressStreet = guestAddressStreet;
         this.guestAddressStreetNo = guestAddressStreetNo;
+
+        this.prepareStrings();
+    }
+
+    prepareStrings() {
+        this.strings = {
+            "checkInDate": this.dateToString(this.checkInDate),
+            "checkOutDate": this.dateToString(this.checkOutDate),
+            "numberOfGuests": this.getFullNumberOfGuests(),
+            "totalPrice": this.totalPrice.toLocaleString("default", { style: "currency", currency: "EUR" }),
+            "guestTravelsForWork": (this.guestTravelsForWork) ? "Yes" : "No",
+            "breakfastIncluded": (this.breakfastIncluded) ? "Yes" : "No",
+            "freeCancellationAllowed": (this.freeCancellationAllowed) ? "Yes" : "No"
+        };
+    }
+
+    getFullNumberOfGuests() {
+        return `${this.numberOfAdults} ${(this.numberOfAdults === 1) ? "adult" : "adults"} • ${this.numberOfChildren} ${(this.numberOfChildren === 1) ? "child" : "children"} • ${this.numberOfInfants} ${(this.numberOfInfants === 1) ? "infant" : "infants"}`;
+    }
+
+    dateToString(date) {
+        return date.toLocaleDateString("en-US", { "month": "short", "day": "numeric", "year": "numeric" });
     }
 }
 
