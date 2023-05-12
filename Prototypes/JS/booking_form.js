@@ -1,26 +1,31 @@
 const phone = document.querySelector("#phone");
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRegex = /^[0-9\(\)\-\s]+$/;
 const email = document.querySelector("#e-mail");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const form = document.querySelector("form");
+// const streetNumber = document.querySelector("#street_number");
+// const postalCode = document.querySelector("#postal_code");
+// const NumberRegex = /^[0-9]+$/;
 
 const iti = window.intlTelInput(phone,{
     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
-    initialCountry: "auto",
+    initialCountry: "gr",
     geoIpLookup: callback => {
     fetch("https://ipapi.co/json")
       .then(res => res.json())
       .then(data => callback(data.country_code))
       .catch(() => callback("us"));
-  }
+    }
   });
 
 document.addEventListener("DOMContentLoaded",() => {
-    email.addEventListener("blur",validateEmail);
+    email.addEventListener('blur',validateEmail);
     phone.addEventListener('blur',(event) => {
       validatePhone(event);
       phone.addEventListener('focus',validatePhone);
     });
+    // streetNumber.addEventListener('blur',validateStreetNumber);
 
-    // document.querySelector(".iti__country").addEventListener('click',validatePhone);
     validate();
 })
 
@@ -34,11 +39,11 @@ const errorMap = {
 };
 
 function validate() {
-  form = document.querySelector("form");
   form.addEventListener('submit', (event) => {
 
     email.addEventListener("keyup",validateEmail);
     phone.addEventListener("keyup",validatePhone);
+    // streetNumber.addEventListener("keyup",validateStreetNumber);
 
     if (!form.checkValidity()) {
         event.preventDefault();
@@ -47,8 +52,14 @@ function validate() {
 
     validateEmail(event);
     validatePhone(event);
+    // validateStreetNumber(event);
   
     form.classList.add('was-validated');
+
+    let invalidInputs = document.querySelectorAll(".is-invalid");
+    if (invalidInputs.length === 0 && form.checkValidity())
+        submitForm();
+
   }, false);
 }
 
@@ -69,7 +80,7 @@ function validateEmail(event) {
 
 function validatePhone(event) {
     
-      if (iti.isValidNumber()) {
+      if (iti.isValidNumber() && phoneRegex.test(phone.value)) {
         phone.setCustomValidity("");
         phone.parentElement.classList.remove("is-invalid");
         phone.parentElement.classList.add("is-valid");
@@ -88,4 +99,30 @@ function validatePhone(event) {
         event.preventDefault();
         event.stopPropagation();
       }
+}
+
+// function validateStreetNumber(event) {
+//     if (streetNumber.value === "")
+//         streetNumber.classList.add("optional");
+//     else {
+//         streetNumber.classList.remove("optional");
+//         if (!NumberRegex.test(streetNumber.value)) {
+//             streetNumber.setCustomValidity("Street number is not valid");
+//             streetNumber.classList.remove("is-valid");
+//             streetNumber.classList.add("is-invalid");
+//             event.preventDefault();
+//             event.stopPropagation();
+//         }
+//         else {
+//             streetNumber.setCustomValidity("");
+//             streetNumber.classList.remove("is-invalid");
+//             streetNumber.classList.add("is-valid");
+//         }
+
+//     }
+// }
+
+function submitForm() {
+    console.log("Send form");
+    phone.value = iti.getNumber();
 }

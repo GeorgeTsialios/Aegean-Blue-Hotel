@@ -121,48 +121,126 @@
         </div>
     </header>
 
-    <main class="d-flex justify-content-center align-items-center login my-auto">
-        <div class="card d-inline-flex m-4" style="border-radius: 1rem;">
-            <div class="d-inline-flex p-5  justify-content-center text-black ">
-                <div class="d-flex align-items-center">
-                    <form action="" method="get" class="needs-validation" novalidate>
-                        <h3 class="fw-semibold mb-3 pb-3" id="heading">Personal information</h3>
-                        <div class="d-flex flex-column flex-lg-row">
-                            <div class="form-floating mb-4 me-lg-2">
-                                <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" required>
-                                <label for="fname">First Name</label>
-                                <div class="invalid-feedback">
-                                    Please provide a first name
+    <main class="d-flex justify-content-center align-items-center my-auto">
+        <form action="" method="get" class="needs-validation d-flex flex-column align-items-center" novalidate>
+            <div class="card d-flex shadow mt-4 w-100">
+                <div class="card-header d-flex align-items-center px-4">
+                    <h4 class="fw-semibold my-3" id="heading">Personal information</h4>
+                </div>
+                <div class="card-body p-4 pb-3 d-flex justify-content-center text-black">
+                    <div class="d-flex align-items-center w-100">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-6 px-0 pe-md-2">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" required>
+                                        <label for="fname">First name</label>
+                                        <div class="invalid-feedback">
+                                            Please provide a first name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 px-0 ps-md-2">
+                                    <div class="form-floating mb-4 ">
+                                        <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" required>
+                                        <label for="lname">Last name</label>
+                                        <div class="invalid-feedback">
+                                            Please provide a last name
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-floating mb-4 ms-lg-2">
-                                <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" required>
-                                <label for="lname">Last Name</label>
-                                <div class="invalid-feedback">
-                                    Please provide a last name
+                            <div class="row">
+                                <div class="col-12 col-md-6 px-0 pe-md-2">
+                                    <div class="form-floating mb-4">
+                                        <input type="email" class="form-control" id="e-mail" placeholder=" " name="user_email" required>
+                                        <label for="e-mail">Email address</label>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid email
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 px-0 ps-md-2">
+                                    <div class="form-floating mb-4">
+                                        <input type="tel" class="form-control py-3" id="phone" name="user_phone" required>
+                                        <div class="invalid-feedback" id="phone_error_message">
+                                            Please provide a valid phone number
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto px-0">
+                                    <label class="form-check-label" for="TravelForWork">Are you travelling for work?</label>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check text-start form-switch">
+                                        <input class="form-check-input" type="checkbox" name="TravelForWork" role="switch" id="TravelForWork">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="email" class="form-control" id="e-mail" placeholder=" " name="user_email" required>
-                            <label for="e-mail">Email address</label>
-                            <div class="invalid-feedback">
-                                Please provide a valid email
-                            </div>
-                        </div>
-                        <div class="form-floating mb-4">
-                            <input type="tel" class="form-control py-3" id="phone" name="user_phone" required>
-                            <div class="invalid-feedback" id="phone_error_message">
-                                Please provide a valid phone number
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <button class="w-100 btn btn-dark btn-lg" type="submit">Login</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="card d-flex shadow mt-4 mb-4 w-100">
+                <div class="card-header d-flex align-items-center px-4">
+                    <h4 class="fw-semibold my-3" id="billing_address">Billing address <span class="parenthesis">(optional)</span></h4>
+                </div>
+                <div class="card-body p-4 d-flex justify-content-center text-black ">
+                    <div class="d-flex align-items-center w-100">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-6 px-0 pe-md-2">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control optional" id="country" placeholder=" " name="user_country">
+                                        <label for="country">Country</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 px-0 ps-md-2">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control optional" id="city" placeholder=" " name="user_city">
+                                        <label for="city">City</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 px-0 pe-md-2">
+                                    <div class="form-floating mb-4 mb-md-0">
+                                        <input type="text" class="form-control optional" id="street_name" placeholder=" " name="user_street_name">
+                                        <label for="street_name">Street name</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 px-0 ps-md-2 pe-md-2">
+                                    <div class="form-floating mb-4 mb-md-0">
+                                        <input type="text" class="form-control optional" id="street_number" placeholder=" " name="user_street_number">
+                                        <label for="street_number">Street number</label>
+                                        <!-- <div class="invalid-feedback">
+                                            A street number must only contain numbers 
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 px-0 ps-md-2">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control optional" id="postal_code" placeholder=" " name="user_postal_code">
+                                        <label for="postal_code">Postal code</label>
+                                        <!-- <div class="invalid-feedback">
+                                            A postal code must only contain numbers 
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="w-100 d-flex align-items-center justify-content-center btn btn-dark btn-lg mb-4" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" fill="currentColor" class="bi bi-lock-fill me-1" viewBox="0 0 20 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                </svg>
+                Proceed to Payment
+            </button>
+        </form>
     </main>
 
     <footer class="container-fluid d-flex flex-wrap justify-content-between py-3 border-top bg-dark-subtle">

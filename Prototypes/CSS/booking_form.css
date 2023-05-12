@@ -4,8 +4,16 @@ body {
     background-attachment: fixed;
 }
 
+.card {
+    border-radius: 1rem;
+}
+
 label {
     color: gray;
+}
+
+.form-check-label {
+    color: #212529;
 }
 
 .btn-dark {
@@ -14,15 +22,6 @@ label {
 
 .btn-dark:hover {
     background-color: var(--brand-background-elements-hover);
-}
-
-@media (min-width: 992px) {
-    #e-mail {
-        width: 428.8px;
-    }
-    .was-validated #e-mail {
-        width: 476.8px;
-    }
 }
 
 .intl-tel-input {
@@ -42,4 +41,20 @@ label {
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 0;
+}
+
+.iti {
+    width: 100%;
+}
+
+.parenthesis {
+    font-size: medium;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.form-control.optional:valid {
+    border-color: #ced4da;
+    padding-right: .75rem;
+    background: none;
 }
