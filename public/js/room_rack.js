@@ -19,7 +19,7 @@ class Entry {
 
 const rooms = [];
 const bookings = [];
-let entries = [];
+let allEntries = [];
 
 let dateCells;
 let currentMonthPlaceholder;
@@ -99,6 +99,9 @@ async function fetchBookings(startDate, endDate) {
 
     for (let booking of data) {
         bookings.push(booking);
+        for (let room of booking.roomOccupations) {
+            allEntries.push(new Entry(booking, room, booking.roomOccupations.indexOf(room)));
+        }
     }
 }
 
@@ -120,60 +123,57 @@ function updateDateCells() {
 function updateVisibleEntries() {
     document.querySelectorAll("td").forEach(elem => elem.innerHTML = "");
     roomRackRows = {};
-    entries = [];
-    for (let booking of bookings) {
-        const checkInDate = new Date(booking.checkInDate);
-        const checkOutDate = new Date(booking.checkOutDate);
+    // currentEntries = [];
+    for (let entry of allEntries) {
+        const checkInDate = new Date(entry.booking.checkInDate);
+        const checkOutDate = new Date(entry.booking.checkOutDate);
         if (checkInDate <= visibleEndOfWeek && checkOutDate >= visibleStartOfWeek) {
-            for (let room of booking.roomOccupations) {
-                const entry = new Entry(booking, room, booking.roomOccupations.indexOf(room))
-                entries.push(entry);
-                const node = document.createElement("div");
-                node.id = `entry-${booking.id}-${room.number}-${booking.roomOccupations.indexOf(room)}`;
-                node.className = "entry";
-                node.setAttribute("data-bs-toggle", "modal");
-                node.setAttribute("data-bs-target", "#bookingModal");
-                node.setAttribute("draggable", "true");
-                node.addEventListener("click", () => populateBookingConfirmation(booking));
-                node.addEventListener("dragstart", dragstart_handler);
-                node.textContent = `${booking.guestInformation.lastName.toUpperCase()}, ${booking.guestInformation.firstName.toUpperCase()}`;
-                
-                if (checkInDate < visibleStartOfWeek) {
-                    node.classList.add("extendsLeft");
-                }
-                if (checkOutDate > visibleEndOfWeek) {
-                    node.classList.add("extendsRight");
-                }
+            const node = document.createElement("div");
+            node.id = `entry-${entry.booking.id}-${entry.room.number}-${entry.booking.roomOccupations.indexOf(entry.room)}`;
+            node.className = "entry";
+            node.setAttribute("data-bs-toggle", "modal");
+            node.setAttribute("data-bs-target", "#bookingModal");
+            node.setAttribute("draggable", "true");
+            node.addEventListener("click", () => populateBookingConfirmation(entry.booking));
+            node.addEventListener("dragstart", dragstart_handler);
+            node.textContent = `${entry.booking.guestInformation.lastName.toUpperCase()}, ${entry.booking.guestInformation.firstName.toUpperCase()}`;
+            
+            if (checkInDate < visibleStartOfWeek) {
+                node.classList.add("extendsLeft");
+            }
+            if (checkOutDate > visibleEndOfWeek) {
+                node.classList.add("extendsRight");
+            }
 
-                if (checkInDate >= visibleStartOfWeek && checkOutDate <= visibleEndOfWeek) {
-                    node.style.width = `${Math.ceil(Math.abs(checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)) * 100}%`;
-                }
-                else if (checkInDate < visibleStartOfWeek && checkOutDate <= visibleEndOfWeek) {
-                    node.style.width = `${Math.ceil(Math.abs(checkOutDate - visibleStartOfWeek) / (1000 * 60 * 60 * 24)) * 100 + 50}%`;
-                }
-                else if (checkInDate >= visibleStartOfWeek && checkOutDate > visibleEndOfWeek) {
-                    node.style.width = `${Math.ceil(Math.abs(visibleEndOfWeek - checkInDate) / (1000 * 60 * 60 * 24)) * 100 + 50}%`;
-                }
-                else {
-                    node.style.width = "700%";
-                }
+            if (checkInDate >= visibleStartOfWeek && checkOutDate <= visibleEndOfWeek) {
+                node.style.width = `${Math.ceil(Math.abs(checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)) * 100}%`;
+            }
+            else if (checkInDate < visibleStartOfWeek && checkOutDate <= visibleEndOfWeek) {
+                node.style.width = `${Math.ceil(Math.abs(checkOutDate - visibleStartOfWeek) / (1000 * 60 * 60 * 24)) * 100 + 50}%`;
+            }
+            else if (checkInDate >= visibleStartOfWeek && checkOutDate > visibleEndOfWeek) {
+                node.style.width = `${Math.ceil(Math.abs(visibleEndOfWeek - checkInDate) / (1000 * 60 * 60 * 24)) * 100 + 50}%`;
+            }
+            else {
+                node.style.width = "700%";
+            }
 
-                if (checkInDate <= visibleStartOfWeek) {
-                    document.querySelector(`#room-${room.number}`).children[2].appendChild(node);
-                }
-                else {
-                    document.querySelector(`#room-${room.number}`).children[Math.ceil(Math.abs(checkInDate - visibleStartOfWeek) / (1000 * 60 * 60 * 24)) + 2].appendChild(node);
-                }
+            if (checkInDate <= visibleStartOfWeek) {
+                document.querySelector(`#room-${entry.room.number}`).children[2].appendChild(node);
+            }
+            else {
+                document.querySelector(`#room-${entry.room.number}`).children[Math.ceil(Math.abs(checkInDate - visibleStartOfWeek) / (1000 * 60 * 60 * 24)) + 2].appendChild(node);
+            }
 
-                if (roomRackRows[room.number]) {
-                    if (!roomRackRows[room.number].includes(entry)) {
-                        roomRackRows[room.number].push(entry);
-                    }
-                }
-                else {
-                    roomRackRows[room.number] = [entry];
+            if (roomRackRows[entry.room.number]) {
+                if (!roomRackRows[entry.room.number].includes(entry)) {
+                    roomRackRows[entry.room.number].push(entry);
                 }
             }
+            else {
+                roomRackRows[entry.room.number] = [entry];
+            }
+
         }
     }
 
@@ -210,7 +210,7 @@ function arrangeOverlappingEntries() {
 }
 
 function entryHasOverlaps(entry) {
-    for (let elem of entries) {
+    for (let elem of allEntries) {
         if (checkIfTwoEntriesOverlap(entry, elem)) return true;
     }
     return false;
@@ -240,10 +240,10 @@ function drop_handler(event) {
     const eventData = event.dataTransfer.getData("entryID").split("-");
     let entry;
 
-    for (let i=0; i<entries.length; i++) {
-        if (entries[i].booking.id === eventData[1] && entries[i].room.number === parseInt(eventData[2]) && entries[i].index === parseInt(eventData[3])) {
-            entries[i].room = rooms.find(room => room.number === parseInt(event.currentTarget.id.split("-")[1]));
-            entry = entries[i];
+    for (let i=0; i<allEntries.length; i++) {
+        if (allEntries[i].booking.id === eventData[1] && allEntries[i].room.number === parseInt(eventData[2]) && allEntries[i].index === parseInt(eventData[3])) {
+            allEntries[i].room = rooms.find(room => room.number === parseInt(event.currentTarget.id.split("-")[1]));
+            entry = allEntries[i];
         }
     }
     for (let i=0; i<bookings.length; i++) {
