@@ -1,0 +1,93 @@
+<div class="row align-items-center justify-content-center mt-3">
+    <h6 class="col-lg-8">Booking information</h6>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Booking code</p>
+    <p class="col-6 col-lg-4" id="bookingIDField">{{booking.id}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Check-in date</p>
+    <p class="col-6 col-lg-4" id="bookingCheckInDateField">{{booking.strings.checkInDate}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Check-out date</p>
+    <p class="col-6 col-lg-4" id="bookingCheckOutDateField">{{booking.strings.checkOutDate}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Number of guests</p>
+    <p class="col-6 col-lg-4" id="bookingNumberOfGuestsField">{{booking.strings.guests}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Price</p>
+    <p class="col-6 col-lg-4" id="bookingTotalPriceField">{{booking.strings.totalPrice}}</p>
+</div>
+<div class="row align-items-center justify-content-center mt-3">
+    <h6 class="col-lg-8">Room types</h6>
+</div>
+<div class="row">
+    <div class="container" id="roomRequestsContainer">
+        {{#each booking.roomRequests}}
+        <div class="row align-items-center justify-content-center mb-3">
+            <img src="{{this.coverPhoto.source}}" class="col-6 col-lg-3" alt="{{this.coverPhoto.description}}">
+            <p class="col-6 col-lg-4">{{this.name}}</p>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<div class="row align-items-center justify-content-center mt-3">
+    <h6 class="col-lg-8">Guest information</h6>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">First name</p>
+    <p class="col-6 col-lg-4" id="bookingGuestFirstNameField">{{booking.guestInformation.firstName}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Last name</p>
+    <p class="col-6 col-lg-4" id="bookingGuestLastNameField">{{booking.guestInformation.lastName}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Email</p>
+    <p class="col-6 col-lg-4" id="bookingGuestEmailField">{{booking.guestInformation.email}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Phone number</p>
+    <p class="col-6 col-lg-4" id="bookingGuestPhoneNumberField">{{booking.guestInformation.phoneNumber}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Travelling for work</p>
+    <p class="col-6 col-lg-4" id="bookingGuestTravelsForWorkField">{{booking.strings.guestTravelsForWork}}</p>
+</div>
+<div class="row align-items-center justify-content-center mt-3">
+    <h6 class="col-lg-8">Billing address</h6>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Street</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressStreetField">{{booking.guestInformation.address.street}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Street no.</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressStreetNoField">{{booking.guestInformation.address.streetNo}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">City</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressCityField">{{booking.guestInformation.address.city}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Postal code</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressPostalCodeField">{{booking.guestInformation.address.postalCode}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Country</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressCountryField">{{booking.guestInformation.address.country}}</p>
+</div>
+<div class="row align-items-center justify-content-center mt-3">
+    <h6 class="col-lg-8">Extra options</h6>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Breakfast included</p>
+    <p class="col-6 col-lg-4" id="bookingBreakfastIncludedField">{{booking.strings.breakfastIncluded}}</p>
+</div>
+<div class="row align-items-center justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Free cancellation included</p>
+    <p class="col-6 col-lg-4" id="bookingFreeCancellationAllowedField">{{booking.strings.freeCancellationAllowed}}</p>
+</div>
