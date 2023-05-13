@@ -66,3 +66,7 @@ label {
     padding-right: .75rem;
     background: none;
 }
+
+.no-wrap {
+    white-space: nowrap;
+}
