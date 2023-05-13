@@ -1,6 +1,28 @@
 import { Hotel } from "../../model/hotel.mjs";
 import { Photo } from "../../model/photo.mjs";
 
+import { Account } from "../../model/account.mjs";
+import { AccountLevel } from "../../model/accountLevel.mjs";
+
+const accountLevels = [
+    new AccountLevel("Loyalty level 0", 0, 0),
+    new AccountLevel("Loyalty level 1", 0.1, 3),
+    new AccountLevel("Loyalty level 2", 0.2, 6),
+    new AccountLevel("Loyalty level 3", 0.3, 10)
+];
+
+const account = new Account(
+    "Christos",
+    "Katsandris",
+    "christoskatsandris@outlook.com",
+    "+306937708141",
+    "123456",
+    true,
+    null,
+    // new Photo("assets/HotelPhotos/double2.jpg", "Deluxe Twin Room"),
+    accountLevels[3]
+);
+
 const hotelPhotos = [
     new Photo("assets/HotelPhotos/entrance.jpg", "Photo showing the hotel entrance and stairs", true),
     new Photo("assets/HotelPhotos/room_door.jpg", "Photo showing a person opening a room door"),
@@ -33,7 +55,8 @@ function navigateToHome(req, res, next) {
                 scriptTags: `
                     <script src="js/home.js"></script>
                 `,
-                hotel: hotel
+                hotel: hotel,
+                account: account
             }
         );
     }

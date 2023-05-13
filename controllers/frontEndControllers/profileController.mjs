@@ -116,7 +116,8 @@ function navigateToProfile(req, res, next) {
                 `,
                 account: account,
                 upcomingBookings: upcomingBookings,
-                pastBookings: pastBookings
+                pastBookings: pastBookings,
+                account: account
             }
         );
     }
