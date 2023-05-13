@@ -1,7 +1,7 @@
 import 'dotenv'
 import express from 'express';
 import { engine } from 'express-handlebars';
-import { router } from './routes.mjs';
+import * as Routers from './routers/index.mjs';
 
 const app = express();
 
@@ -11,7 +11,8 @@ app.use(express.urlencoded({extended: false}));
 app.engine('hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-app.use('/', router);
+app.use('/', Routers.FrontEndRouter.router);
+app.use('/api', Routers.ApiRouter.router);
 
 // ToDo: Add a NOT FOUND page
 

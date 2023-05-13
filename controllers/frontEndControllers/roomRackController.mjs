@@ -1,6 +1,6 @@
-import { Photo } from "../model/photo.mjs";
-import { RoomType } from "../model/roomType.mjs";
-import { Room } from "../model/room.mjs";
+import { Photo } from "../../model/photo.mjs";
+import { RoomType } from "../../model/roomType.mjs";
+import { Room } from "../../model/room.mjs";
 
 const roomTypes = [
     new RoomType("STA", "Standard Single Room", 2, 150, "RoomAmenities", [

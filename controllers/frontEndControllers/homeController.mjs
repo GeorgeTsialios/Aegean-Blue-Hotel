@@ -1,5 +1,5 @@
-import { Hotel } from "../model/hotel.mjs";
-import { Photo } from "../model/photo.mjs";
+import { Hotel } from "../../model/hotel.mjs";
+import { Photo } from "../../model/photo.mjs";
 
 const hotelPhotos = [
     new Photo("assets/HotelPhotos/entrance.jpg", "Photo showing the hotel entrance and stairs", true),
