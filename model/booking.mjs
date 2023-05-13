@@ -1,28 +1,31 @@
 class Booking {
-    constructor(madeByAccount, id, checkInDate, checkOutDate, numberOfAdults, numberOfChildren, numberOfInfants, totalPrice, breakfastIncluded, freeCancellationAllowed, dateChangeAllowed, isCancelled, dateCreated, guestFirstName, guestLastName, guestEmail, guestPhoneNumber, guestTravelsForWork, guestAddressCountry, guestAddressCity, guestAddressPostalCode, guestAddressStreet, guestAddressStreetNo) {
+    constructor(madeByAccount, id, checkInDate, checkOutDate, numberOfAdults, numberOfChildren, numberOfInfants, totalPrice, breakfastIncluded, freeCancellationAllowed, dateChangeAllowed, isCancelled, dateCreated, guestInformation, roomRequests, roomOccupations) {
         this.madeByAccount = madeByAccount;
         this.id = id;
+
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.numberOfAdults = numberOfAdults;
-        this.numberOfChildren = numberOfChildren;
-        this.numberOfInfants = numberOfInfants;
+
+        this.guests = {
+            "adults": numberOfAdults,
+            "children": numberOfChildren,
+            "infants": numberOfInfants
+        };
+
         this.totalPrice = totalPrice;
         this.breakfastIncluded = breakfastIncluded;
         this.freeCancellationAllowed = freeCancellationAllowed;
         this.dateChangeAllowed = dateChangeAllowed;
         this.isCancelled = isCancelled;
         this.dateCreated = dateCreated;
-        this.guestFirstName = guestFirstName;
-        this.guestLastName = guestLastName;
-        this.guestEmail = guestEmail;
-        this.guestPhoneNumber = guestPhoneNumber;
-        this.guestTravelsForWork = guestTravelsForWork;
-        this.guestAddressCountry = guestAddressCountry;
-        this.guestAddressCity = guestAddressCity;
-        this.guestAddressPostalCode = guestAddressPostalCode;
-        this.guestAddressStreet = guestAddressStreet;
-        this.guestAddressStreetNo = guestAddressStreetNo;
+
+        this.guestInformation = guestInformation;
+
+        if (roomRequests) this.roomRequests = roomRequests;
+        else this.roomRequests = [];
+
+        if (roomOccupations) this.roomOccupations = roomOccupations;
+        else this.roomOccupations = [];
 
         this.prepareStrings();
     }
@@ -31,7 +34,7 @@ class Booking {
         this.strings = {
             "checkInDate": this.dateToString(this.checkInDate),
             "checkOutDate": this.dateToString(this.checkOutDate),
-            "numberOfGuests": this.getFullNumberOfGuests(),
+            "guests": this.getFullNumberOfGuests(),
             "totalPrice": this.totalPrice.toLocaleString("default", { style: "currency", currency: "EUR" }),
             "guestTravelsForWork": (this.guestTravelsForWork) ? "Yes" : "No",
             "breakfastIncluded": (this.breakfastIncluded) ? "Yes" : "No",
@@ -40,7 +43,7 @@ class Booking {
     }
 
     getFullNumberOfGuests() {
-        return `${this.numberOfAdults} ${(this.numberOfAdults === 1) ? "adult" : "adults"} • ${this.numberOfChildren} ${(this.numberOfChildren === 1) ? "child" : "children"} • ${this.numberOfInfants} ${(this.numberOfInfants === 1) ? "infant" : "infants"}`;
+        return `${this.guests.adults} ${(this.guests.adults === 1) ? "adult" : "adults"} • ${this.guests.children} ${(this.guests.children === 1) ? "child" : "children"} • ${this.guests.infants} ${(this.guests.infants === 1) ? "infant" : "infants"}`;
     }
 
     dateToString(date) {
