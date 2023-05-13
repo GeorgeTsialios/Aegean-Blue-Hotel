@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Cancel booking</button>
+                <button id="cancelBookingButton" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Cancel booking</button>
             </div>
         </div>
     </div>
@@ -103,8 +103,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="confirmationModalInfoMessage">Are you sure you want to cancel {{booking.guestLastName}}, {{booking.guestFirstName}}'s booking for {{booking.strings.checkInDate}} &#8211; {{booking.strings.checkOutDate}}?</p>
-                <p id="confirmationModalRefundMessage">They will get a full refund, since they are entitled to free cancellation.</p>
+                <p id="confirmationModalInfoMessage"></p>
+                <p id="confirmationModalRefundMessage"></p>
                 <p id="modalActionWarning" class="fw-bold mt-3">This action cannot be undone.</p>
             </div>
             <div class="modal-footer">

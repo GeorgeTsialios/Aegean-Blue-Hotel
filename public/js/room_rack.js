@@ -28,6 +28,7 @@ let visibleEndOfWeek;
 let today;
 let roomRackRows = {};
 let roomOverlaps = {};
+let bookingToCancel = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     dateCells = document.querySelectorAll(".dayHeader");
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector("#calendarButtonToday").addEventListener("click", calendarGoToToday);
     document.querySelector("#calendarButtonPrev").addEventListener("click", calendarGoToPrevWeek);
     document.querySelector("#calendarButtonNext").addEventListener("click", calendarGoToNextWeek);
+    document.querySelector("#cancelBookingButton").addEventListener("click", populateCancelConfirmation);
 
     document.querySelectorAll("tbody tr").forEach(elem => {
         elem.addEventListener("dragover", dragover_handler);
@@ -254,6 +256,7 @@ function drop_handler(event) {
 }
 
 function populateBookingConfirmation(booking) {
+    bookingToCancel = booking;
     document.querySelector("#bookingIDField").textContent = booking.id;
     document.querySelector("#bookingCheckInDateField").textContent = booking.strings.checkInDate;
     document.querySelector("#bookingCheckOutDateField").textContent = booking.strings.checkOutDate;
@@ -288,4 +291,14 @@ function populateBookingConfirmation(booking) {
     document.querySelector("#bookingGuestAddressCountryField").textContent = booking.guestInformation.address.country;
     document.querySelector("#bookingBreakfastIncludedField").textContent = booking.strings.breakfastIncluded;
     document.querySelector("#bookingFreeCancellationAllowedField").textContent = booking.strings.freeCancellationAllowed;
+}
+
+function populateCancelConfirmation() {
+    document.querySelector("#confirmationModalInfoMessage").innerHTML = `Are you sure you want to cancel ${bookingToCancel.guestInformation.lastName}, ${bookingToCancel.guestInformation.firstName}'s booking for ${bookingToCancel.strings.checkInDate} &#8211; ${bookingToCancel.strings.checkOutDate}?`;
+    if (bookingToCancel.freeCancellationAllowed) {
+        document.querySelector("#confirmationModalRefundMessage").textContent = `They will get a full refund, since they are entitled to free cancellation.`;
+    }
+    else {
+        document.querySelector("#confirmationModalRefundMessage").textContent = `They will not get a refund, since they are not entitled to free cancellation.`;
+    }
 }
