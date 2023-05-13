@@ -6,10 +6,15 @@ const form = document.querySelector("form");
 // const streetNumber = document.querySelector("#street_number");
 // const postalCode = document.querySelector("#postal_code");
 // const NumberRegex = /^[0-9]+$/;
+const country = document.querySelector("#country");
+const phoneContainer = document.querySelector("#phone_container");
 
 const iti = window.intlTelInput(phone,{
     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
     initialCountry: "gr",
+    preferredCountries: ["gr"],
+    // responsiveDropdown: true,
+    separateDialCode: true,
     geoIpLookup: callback => {
     fetch("https://ipapi.co/json")
       .then(res => res.json())
@@ -18,6 +23,8 @@ const iti = window.intlTelInput(phone,{
     }
   });
 
+const PhoneDropdown = document.querySelector("#iti-0__country-listbox");
+
 document.addEventListener("DOMContentLoaded",() => {
     email.addEventListener('blur',validateEmail);
     phone.addEventListener('blur',(event) => {
@@ -25,6 +32,10 @@ document.addEventListener("DOMContentLoaded",() => {
       phone.addEventListener('focus',validatePhone);
     });
     // streetNumber.addEventListener('blur',validateStreetNumber);
+    country.addEventListener('focus',() => country.style.color="black");
+
+    setPhoneDropdownSize();
+    window.addEventListener('resize',setPhoneDropdownSize);
 
     validate();
 })
@@ -125,4 +136,11 @@ function validatePhone(event) {
 function submitForm() {
     console.log("Send form");
     phone.value = iti.getNumber();
+}
+
+function setPhoneDropdownSize() {
+    console.log(phoneContainer.offsetWidth);
+    PhoneDropdown.style.width = `${phoneContainer.offsetWidth}px`;
+    console.log(PhoneDropdown);
+    console.log(PhoneDropdown.style.width);
 }

@@ -30,6 +30,23 @@ let TotalPrice = 0;
 const freeCancellationCoefficient = 1.2;
 const breakfastPriceperNightperPerson = 15;
 
+class AccountLevel {
+    constructor(name, discount, maxCompletedBookings) {
+        this.name = name;
+        this.discount = discount;
+        this.maxCompletedBookings = maxCompletedBookings;
+    }
+}
+
+const accountLevels = [
+    new AccountLevel("Loyalty level 0", 0, 0),
+    new AccountLevel("Loyalty level 1", 0.1, 3),
+    new AccountLevel("Loyalty level 2", 0.2, 6),
+    new AccountLevel("Loyalty level 3", 0.3, 10)
+  ];
+
+  const userAccountLevel = accountLevels[1];
+
 document.addEventListener("DOMContentLoaded", () => {
     setOriginalDates();
     setOriginalGuests();
@@ -90,15 +107,26 @@ function updateRooms(room, symbol) {
 
 function updateTotal() {
     let TotalPrice = 0;
+    let TotalPriceWithDiscount = 0;
+    let Discount = 0;
     let totalCapacity = 0;
     let freeCancellationSelected = document.querySelector("#FreeCancellation").checked;
     let breakfastSelected = document.querySelector("#BreakfastIncluded").checked;
 
     roomTypes.forEach((room) => TotalPrice += (originalDates["numberOfNights"] * room[1] * room[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
-    if (TotalPrice !== 0)
+    if (TotalPrice !== 0) {
         TotalPrice += breakfastSelected?(originalGuests["numberOfGuests"] * originalDates["numberOfNights"] * breakfastPriceperNightperPerson):0;
-    document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
-    document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
+        Discount = TotalPrice * (userAccountLevel.discount);
+        TotalPriceWithDiscount = TotalPrice - Discount;
+        document.querySelector("#totalPrice").innerHTML = `Total Price: <span style="text-decoration: line-through 1.5px; color: #CC0000; font-size: smaller; font-weight: lighter">${TotalPrice}&euro;</span> ${TotalPriceWithDiscount}&euro;`;
+        document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPriceWithDiscount}&euro;`;
+        document.querySelector("#price_policies").innerHTML = `<li class="fw-semibold">You are saving ${Discount}&euro; with your ${userAccountLevel.name} account.</li><li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+    }
+    else {
+        document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
+        document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
+        document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+    }
     for (let room of roomTypes)
         totalCapacity += room[0].capacity * room[1];
     document.querySelector("#BookButton").disabled = (totalCapacity < originalGuests["numberOfGuests"]);
