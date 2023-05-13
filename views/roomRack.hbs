@@ -84,93 +84,7 @@
             <div class="modal-body">
                 <div class="container-lg text-center justify-content-center my-3">
                     <div class="text-start text-break">
-                        <div class="row align-items-center justify-content-center mt-3">
-                            <h6 class="col-lg-8">Booking information</h6>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Booking code</p>
-                            <p class="col-6 col-lg-4">NX7kEPpXqm</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Check-in date</p>
-                            <p class="col-6 col-lg-4">Apr 4, 2023</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Check-out date</p>
-                            <p class="col-6 col-lg-4">Apr 7, 2023</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Number of guests</p>
-                            <p class="col-6 col-lg-4">2 adults &bull; 0 children &bull; 0 infants</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Price</p>
-                            <p class="col-6 col-lg-4">237,00&euro;</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center mt-3">
-                            <h6 class="col-lg-8">Room types</h6>
-                        </div>
-                        <div class="row align-items-center justify-content-center mb-3">
-                            <img src="../../Assets/HotelPhotos/double.jpg" class="col-6 col-lg-3" alt="Executive Double Room">
-                            <p class="col-6 col-lg-4">Executive Double Room</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center mt-3">
-                            <h6 class="col-lg-8">Guest information</h6>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">First name</p>
-                            <p class="col-6 col-lg-4">Konstantinos</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Last name</p>
-                            <p class="col-6 col-lg-4">Papanikolaou</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Email</p>
-                            <p class="col-6 col-lg-4">k.papanikolaou@gmail.com</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Phone number</p>
-                            <p class="col-6 col-lg-4">+306944342414</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Travelling for work</p>
-                            <p class="col-6 col-lg-4">No</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center mt-3">
-                            <h6 class="col-lg-8">Billing address</h6>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Street</p>
-                            <p class="col-6 col-lg-4">Korinthou</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Street no.</p>
-                            <p class="col-6 col-lg-4">82</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">City</p>
-                            <p class="col-6 col-lg-4">Patras</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Postal code</p>
-                            <p class="col-6 col-lg-4">262 21</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Country</p>
-                            <p class="col-6 col-lg-4">Greece</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center mt-3">
-                            <h6 class="col-lg-8">Extra options</h6>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Breakfast included</p>
-                            <p class="col-6 col-lg-4">Yes</p>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="col-6 col-lg-3 text-secondary">Free cancellation included</p>
-                            <p class="col-6 col-lg-4">Yes</p>
-                        </div>
+                        {{>bookingConfirmationPartial}}
                     </div>
                 </div>
             </div>
@@ -189,8 +103,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to cancel PAPANIKOLAOU, KONSTANTINOS's booking for Apr 4, 2023 &#8211; Apr 7, 2023?</p>
-                <p>They will get a full refund, since they are entitled to free cancellation.</p>
+                <p id="confirmationModalInfoMessage">Are you sure you want to cancel {{booking.guestLastName}}, {{booking.guestFirstName}}'s booking for {{booking.strings.checkInDate}} &#8211; {{booking.strings.checkOutDate}}?</p>
+                <p id="confirmationModalRefundMessage">They will get a full refund, since they are entitled to free cancellation.</p>
                 <p id="modalActionWarning" class="fw-bold mt-3">This action cannot be undone.</p>
             </div>
             <div class="modal-footer">

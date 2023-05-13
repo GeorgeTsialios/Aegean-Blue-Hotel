@@ -25,7 +25,7 @@ tbody td {
     position: relative;
 }
 
-.bookingEntry {
+.entry {
     background-color: burlywood;
     border-radius: 15px;
     padding: 0 10px;
@@ -39,27 +39,27 @@ tbody td {
     left: 50%;
 }
 
-.bookingEntry:hover {
+.entry:hover {
     background-color: rgb(184, 153, 112);
     cursor: pointer;
 }
 
-.bookingEntry.overlapping {
+.entry.overlapping {
     background-color: firebrick;
     color: white;
 }
 
-.bookingEntry.overlapping:hover {
+.entry.overlapping:hover {
     background-color: rgb(130, 20, 20);
 }
 
-.bookingEntry.extendsLeft {
+.entry.extendsLeft {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     left: 0;
 }
 
-.bookingEntry.extendsRight {
+.entry.extendsRight {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
