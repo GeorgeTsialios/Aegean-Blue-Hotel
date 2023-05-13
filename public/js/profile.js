@@ -3,26 +3,39 @@ const dates = {
     "check-out": null
 };
 
+const accountBookings = [];
+
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".cancelBookingButton").forEach((elem) => elem.addEventListener("click", () => populateModal(elem)));
-    document.querySelectorAll(".changeDatesButton").forEach((elem) => elem.addEventListener("click", () => populateModal(elem)));
-    document.querySelector("#daterange").addEventListener("click", changeDatepickerDisplayProperty);
+    fetchAccountBookings();
+
+    document.querySelectorAll(".cancelBookingButton").forEach((elem) => elem.addEventListener("click", populateModal));
+    document.querySelectorAll(".changeDatesButton").forEach((elem) => elem.addEventListener("click", populateModal));
     document.querySelector("#fileInputVisible").addEventListener("click", () => {
         document.querySelector("#fileInputHidden").click();
     })
     document.querySelector("#fileInputHidden").addEventListener("change", updateProfilePhoto);
 })
 
-function populateModal(elem) {
-    dates["check-in"] = new Date(elem.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[0].textContent.split("–")[0].trim());
-    dates["check-out"] = new Date(elem.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[0].textContent.split("–")[1].trim());
+async function fetchAccountBookings() {
+    const response = await fetch(`/api/bookings?madeByAccount=${accountEmail}`);
+    const data = await response.json();
 
-    switch (elem.textContent) {
+    for (let booking of data) {
+        accountBookings.push(booking);
+    }
+}
+
+function populateModal(event) {
+    const booking = accountBookings.find(booking => booking.id === event.currentTarget.id.split("-")[1]);
+    dates["check-in"] = new Date(booking.checkInDate);
+    dates["check-out"] = new Date(booking.checkOutDate);
+
+    switch (event.currentTarget.textContent) {
         case "Cancel": {
             document.querySelector("#modalLabel").textContent = "Booking cancellation";
-            document.querySelector("#modalMessage").innerHTML = `Are you sure you want to cancel your booking for ${elem.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[0].textContent.trim()}?`;
+            document.querySelector("#modalMessage").innerHTML = `Are you sure you want to cancel your booking for ${booking.strings.checkInDate} &#8211; ${booking.strings.checkOutDate}?`;
             
-            if (Math.random() >= 0.5) {
+            if (booking.freeCancellationAllowed) {
                 document.querySelector("#modalRefund").textContent = "You will get a full refund, since you are entitled to free cancellation.";
             }
             else {
@@ -40,13 +53,13 @@ function populateModal(elem) {
         }
         case "Change dates": {
             document.querySelector("#modalLabel").textContent = "Change booking dates";
-            document.querySelector("#modalMessage").innerHTML = `Are you sure you want to change the dates of your booking for ${elem.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[0].textContent.trim()}?`;
+            document.querySelector("#modalMessage").innerHTML = `Are you sure you want to change the dates of your booking for ${booking.strings.checkInDate} &#8211; ${booking.strings.checkOutDate}?`;
 
-            if (Math.random() >= 0.5) {
+            if (booking.dateChangeAllowed) {
                 document.querySelector("#modalMessage").innerHTML = "You are entitled for one free change of booking dates.";
                 document.querySelector("#modalButton").style.display = "block";
                 document.querySelector("#daterange").style.display = "block";
-                document.querySelector("#daterange").textContent = elem.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[0].textContent;
+                document.querySelector("#daterange").innerHTML = `${booking.strings.checkInDate} &#8211; ${booking.strings.checkOutDate}`;
                 $(() => {
                     $('#daterange').daterangepicker(
                         {
@@ -81,11 +94,6 @@ function populateModal(elem) {
             break;
         }
     }
-}
-
-function changeDatepickerDisplayProperty() {
-    const datepicker = document.querySelector(".daterangepicker.show-calendar");
-    datepicker.style.display = "flex";
 }
 
 function updateProfilePhoto() {

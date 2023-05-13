@@ -2,6 +2,27 @@ import { Booking } from '../../model/booking.mjs';
 import { Photo } from "../../model/photo.mjs";
 import { RoomType } from "../../model/roomType.mjs";
 import { Room } from "../../model/room.mjs";
+import { Account } from "../../model/account.mjs";
+import { AccountLevel } from "../../model/accountLevel.mjs";
+
+const accountLevels = [
+    new AccountLevel("Loyalty level 0", 0, 0),
+    new AccountLevel("Loyalty level 1", 0.1, 3),
+    new AccountLevel("Loyalty level 2", 0.2, 6),
+    new AccountLevel("Loyalty level 3", 0.3, 10)
+];
+
+const account = new Account(
+    "Christos",
+    "Katsandris",
+    "christoskatsandris@outlook.com",
+    "+306937708141",
+    "123456",
+    true,
+    null,
+    // new Photo("assets/HotelPhotos/double2.jpg", "Deluxe Twin Room"),
+    accountLevels[3]
+);
 
 const roomTypes = [
     new RoomType("STA", "Standard Single Room", 2, 150, "RoomAmenities", [
@@ -36,7 +57,7 @@ const rooms = [
 ];
 
 const bookings = [
-    new Booking(null, "NX7kEPpXqm", new Date(2023, 4,  2), new Date(2023, 4,  5), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
+    new Booking(account, "NX7kEPpXqm", new Date(2023, 4,  2), new Date(2023, 4,  15), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
         "firstName": "Konstantinos",
         "lastName": "Papanikolaou",
         "email": "k.papanikolaou@gmail.com",
@@ -106,7 +127,7 @@ const bookings = [
             "streetNo": "5"
         }
     }, [roomTypes[1]], [rooms[3]]),
-    new Booking(null, "iK6gM7fZ1L", new Date(2023, 4,  2), new Date(2023, 4,  3), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
+    new Booking(account, "iK6gM7fZ1L", new Date(2023, 4,  2), new Date(2023, 4,  3), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
         "firstName": "Katerina",
         "lastName": "Triantafyllou",
         "email": "katerina.triantafyllou@hotmail.com",
@@ -176,7 +197,7 @@ const bookings = [
             "streetNo": "11"
         }
     }, [roomTypes[1]], [rooms[8]]),
-    new Booking(null, "Bv9jF5cT7a", new Date(2023, 4,  2), new Date(2023, 4,  6), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
+    new Booking(account, "Bv9jF5cT7a", new Date(2023, 4,  2), new Date(2023, 4,  6), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
         "firstName": "Athina",
         "lastName": "Sakellariou",
         "email": "athina.sakellariou@gmail.com",
@@ -192,13 +213,25 @@ const bookings = [
     }, [roomTypes[2]], [rooms[9]])
 ];
 
+function filterBookings(query) {
+    return bookings.filter(booking => {
+        let accepted = true;
+
+        if ("madeByAccount" in query) {
+            accepted = accepted && booking.madeByAccount && booking.madeByAccount.email === query.madeByAccount;
+        }
+        
+        return accepted;
+    });
+}
+
 function getBookings(req, res, next) {
     try {
-        res.send(JSON.stringify(bookings));
+        res.send(JSON.stringify(filterBookings(req.query)));
     }
     catch (err) {
         next(err);
     }
 }
 
-export { getBookings }
+export { filterBookings, getBookings }
