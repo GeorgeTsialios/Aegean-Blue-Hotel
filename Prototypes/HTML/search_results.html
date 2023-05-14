@@ -138,7 +138,7 @@
                         </div>
                         <div class="col-lg-4 px-0 btn-group dropdown">
                             <button id="guests" type="button" class="btn btn-light rounded-0" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                7 adult &bull; 0 children &bull; 0 infants
+                                7 adults &bull; 2 children &bull; 0 infants
                             </button>
                             <div class="dropdown-menu container border">
                                 <div class="row align-items-center justify-content-between">
@@ -146,10 +146,10 @@
                                         Adults: <div class="age-description text-secondary">(age: 12+)</div>
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="adultsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton" disabled>
+                                        <button id="adultsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>-</span>
                                         </button>
-                                        <p id="adultsCount" class="fw-semibold my-0 mx-3 text-center">1</p>
+                                        <p id="adultsCount" class="fw-semibold my-0 mx-3 text-center">7</p>
                                         <button id="adultsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>+</span>
                                         </button>
@@ -160,10 +160,10 @@
                                         Children: <div class="age-description text-secondary">(age: 2-11)</div>
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="childrenCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton" disabled>
+                                        <button id="childrenCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>-</span>
                                         </button>
-                                        <p id="childrenCount" class="fw-semibold my-0 mx-3 text-center">0</p>
+                                        <p id="childrenCount" class="fw-semibold my-0 mx-3 text-center">2</p>
                                         <button id="childrenCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>+</span>
                                         </button>
@@ -174,7 +174,7 @@
                                         Infants: <div class="age-description text-secondary">(age: 0-1)</div>
                                     </div>
                                     <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="infantsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton" disabled>
+                                        <button id="infantsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
                                             <span>-</span>
                                         </button>
                                         <p id="infantsCount" class="fw-semibold my-0 mx-3 text-center">0</p>
@@ -214,8 +214,16 @@
                                                 <div class="col-lg">
                                                     <img src="../../Assets/HotelPhotos/double.jpg" alt="Executive Double Room photo" class="img-fluid" width="250">
                                                 </div>
-                                                <div class="col-lg link-primary">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#profileModal" >Executive Double Room</a>
+                                                <div class="col-lg">
+                                                    <a href="#" data-bs-toggle="modal" class="link-primary" data-bs-target="#profileModal" >Executive Double Room</a>
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#212529" class="bi bi-person-fill mt-1 mt-lg-3" viewBox="0 0 16 16">
+                                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#212529" class="bi bi-person-fill mt-1 mt-lg-3" viewBox="0 0 16 16">
+                                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                                        </svg>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -235,32 +243,43 @@
                                         </div>
                                     </td>
                                     <td class="py-lg-4 offcanvas-lg offcanvas-bottom" rowspan="6" tabindex="-1" aria-labelledby="offcanvasCartLabel" id="offcanvasCart">
-                                            <div class="offcanvas-header">
-                                                <h5 class="offcanvas-title" id="offcanvasCartLabel">My Cart</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasCart" aria-label="Close"></button>
+                                        <div class="offcanvas-header">
+                                            <h5 class="offcanvas-title" id="offcanvasCartLabel">My Cart</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasCart" aria-label="Close"></button>
+                                        </div>
+                                        <div class="offcanvas-body d-flex flex-column">
+                                            <div class="form-check text-start form-switch ">
+                                                <label class="form-check-label" for="BreakfastIncluded">Breakfast included</label>
+                                                <input class="form-check-input" type="checkbox" role="switch" id="BreakfastIncluded">
                                             </div>
-                                            <div class="offcanvas-body d-flex flex-column">
-                                                <div class="form-check text-start form-switch ">
-                                                    <label class="form-check-label" for="BreakfastIncluded">Breakfast included</label>
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="BreakfastIncluded">
-                                                </div>
-                                                <div class="form-check text-start form-switch ">
-                                                    <label class="form-check-label" for="FreeCancellation">Free cancellation</label>
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="FreeCancellation">
-                                                </div>
-                                                <div class="text-center fs-5 mt-4 fw-semibold" id="totalPrice">
-                                                    Total Price: 0&euro;
-                                                </div>
-                                                <div data-bs-toggle="tooltip" data-bs-title="" data-bs-custom-class="custom-tooltip" class="mt-4 mx-auto" id="BookButtonWrapper">
-                                                   <a href="booking_form.html"> <button type="button" class="btn btn-lg btn-primary " id="BookButton" disabled>Book</button> </a>
-                                                </div>
-                                                <div class="fs-6 mt-4 text-start fst-italic">
-                                                    <ul class="ps-3" id="price_policies">
-                                                        <li>All taxes are included in this price.</li>
-                                                        <li>Every customer is entitled to one free change of dates for their booking.</li>
-                                                    </ul>
-                                                </div>
+                                            <div class="form-check text-start form-switch ">
+                                                <label class="form-check-label" for="FreeCancellation">Free cancellation</label>
+                                                <input class="form-check-input" type="checkbox" role="switch" id="FreeCancellation">
                                             </div>
+                                            <div class="text-center fs-5 mt-4 fw-semibold" id="totalPrice">
+                                                Total Price: 0&euro;
+                                            </div>
+                                        <form action="/booking_form" class="d-flex flex-column" id="search_results_form">
+                                            <input type="hidden" name="checkInDate" id="checkInDate">
+                                            <input type="hidden" name="checkOutDate" id="checkOutDate">
+                                            <input type="hidden" name="adultsCount" id="adultsCountForm">
+                                            <input type="hidden" name="childrenCount" id="childrenCountForm">
+                                            <input type="hidden" name="infantsCount" id="infantsCountForm">
+                                            <input type="hidden" name="EXEDDCount" id="EXEDDCountForm" value="0">
+                                            <input type="hidden" name="DLXCount" id="DLXCountForm" value="0">
+                                            <input type="hidden" name="brekfastIncluded" id="BreakfastIncludedForm" value="false">
+                                            <input type="hidden" name="freeCancellationIncluded" id="FreeCanellationIncludedForm" value="false">
+                                            <div data-bs-toggle="tooltip" data-bs-title="" data-bs-custom-class="custom-tooltip" class="mt-4 mx-auto" id="BookButtonWrapper">
+                                                <button type="submit" class="btn btn-lg btn-primary" id="BookButton" disabled>Book</button>
+                                            </div>
+                                        </form>
+                                            <div class="fs-6 mt-4 text-start fst-italic">
+                                                <ul class="ps-3" id="price_policies">
+                                                    <li>All taxes are included in this price.</li>
+                                                    <li>Every customer is entitled to one free change of dates for their booking.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr class="table-light">
@@ -270,8 +289,16 @@
                                                 <div class="col-lg">
                                                     <img src="../../Assets/HotelPhotos/double2.jpg" alt="Deluxe Room photo" class="img-fluid" width="250">
                                                 </div>
-                                                <div class="col-lg link-primary">
-                                                    <a href="#" >Deluxe Room</a>
+                                                <div class="col-lg">
+                                                    <a href="#" class="link-primary">Deluxe Room</a>
+                                                    <div class="d-flex align-items-center justify-content-center mt-1 mt-lg-3">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#212529" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#212529" class="bi bi-x" viewBox="0 0 16 16">
+                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                        </svg><span class="room-capacity">3</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,5 +1,5 @@
 const guests = {
-    "adultsCount": 1,
+    "adultsCount": 0,
     "childrenCount": 0,
     "infantsCount": 0
 }
@@ -45,11 +45,14 @@ const accountLevels = [
     new AccountLevel("Loyalty level 3", 0.3, 10)
   ];
 
-  const userAccountLevel = accountLevels[1];
+const userAccountLevel = accountLevels[0];
 
 document.addEventListener("DOMContentLoaded", () => {
     setOriginalDates();
     setOriginalGuests();
+    updateGuests("adultsCount","NULL");
+    updateGuests("childrenCount","NULL");
+    updateGuests("infantsCount","NULL");
     document.querySelector("#adultsCountMinus").addEventListener("click", () => updateGuests("adultsCount", "Minus"));
     document.querySelector("#adultsCountPlus").addEventListener("click", () => updateGuests("adultsCount", "Plus"));
     document.querySelector("#childrenCountMinus").addEventListener("click", () => updateGuests("childrenCount", "Minus"));
@@ -57,8 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#infantsCountMinus").addEventListener("click", () => updateGuests("infantsCount", "Minus"));
     document.querySelector("#infantsCountPlus").addEventListener("click", () => updateGuests("infantsCount", "Plus"));
 
-    document.querySelector("#BreakfastIncluded").addEventListener("change",() => updateTotal());
-    document.querySelector("#FreeCancellation").addEventListener("change",() => updateTotal());
+    document.querySelector("#BreakfastIncluded").addEventListener("change",() => {
+        updateTotal();
+        document.querySelector("#BreakfastIncludedForm").value = document.querySelector("#BreakfastIncluded").checked;
+    });
+    document.querySelector("#FreeCancellation").addEventListener("change",() => {
+        updateTotal();
+        document.querySelector("#FreeCanellationIncludedForm").value = document.querySelector("#FreeCancellation").checked;
+    });
 
     roomTypes.forEach((room) => {
         document.querySelector(`#${room[0].code}CountPlus`).addEventListener("click", () => {updateRooms(room, "Plus");  updateTotal();} );
@@ -69,8 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
     countButtons.forEach((Button) => Button.addEventListener('click',() => checkFormChange()));
 
     document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"]} more ${(originalGuests["numberOfGuests"] === 1)?"person":"people"}.`);
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 })
 
 function setOriginalDates() {
@@ -80,6 +89,11 @@ function setOriginalDates() {
     originalDates["check-in"] = new Date(Date.parse(originalDateArray[0])); 
     originalDates["check-out"] = new Date(Date.parse(originalDateArray[1])); 
     originalDates["numberOfNights"] = (originalDates["check-out"] - originalDates["check-in"]) / (1000 * 3600 * 24);
+
+    document.querySelector("#checkInDate").value = originalDates["check-in"].toLocaleDateString();
+    document.querySelector("#checkOutDate").value = originalDates["check-out"].toLocaleDateString();
+
+    console.log(`Length of stay: ${originalDates["numberOfNights"]} nights`);
 }
 
 function setOriginalGuests() {
@@ -93,11 +107,17 @@ function setOriginalGuests() {
     originalGuests["childrenCount"] = originalGuestsArray[1];
     originalGuests["infantsCount"] = originalGuestsArray[2];
     originalGuests["numberOfGuests"] = originalGuests["adultsCount"] + originalGuests["childrenCount"];
+
+    document.querySelector("#adultsCountForm").value = originalGuests["adultsCount"];
+    document.querySelector("#childrenCountForm").value = originalGuests["childrenCount"];
+    document.querySelector("#infantsCountForm").value = originalGuests["infantsCount"];
 }
 
 function updateRooms(room, symbol) {
     const lowerLimit = 0;
     (symbol === "Minus") ? room[1]-- : room[1]++;
+
+    document.querySelector(`#${room[0].code}CountForm`).value = room[1];
     
     document.querySelector(`#${room[0].code}CountMinus`).disabled = (room[1] <= lowerLimit);
     document.querySelector(`#${room[0].code}CountPlus`).disabled = (room[1] >= 9);
@@ -116,13 +136,28 @@ function updateTotal() {
     roomTypes.forEach((room) => TotalPrice += (originalDates["numberOfNights"] * room[1] * room[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
     if (TotalPrice !== 0) {
         TotalPrice += breakfastSelected?(originalGuests["numberOfGuests"] * originalDates["numberOfNights"] * breakfastPriceperNightperPerson):0;
-        Discount = TotalPrice * (userAccountLevel.discount);
-        TotalPriceWithDiscount = TotalPrice - Discount;
-        document.querySelector("#totalPrice").innerHTML = `Total Price: <span style="text-decoration: line-through 1.5px; color: #CC0000; font-size: smaller; font-weight: lighter">${TotalPrice}&euro;</span> ${TotalPriceWithDiscount}&euro;`;
-        document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPriceWithDiscount}&euro;`;
-        document.querySelector("#price_policies").innerHTML = `<li class="fw-semibold">You are saving ${Discount}&euro; with your ${userAccountLevel.name} account.</li><li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+        if (userAccountLevel.discount !== 0){
+            Discount = TotalPrice * (userAccountLevel.discount);
+            TotalPriceWithDiscount = TotalPrice - Discount;
+            if (!Number.isInteger(TotalPrice))
+                TotalPrice = TotalPrice.toFixed(2);
+            if (!Number.isInteger(Discount))
+                Discount = Discount.toFixed(2);
+            if (!Number.isInteger(TotalPriceWithDiscount)) 
+                TotalPriceWithDiscount = TotalPriceWithDiscount.toFixed(2);
+            document.querySelector("#totalPrice").innerHTML = `Total Price: <span id="oldPrice">${TotalPrice}&euro;</span> ${TotalPriceWithDiscount}&euro;`;
+            document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPriceWithDiscount}&euro;`;
+            document.querySelector("#price_policies").innerHTML = `<li class="fw-semibold">You are saving ${Discount}&euro; with your ${userAccountLevel.name} account.</li><li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+        }
+        else {
+            if (!Number.isInteger(TotalPrice))
+                TotalPrice = TotalPrice.toFixed(2);
+            document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
+            document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
+            document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+        }
     }
-    else {
+    else { // When TotalPrice = 0
         document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
         document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
         document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
@@ -149,7 +184,18 @@ function updateTotal() {
 
 function updateGuests(elem, symbol) {
     const lowerLimit = (elem === "adultsCount") ? 1 : 0;
-    (symbol === "Minus") ? guests[elem]-- : guests[elem]++;
+
+    switch (symbol) {
+        case "Minus":
+            guests[elem]--;
+            break;
+        case "Plus":
+            guests[elem]++;
+            break;
+        default:
+            // Initialization
+            guests[elem] = originalGuests[elem];
+    }
 
     document.querySelector(`#${elem}Minus`).disabled = (guests[elem] <= lowerLimit);
     document.querySelector(`#${elem}Plus`).disabled = (guests[elem] >= 9);

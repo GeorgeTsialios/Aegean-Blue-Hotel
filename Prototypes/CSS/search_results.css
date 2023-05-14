@@ -142,3 +142,14 @@
     --bs-tooltip-opacity:1;
     }
 
+#oldPrice {
+    text-decoration: line-through 1.5px; 
+    color: #CC0000; 
+    font-size: smaller; 
+    font-weight: lighter;
+}
+
+.room-capacity {
+    font-size: large; 
+    margin-bottom: 2px;
+}
