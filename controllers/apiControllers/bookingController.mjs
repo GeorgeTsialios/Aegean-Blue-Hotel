@@ -220,6 +220,10 @@ function filterBookings(query) {
         if ("madeByAccount" in query) {
             accepted = accepted && booking.madeByAccount && booking.madeByAccount.email === query.madeByAccount;
         }
+
+        if ("isCancelled" in query) {
+            accepted = accepted && booking.isCancelled === (query.isCancelled === "true");
+        }
         
         return accepted;
     });

@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector("#calendarButtonPrev").addEventListener("click", calendarGoToPrevWeek);
     document.querySelector("#calendarButtonNext").addEventListener("click", calendarGoToNextWeek);
     document.querySelector("#cancelBookingButton").addEventListener("click", populateCancelConfirmation);
+    document.querySelector("#confirmationModalButton").addEventListener("click", handleCancelConfirmation);
 
     document.querySelectorAll("tbody tr").forEach(elem => {
         elem.addEventListener("dragover", dragover_handler);
@@ -94,7 +95,7 @@ async function fetchRooms() {
 }
 
 async function fetchBookings(startDate, endDate) {
-    const response = await fetch("/api/bookings");
+    const response = await fetch("/api/bookings?isCancelled=false");
     const data = await response.json();
 
     for (let booking of data) {
@@ -301,4 +302,9 @@ function populateCancelConfirmation() {
     else {
         document.querySelector("#confirmationModalRefundMessage").textContent = `They will not get a refund, since they are not entitled to free cancellation.`;
     }
+}
+
+async function handleCancelConfirmation() {
+    await fetch(`/api/cancelBooking/${bookingToCancel.id}`);
+    location.reload();
 }
