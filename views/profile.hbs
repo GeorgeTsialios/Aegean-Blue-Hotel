@@ -23,6 +23,7 @@
 
             <div class="col-lg">
                 <h6>Ongoing bookings</h6>
+                {{#if ongoingBookings.length}}
                 <div class="accordion mb-4" id="ongoing">
                     {{#each ongoingBookings}}
                     <div class="accordion-item">
@@ -44,8 +45,13 @@
                     </div>
                     {{/each}}
                 </div>
+                {{/if}}
+                {{#unless ongoingBookings.length}}
+                <div class="mb-4">You have no ongoing bookings.</div>
+                {{/unless}}
 
                 <h6>Upcoming bookings</h6>
+                {{#if upcomingBookings.length}}
                 <div class="accordion mb-4" id="upcoming">
                     {{#each upcomingBookings}}
                     <div class="accordion-item">
@@ -73,8 +79,13 @@
                     </div>
                     {{/each}}
                 </div>
+                {{/if}}
+                {{#unless upcomingBookings.length}}
+                <div class="mb-4">You have no upcoming bookings.</div>
+                {{/unless}}
 
                 <h6>Past bookings</h6>
+                {{#if pastBookings.length}}
                 <div class="accordion mb-4" id="past">
                     {{#each pastBookings}}
                     <div class="accordion-item">
@@ -96,6 +107,10 @@
                     </div>
                     {{/each}}
                 </div>
+                {{/if}}
+                {{#unless pastBookings.length}}
+                <div class="mb-4">You have no past bookings.</div>
+                {{/unless}}
             </div>
         </div>
     </div>
