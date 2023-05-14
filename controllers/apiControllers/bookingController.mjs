@@ -57,7 +57,7 @@ const rooms = [
 ];
 
 const bookings = [
-    new Booking(account, "NX7kEPpXqm", new Date(2023, 4,  2), new Date(2023, 4,  15), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
+    new Booking(account, "NX7kEPpXqm", new Date(2023, 4, 17), new Date(2023, 4, 19), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
         "firstName": "Konstantinos",
         "lastName": "Papanikolaou",
         "email": "k.papanikolaou@gmail.com",

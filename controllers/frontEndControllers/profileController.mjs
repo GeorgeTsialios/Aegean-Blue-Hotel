@@ -45,7 +45,8 @@ async function navigateToProfile(req, res, next) {
                     <script src="js/profile.js"></script>
                 `,
                 account: account,
-                upcomingBookings: bookings.filter(booking => booking.checkOutDate >= new Date()),
+                ongoingBookings: bookings.filter(booking => booking.checkInDate <= new Date() && booking.checkOutDate >= new Date()),
+                upcomingBookings: bookings.filter(booking => booking.checkInDate > new Date()),
                 pastBookings: bookings.filter(booking => booking.checkOutDate < new Date()),
                 account: account
             }

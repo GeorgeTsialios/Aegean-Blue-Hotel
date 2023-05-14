@@ -2,6 +2,11 @@
     font-size: small;
 }
 
+.cancelled {
+    color: gray;
+    font-size: small;
+}
+
 .daterangepicker {
     position: relative !important;
     top: 0 !important;
