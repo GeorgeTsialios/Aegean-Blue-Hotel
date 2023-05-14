@@ -76,6 +76,12 @@ function populateModal(event) {
                             drops: 'down',
                             opens: 'center',
                             minDate: new Date(),
+                            minSpan: {
+                                days: (dates['check-out'].getTime() - dates['check-in'].getTime()) / (1000 * 3600 * 24)
+                            },
+                            maxSpan: {
+                                days: (dates['check-out'].getTime() - dates['check-in'].getTime()) / (1000 * 3600 * 24)
+                            },
                             autoApply: true,
                             parentEl: $(".modal-body")
                         },
@@ -91,6 +97,7 @@ function populateModal(event) {
             else {
                 document.querySelector("#modalMessage").innerHTML = "You have already changed the booking dates once. You are not allowed to make changes anymore.";
                 document.querySelector("#modalButton").style.display = "none";
+                document.querySelector("#modalActionWarning").style.display = "none";
                 document.querySelector("#daterange").style.display = "none";
             }
 

@@ -38,7 +38,7 @@ function updateGuests(elem, symbol) {
 
 function sendForm() {
     document.querySelector("input[name=checkInDate]").value = dates['check-in'].toLocaleDateString();
-    document.querySelector("input[name=checkOutDate").value = dates['check-out'].toLocaleDateString();
+    document.querySelector("input[name=checkOutDate]").value = dates['check-out'].toLocaleDateString();
     document.querySelector("input[name=adultsCount]").value = guests['adultsCount'];
     document.querySelector("input[name=childrenCount]").value = guests['childrenCount'];
     document.querySelector("input[name=infantsCount]").value = guests['infantsCount'];
