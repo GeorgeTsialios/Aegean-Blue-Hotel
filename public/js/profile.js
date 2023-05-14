@@ -1,3 +1,7 @@
+const originalDates = {
+    "check-in": null,
+    "check-out": null
+}
 const dates = {
     "check-in": null,
     "check-out": null
@@ -32,6 +36,8 @@ function populateModal(event) {
     bookingToEdit = booking;
     dates["check-in"] = new Date(booking.checkInDate);
     dates["check-out"] = new Date(booking.checkOutDate);
+    originalDates["check-in"] = new Date(booking.checkInDate);
+    originalDates["check-out"] = new Date(booking.checkOutDate);
 
     switch (event.currentTarget.textContent) {
         case "Cancel": {
@@ -47,7 +53,6 @@ function populateModal(event) {
 
             document.querySelector("#modalRefund").style.display = "block";
             document.querySelector("#daterange").style.display = "none";
-            document.querySelector("#modalActionWarning").style.display = "block";
             document.querySelector("#modalButton").classList.remove("btn-success");
             document.querySelector("#modalButton").classList.add("btn-danger");
             document.querySelector("#modalButton").textContent = "Yes, cancel booking";
@@ -90,7 +95,6 @@ function populateModal(event) {
             }
 
             document.querySelector("#modalRefund").style.display = "none";
-            document.querySelector("#modalActionWarning").style.display = "none";
             document.querySelector("#modalButton").classList.remove("btn-danger");
             document.querySelector("#modalButton").classList.add("btn-success");
             document.querySelector("#modalButton").textContent = "Confirm change";
@@ -102,9 +106,13 @@ function populateModal(event) {
 async function handleModalResult(event) {
     if (event.currentTarget.textContent === "Yes, cancel booking") {
         await fetch(`/api/cancelBooking/${bookingToEdit.id}`);
+        location.reload();
     }
     else if (event.currentTarget.textContent === "Confirm change") {
-        await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
+        if (originalDates["check-in"].getTime() !== dates["check-in"].getTime() && originalDates["check-out"].getTime() !== dates["check-out"].getTime()) {
+            await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
+            location.reload();
+        }
     }
 }
 
