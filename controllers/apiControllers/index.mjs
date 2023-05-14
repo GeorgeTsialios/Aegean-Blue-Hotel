@@ -1,4 +1,4 @@
-import * as BookingController from "./bookingsController.mjs";
-import * as RoomController from "./roomsController.mjs";
+import * as BookingController from "./bookingController.mjs";
+import * as RoomController from "./roomController.mjs";
 
 export { BookingController, RoomController }

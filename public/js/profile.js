@@ -4,10 +4,12 @@ const dates = {
 };
 
 const accountBookings = [];
+let bookingToEdit = null;
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchAccountBookings();
 
+    document.querySelector("#modalButton").addEventListener("click", handleModalResult);
     document.querySelectorAll(".cancelBookingButton").forEach((elem) => elem.addEventListener("click", populateModal));
     document.querySelectorAll(".changeDatesButton").forEach((elem) => elem.addEventListener("click", populateModal));
     document.querySelector("#fileInputVisible").addEventListener("click", () => {
@@ -27,6 +29,7 @@ async function fetchAccountBookings() {
 
 function populateModal(event) {
     const booking = accountBookings.find(booking => booking.id === event.currentTarget.id.split("-")[1]);
+    bookingToEdit = booking;
     dates["check-in"] = new Date(booking.checkInDate);
     dates["check-out"] = new Date(booking.checkOutDate);
 
@@ -93,6 +96,15 @@ function populateModal(event) {
             document.querySelector("#modalButton").textContent = "Confirm change";
             break;
         }
+    }
+}
+
+async function handleModalResult(event) {
+    if (event.currentTarget.textContent === "Yes, cancel booking") {
+        await fetch(`/api/cancelBooking/${bookingToEdit.id}`);
+    }
+    else if (event.currentTarget.textContent === "Confirm change") {
+        await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
     }
 }
 

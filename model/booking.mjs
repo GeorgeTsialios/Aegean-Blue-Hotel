@@ -49,6 +49,18 @@ class Booking {
     dateToString(date) {
         return date.toLocaleDateString("en-US", { "month": "short", "day": "numeric", "year": "numeric" });
     }
+
+    cancel() {
+        this.isCancelled = true;
+    }
+
+    changeDates(checkInDate, checkOutDate) {
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.strings.checkInDate = this.dateToString(this.checkInDate);
+        this.strings.checkOutDate = this.dateToString(this.checkOutDate);
+        this.dateChangeAllowed = false;
+    }
 }
 
 export { Booking }

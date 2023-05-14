@@ -234,4 +234,24 @@ function getBookings(req, res, next) {
     }
 }
 
-export { filterBookings, getBookings }
+function cancelBooking(req, res, next) {
+    try {
+        bookings.find(booking => booking.id === req.params.id).cancel();
+        res.send();
+    }
+    catch (err) {
+        next(err);
+    }
+}
+
+function changeBookingDates(req, res, next) {
+    try {
+        bookings.find(booking => booking.id === req.params.id).changeDates(new Date(req.params.checkInDate), new Date(req.params.checkOutDate));
+        res.send();
+    }
+    catch (err) {
+        next(err);
+    }
+}
+
+export { filterBookings, getBookings, cancelBooking, changeBookingDates }
