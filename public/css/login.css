@@ -17,9 +17,9 @@ label {
 }
 
 @media (min-width: 992px) {
-    #e-mail {
+     #e-mail {
         width: 428.8px;
-    }
+    } 
     .was-validated #e-mail {
         width: 476.8px;
     }
@@ -38,8 +38,13 @@ label {
     display: block;
 }
   
-.links>a {
+.links>div {
     width: fit-content;
+    cursor: pointer;
+}
+
+.links {
+    text-decoration: underline #6c757d;
 }
 
 
