@@ -1,38 +1,29 @@
 const guests = {
-    "adultsCount": 1,
+    "adultsCount": 0,
     "childrenCount": 0,
     "infantsCount": 0
 }
-
-const originalGuests = {}
 
 const dates = {
     "check-in": new Date(2023,4,31),
     "check-out": new Date (2023,5,2)
 }
 
-const originalDates = {}
-
-class RoomType {
-    constructor(code,name,capacity,price,amenities,photos){
-        this.code = code;
-        this.name = name;
-        this.capacity = capacity;
-        this.price = price;
-        this.amenities = amenities;
-        this.photos = photos;
-    }
-}
-
-const roomTypes = [[new RoomType("EXEDD","Executive Double Room",2,150,"EXEDDAmenities","EXEDDPhotos"), 0],[new RoomType("DLX","Deluxe Room",3,180,"DLXAmenities","DLXPhotos"), 0]];
+const roomTypes = [];
 
 let TotalPrice = 0;
 const freeCancellationCoefficient = 1.2;
 const breakfastPriceperNightperPerson = 15;
 
-document.addEventListener("DOMContentLoaded", () => {
-    setOriginalDates();
-    setOriginalGuests();
+let account = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+    initializeForm();
+    await fetchRoomtypes();
+    await fetchAccount();
+    updateGuests("adultsCount","NULL");
+    updateGuests("childrenCount","NULL");
+    updateGuests("infantsCount","NULL");
     document.querySelector("#adultsCountMinus").addEventListener("click", () => updateGuests("adultsCount", "Minus"));
     document.querySelector("#adultsCountPlus").addEventListener("click", () => updateGuests("adultsCount", "Plus"));
     document.querySelector("#childrenCountMinus").addEventListener("click", () => updateGuests("childrenCount", "Minus"));
@@ -40,8 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#infantsCountMinus").addEventListener("click", () => updateGuests("infantsCount", "Minus"));
     document.querySelector("#infantsCountPlus").addEventListener("click", () => updateGuests("infantsCount", "Plus"));
 
-    document.querySelector("#BreakfastIncluded").addEventListener("change",() => updateTotal());
-    document.querySelector("#FreeCancellation").addEventListener("change",() => updateTotal());
+    document.querySelector("#BreakfastIncluded").addEventListener("change",() => {
+        updateTotal();
+        document.querySelector("#BreakfastIncludedForm").value = document.querySelector("#BreakfastIncluded").checked;
+    });
+    document.querySelector("#FreeCancellation").addEventListener("change",() => {
+        updateTotal();
+        document.querySelector("#FreeCanellationIncludedForm").value = document.querySelector("#FreeCancellation").checked;
+    });
 
     roomTypes.forEach((room) => {
         document.querySelector(`#${room[0].code}CountPlus`).addEventListener("click", () => {updateRooms(room, "Plus");  updateTotal();} );
@@ -52,35 +49,99 @@ document.addEventListener("DOMContentLoaded", () => {
     countButtons.forEach((Button) => Button.addEventListener('click',() => checkFormChange()));
 
     document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"]} more ${(originalGuests["numberOfGuests"] === 1)?"person":"people"}.`);
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+    const modalLinks = document.querySelectorAll(".modal-link");
+    modalLinks.forEach((modalLink) =>  modalLink.addEventListener('click',populateModal));
 })
 
-function setOriginalDates() {
-    const originalDateString = document.querySelector("#daterange").textContent;
-    const originalDateArray = originalDateString.split('–');
-    originalDateArray.forEach((date,i,array) => array[i] = array[i].trim());
-    originalDates["check-in"] = new Date(Date.parse(originalDateArray[0])); 
-    originalDates["check-out"] = new Date(Date.parse(originalDateArray[1])); 
-    originalDates["numberOfNights"] = (originalDates["check-out"] - originalDates["check-in"]) / (1000 * 3600 * 24);
+function initializeForm() {
+    document.querySelector("#checkInDate").value = originalDates["check-in"].toLocaleDateString();
+    document.querySelector("#checkOutDate").value = originalDates["check-out"].toLocaleDateString();
+
+    // console.log(`Length of stay: ${originalDates["numberOfNights"]} nights`);
+
+    document.querySelector("#adultsCountForm").value = originalGuests["adultsCount"];
+    document.querySelector("#childrenCountForm").value = originalGuests["childrenCount"];
+    document.querySelector("#infantsCountForm").value = originalGuests["infantsCount"];
 }
 
-function setOriginalGuests() {
-    const originalGuestsString = document.querySelector("#guests").textContent;
-    const originalGuestsArray = originalGuestsString.split('•');
-    originalGuestsArray.forEach((guests,i,array) => {
-        array[i] = array[i].trim();
-        array[i] = Number(array[i][0]);
-    });
-    originalGuests["adultsCount"] = originalGuestsArray[0];
-    originalGuests["childrenCount"] = originalGuestsArray[1];
-    originalGuests["infantsCount"] = originalGuestsArray[2];
-    originalGuests["numberOfGuests"] = originalGuests["adultsCount"] + originalGuests["childrenCount"];
+async function fetchRoomtypes () {
+    const response = await fetch(`/api/roomTypes`);
+    const data = await response.json();
+    
+    for (let roomType of data) {
+        roomTypes.push([roomType,0]);
+    }
+}
+
+async function fetchAccount() {
+    const response = await fetch(`/api/account/${accountEmail}`);
+    account = await response.json();
+}
+
+function populateModal(event) {
+    const linkClicked = event.target.id.split("-")[0];
+
+    const roomType = roomTypes.find((roomType) => roomType[0].code === linkClicked)[0];
+    const carouselIndicatorContainer = document.querySelector("#carousel_indicator_container");
+    const carouselInner = document.querySelector("#carousel-inner");
+    const roomTypeName = document.querySelector("#room_type_name");
+    const roomTypeSize = document.querySelector("#room_type_size");
+    const roomTypeCapacity = document.querySelector("#room_type_capacity");
+    const roomTypePrice = document.querySelector("#room_type_price");
+    const roomTypeAmenities = document.querySelector("#room_type_amenities");
+
+    carouselIndicatorContainer.innerHTML="";
+    carouselInner.innerHTML="";
+    roomTypeAmenities.innerHTML="";
+
+   for (let i=0; i<roomType.photos.length; i++) {
+        let newButton = document.createElement("button");
+        let newCarouselItem = document.createElement("div");
+        let newImage = document.createElement("img");
+        
+        newButton.setAttribute("type","button");
+        newButton.setAttribute("data-bs-target","#introCarousel");
+        newButton.setAttribute("data-bs-slide-to",`${i}`);
+        newButton.setAttribute("aria-label",`Photo ${i+1}`);
+        newCarouselItem.classList.add("carousel-item")
+        newImage.setAttribute("src",roomType.photos[i].source);
+        newImage.classList.add("d-block");
+        newImage.classList.add("w-100");
+        newImage.setAttribute("alt",roomType.photos[i].desription);
+        
+        if (i === 0) {
+            newButton.classList.add("active");
+            newButton.setAttribute("aria-current","true");
+            newCarouselItem.classList.add("active")
+        }
+
+        carouselIndicatorContainer.appendChild(newButton);
+        newCarouselItem.appendChild(newImage);
+        carouselInner.appendChild(newCarouselItem);
+   }
+    
+   roomTypeName.textContent = roomType.name;
+   roomTypeSize.innerHTML = `${roomType.size} m<sup>2</sup>`;
+   roomTypeCapacity.innerHTML = `${roomType.capacity} ${(roomType.capacity === 1)?"person":"people"}`;
+   roomTypePrice.innerHTML = `${roomType.price}&euro;`;
+
+   for (let i=0; i<roomType.amenities.length; i++) {
+         let newListItem = document.createElement("li");
+         newListItem.classList.add("col-lg-6");
+         newListItem.classList.add("pe-0");
+         newListItem.textContent = roomType.amenities[i];
+         roomTypeAmenities.appendChild(newListItem);
+   }
 }
 
 function updateRooms(room, symbol) {
     const lowerLimit = 0;
     (symbol === "Minus") ? room[1]-- : room[1]++;
+
+    document.querySelector(`#${room[0].code}CountForm`).value = room[1];
     
     document.querySelector(`#${room[0].code}CountMinus`).disabled = (room[1] <= lowerLimit);
     document.querySelector(`#${room[0].code}CountPlus`).disabled = (room[1] >= 9);
@@ -90,38 +151,71 @@ function updateRooms(room, symbol) {
 
 function updateTotal() {
     let TotalPrice = 0;
+    let TotalPriceWithDiscount = 0;
+    let Discount = 0;
     let totalCapacity = 0;
     let freeCancellationSelected = document.querySelector("#FreeCancellation").checked;
     let breakfastSelected = document.querySelector("#BreakfastIncluded").checked;
 
     roomTypes.forEach((room) => TotalPrice += (originalDates["numberOfNights"] * room[1] * room[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
-    if (TotalPrice !== 0)
+    if (TotalPrice !== 0) {
         TotalPrice += breakfastSelected?(originalGuests["numberOfGuests"] * originalDates["numberOfNights"] * breakfastPriceperNightperPerson):0;
-    document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
-    document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
+        if (account.accountLevel.discount !== 0){
+            Discount = TotalPrice * (account.accountLevel.discount);
+            TotalPriceWithDiscount = TotalPrice - Discount;
+            if (!Number.isInteger(TotalPrice))
+                TotalPrice = TotalPrice.toFixed(2);
+            if (!Number.isInteger(Discount))
+                Discount = Discount.toFixed(2);
+            if (!Number.isInteger(TotalPriceWithDiscount)) 
+                TotalPriceWithDiscount = TotalPriceWithDiscount.toFixed(2);
+            document.querySelector("#totalPrice").innerHTML = `Total Price: <span id="oldPrice">${TotalPrice}&euro;</span> ${TotalPriceWithDiscount}&euro;`;
+            document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPriceWithDiscount}&euro;`;
+            document.querySelector("#price_policies").innerHTML = `<li class="fw-semibold">You are saving ${Discount}&euro; with your ${account.accountLevel.name} account.</li><li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+        }
+        else {
+            if (!Number.isInteger(TotalPrice))
+                TotalPrice = TotalPrice.toFixed(2);
+            document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
+            document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
+            document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+        }
+    }
+    else { // When TotalPrice = 0
+        document.querySelector("#totalPrice").innerHTML = `Total Price: ${TotalPrice}&euro;`;
+        document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
+        document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
+    }
     for (let room of roomTypes)
         totalCapacity += room[0].capacity * room[1];
     document.querySelector("#BookButton").disabled = (totalCapacity < originalGuests["numberOfGuests"]);
 
     const tooltip = bootstrap.Tooltip.getInstance('#BookButtonWrapper');
     if (originalGuests["numberOfGuests"] - totalCapacity <= 0) {
-        // document.querySelector("#BookButtonWrapper").removeAttribute("data-bs-title");
-        // document.querySelector("#BookButtonWrapper").removeAttribute("data-bs-toggle");
-        // document.querySelector("#BookButtonWrapper").removeAttribute("data-bs-title");
         tooltip.disable();
     }
     else {
-        // document.querySelector("#BookButtonWrapper").setAttribute("data-bs-toggle","tooltip");
         tooltip.enable();
         document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"] - totalCapacity} more ${(originalGuests["numberOfGuests"] - totalCapacity === 1)?"person":"people"}.`);
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     }
-}
+} 
 
 function updateGuests(elem, symbol) {
     const lowerLimit = (elem === "adultsCount") ? 1 : 0;
-    (symbol === "Minus") ? guests[elem]-- : guests[elem]++;
+
+    switch (symbol) {
+        case "Minus":
+            guests[elem]--;
+            break;
+        case "Plus":
+            guests[elem]++;
+            break;
+        default:
+            // Initialization
+            guests[elem] = originalGuests[elem];
+    }
 
     document.querySelector(`#${elem}Minus`).disabled = (guests[elem] <= lowerLimit);
     document.querySelector(`#${elem}Plus`).disabled = (guests[elem] >= 9);
@@ -149,7 +243,7 @@ function checkFormChange() {
 $(() => {
     $('#daterange').daterangepicker(
         {
-            startDate: originalDates["check-in"],
+            startDate: originalDates["check-in"], 
             endDate: originalDates["check-out"],
             drops: 'down',
             minDate: new Date(),

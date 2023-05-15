@@ -103,10 +103,9 @@
 
 }
 
-
 #offcanvasCart {
     --bs-offcanvas-height: auto !important;
-    background-color:  #c0f1db !important;
+    background-color:  #e9f1fd !important;
 } 
 
  #offcanvasButton {
@@ -122,7 +121,6 @@
 }
 
 .modal img {
-    /* width: 100%; */
     height: 400px;
     object-fit: cover;
 }
@@ -140,8 +138,18 @@
 }
 
 .custom-tooltip {
-    --bs-tooltip-bg: var(--bs-primary);
-    /* background-color: blue; */
-    opacity: 1;
+    --bs-tooltip-bg: #212529;
+    --bs-tooltip-opacity:1;
     }
 
+#oldPrice {
+    text-decoration: line-through 1.5px; 
+    color: #CC0000; 
+    font-size: smaller; 
+    font-weight: lighter;
+}
+
+.room-capacity {
+    font-size: large; 
+    margin-bottom: 2px;
+}
