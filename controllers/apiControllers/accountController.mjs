@@ -77,9 +77,9 @@ function changePassword(req, res, next) {
 async function uploadProfilePicture(req, res, next) {
     try {
         const account = returnAccount(req.body.accountId);
-        const filename = `profilePictures/${account.email}.jpg`;
+        const filename = `/profilePictures/${account.email}.jpg`;
         const buffer = Buffer.from(req.body.profilePicture.replace(/^data:image\/\w+;base64,/, ""), 'base64');
-        await fs.writeFile(`./public/${filename}`, buffer);
+        await fs.writeFile(`./public${filename}`, buffer);
 
         account.changeProfilePicture(new Photo(filename, `${account.email} profile picture`));
         res.sendStatus(200);

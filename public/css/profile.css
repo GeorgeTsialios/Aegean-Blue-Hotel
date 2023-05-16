@@ -59,11 +59,11 @@
 }
 
 #passwordList li.check {
-    list-style-image: url("../assets/check-lg-green.svg");
+    list-style-image: url("/assets/check-lg-green.svg");
     color: #198754;
 }
 
 #passwordList li.x {
-    list-style-image: url("../assets/x-lg.svg");
+    list-style-image: url("/assets/x-lg.svg");
     color: #dc3545;
 }

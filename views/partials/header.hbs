@@ -4,7 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand mx-auto me-lg-3" href="/">
-            <img src="../../Assets/aegean-blue-hotel-logo.png" alt="Aegean Blue Hotel Logo" height="100">
+            <img src="{{hotel.logo.source}}" alt="{{hotel.logo.description}}" height="100">
         </a>
         
         <div class="offcanvas offcanvas-start" id="navbarSupportedContent">
@@ -83,7 +83,7 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">Administrator options</h6></li>
                         <li><a class="dropdown-item" href="/roomRack">Room rack</a></li>
-                        <li><a class="dropdown-item" href="/manageHotel">Edit rooms</a></li>
+                        <li><a class="dropdown-item" href="/manageHotel">Manage hotel</a></li>
                         {{/if}}
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">Logout</a></li>

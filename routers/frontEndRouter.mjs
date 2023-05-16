@@ -4,7 +4,7 @@ import { FrontEndControllers } from '../controllers/index.mjs';
 const router = express.Router();
 
 router.get("/", FrontEndControllers.HomeController.navigateToHome);
-router.get("/bookingConfirmation", FrontEndControllers.BookingConfirmationController.navigateToBookingConfirmation);
+router.get("/bookingConfirmation/:bookingId", FrontEndControllers.BookingConfirmationController.navigateToBookingConfirmation);
 router.get("/login", FrontEndControllers.LoginController.navigateToLogin);
 router.get("/profile", FrontEndControllers.ProfileController.navigateToProfile);
 router.get("/roomRack", FrontEndControllers.RoomRackController.navigateToRoomRack);

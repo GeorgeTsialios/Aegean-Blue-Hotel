@@ -2,44 +2,24 @@ import { Booking } from '../../model/booking.mjs';
 import { Photo } from "../../model/photo.mjs";
 import { RoomType } from "../../model/roomType.mjs";
 import { Room } from "../../model/room.mjs";
-import { Account } from "../../model/account.mjs";
-import { AccountLevel } from "../../model/accountLevel.mjs";
-
-const accountLevels = [
-    new AccountLevel("Loyalty level 0", 0, 0),
-    new AccountLevel("Loyalty level 1", 0.1, 3),
-    new AccountLevel("Loyalty level 2", 0.2, 6),
-    new AccountLevel("Loyalty level 3", 0.3, 10)
-];
-
-const account = new Account(
-    "Christos",
-    "Katsandris",
-    "christoskatsandris@outlook.com",
-    "+306937708141",
-    "123456",
-    true,
-    null,
-    // new Photo("assets/HotelPhotos/double2.jpg", "Deluxe Twin Room"),
-    accountLevels[3]
-);
+import { AccountController } from './index.mjs';
 
 const roomTypes = [
-    new RoomType("STA", "Standard Single Room", 2, 150, "RoomAmenities", [
-        new Photo("assets/HotelPhotos/double.jpg", "Executive Double Room"),
-        new Photo("assets/HotelPhotos/double2.jpg", "Executive Double Room")
+    new RoomType("STA", "Standard Single Room", 20, 1, 80, ["In-room air-conditioning","Free Wi-Fi Internet access","Bathrobes and slippers"], [
+        new Photo("/assets/HotelPhotos/double.jpg", "Executive Double Room"),
+        new Photo("/assets/HotelPhotos/double2.jpg", "Executive Double Room")
+    ]), 
+    new RoomType("EXEDD", "Executive Double Room", 30, 2, 120, ["Safety Box","Flat-screen TV","Daily maid service","Garden view"], [
+        new Photo("/assets/HotelPhotos/breakfast.jpg", "Executive Double Room"),
+        new Photo("/assets/HotelPhotos/double2.jpg", "Executive Double Room")
     ]),
-    new RoomType("EXEDD", "Executive Double Room", 2, 150, "RoomAmenities", [
-        new Photo("assets/HotelPhotos/double.jpg", "Executive Double Room"),
-        new Photo("assets/HotelPhotos/double2.jpg", "Executive Double Room")
+    new RoomType("EXETW", "Executive Twin Room", 30, 2, 150, ["Mini bar","Coffee tray and kettle in all rooms","Room service (up to midnight)"], [
+        new Photo("/assets/HotelPhotos/flowers.jpg", "Executive Double Room"),
+        new Photo("/assets/HotelPhotos/double2.jpg", "Executive Double Room")
     ]),
-    new RoomType("EXETW", "Executive Twin Room", 2, 150, "RoomAmenities", [
-        new Photo("assets/HotelPhotos/double.jpg", "Executive Double Room"),
-        new Photo("assets/HotelPhotos/double2.jpg", "Executive Double Room")
-    ]),
-    new RoomType("DELTW", "Deluxe Twin Room", 2, 180, "RoomAmenities", [
-        new Photo("assets/HotelPhotos/double2.jpg", "Deluxe Twin Room"),
-        new Photo("assets/HotelPhotos/double.jpg", "Deluxe Twin Room")
+    new RoomType("DELTW", "Deluxe Twin Room", 40, 4, 180, ["Marble bathrooms","Bathroom with Bathtub","Hair dryer","Direct dial telephone with voice mail service"], [
+        new Photo("/assets/HotelPhotos/double2.jpg", "Deluxe Twin Room"),
+        new Photo("/assets/HotelPhotos/double.jpg", "Deluxe Twin Room")
     ])
 ];
 
@@ -55,6 +35,8 @@ const rooms = [
     new Room(109, roomTypes[1]),
     new Room(110, roomTypes[2]),
 ];
+
+const account = AccountController.returnAccount();
 
 const bookings = [
     new Booking(account, "NX7kEPpXqm", new Date(2023, 4, 17), new Date(2023, 4, 29), 2, 1, 0, 240.34, true, true, true, false, new Date(2023, 2, 4), {
@@ -213,6 +195,10 @@ const bookings = [
     }, [roomTypes[2]], [rooms[9]])
 ];
 
+function returnBooking(id) {
+    return bookings.find(booking => booking.id === id);
+}
+
 function filterBookings(query) {
     return bookings.filter(booking => {
         let accepted = true;
@@ -258,4 +244,4 @@ function changeBookingDates(req, res, next) {
     }
 }
 
-export { filterBookings, getBookings, cancelBooking, changeBookingDates }
+export { returnBooking, filterBookings, getBookings, cancelBooking, changeBookingDates }

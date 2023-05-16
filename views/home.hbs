@@ -21,14 +21,7 @@
                     <div class="row">
                         <h1 class="fs-4 my-3 fw-medium">Book your stay!</h1>
                     </div>
-                    <form action="/searchResults" id="searchForm">
-                        {{>searchForm fromHome=1 checkInDate="Check-in date" checkOutDate="Check-out date" adultsCount="1 adult" childrenCount="0 children" infantsCount="0 infants"}}                        
-                        <input type="hidden" name="checkInDate">
-                        <input type="hidden" name="checkOutDate">
-                        <input type="hidden" name="adultsCount">
-                        <input type="hidden" name="childrenCount">
-                        <input type="hidden" name="infantsCount">
-                    </form>
+                    {{>searchFormPartial fromHome=1 checkInDate="Check-in date" checkOutDate="Check-out date" adultsCount="1 adult" childrenCount="0 children" infantsCount="0 infants"}}                        
                 </div>
             </div>
         </div>

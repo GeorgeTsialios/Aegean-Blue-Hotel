@@ -126,7 +126,7 @@
 }
 
 .modal-body li {
-    list-style-image: url("../../Assets/check-lg.svg");
+    list-style-image: url("/assets/check-lg.svg");
 }
 
 .modal-body .btn-close {
