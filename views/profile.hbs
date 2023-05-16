@@ -1,7 +1,7 @@
 <main>
     <div class="container-fluid mt-3">
         <div class="row">
-            <div class="col-lg-auto mb-3">
+            <div class="col-lg-auto mb-3" id="profileColumn">
                 <div class="card px-3 bg-secondary bg-gradient bg-opacity-10 shadow">
                     {{#if account.photo}}
                     <img src={{account.photo.source}} class="card-img-top mt-3 profilePhotoImg mx-auto" alt="Profile picture">
@@ -16,7 +16,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">{{account.firstName}} {{account.lastName}}</h5>
                         <h6 class="card-subtitle text-secondary">{{account.accountLevel.name}}</h6>
-                        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#profileModal">Edit profile</button>
+                        <button class="btn btn-primary mt-3" id="editProfileButton" data-bs-toggle="modal" data-bs-target="#profileModal">Edit profile</button>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@
 <!-- Profile modal template -->
 <div class="modal fade" id="profileModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-        <form action="" class="modal-content needs-validation" novalidate>
+        <form action="" class="modal-content needs-validation" id="profileForm" novalidate>
             <div class="modal-header">
                 <h5 class="modal-title fs-5" id="profileModalLabel">Edit profile info</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -151,14 +151,14 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" value="{{account.firstName}}">
+                            <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" value="{{account.firstName}}" required>
                             <label for="fname">First name</label>
                             <div class="invalid-feedback">
                                 Please provide a first name
                             </div>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" value="{{account.lastName}}">
+                            <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" value="{{account.lastName}}" required>
                             <label for="lname">Last name</label>
                             <div class="invalid-feedback">
                                 Please provide a last name
@@ -171,27 +171,13 @@
                                 Please provide a valid email
                             </div>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="tel" class="form-control" id="phone" placeholder=" " name="user_phone" value="{{account.phoneNumber}}" required>
-                            <label for="phone">Phone number</label>
-                            <div class="invalid-feedback">
+                        <div class="form-floating mb-4" id="phone_container">
+                            <input type="tel" class="form-control py-3" id="phone" name="user_phone">
+                            <div class="invalid-feedback" id="phone_error_message">
                                 Please provide a valid phone number
                             </div>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" id="password" placeholder=" " name="user_password" value="" required>
-                            <label for="password">Password</label>
-                            <div class="invalid-feedback">
-                                Please provide a valid password
-                            </div>
-                        </div>
-                        <div class="form-floating mb-4" id="repeat_div">
-                            <input type="password" class="form-control" id="repeat_password" placeholder=" " value="">
-                            <label for="password">Repeat Password</label>
-                            <div class="invalid-feedback" id="repeat_password_message">
-                                The passwords don't match
-                            </div>
-                        </div>
+                        <div class="link-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change password</div>
                     </div>
                     <div class="col-lg-4 d-flex flex-column align-items-center">
                         <div id="profilePhotoContainer">
@@ -213,7 +199,56 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-success" id="saveProfileButton">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal">
+        <form action="" class="modal-content needs-validation" id="changePasswordForm" novalidate>
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="profileModalLabel">Change password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-floating mb-4 password">
+                            <input type="password" class="form-control" id="old_password" placeholder=" " name="old_password" required>
+                            <label for="old_password">Old password</label>
+                            <div class="invalid-feedback" id="oldPasswordFeedback">
+                                Password is incorrect    
+                            </div>
+                        </div>
+                        <div class="form-floating mb-4 password">
+                            <input type="password" class="form-control" id="new_password" placeholder=" " name="new_password" required>
+                            <label for="new_password">New password</label>
+                            <div class="invalid-feedback">
+                                Password must contain:
+                                <ul id="passwordList">
+                                    <li id="lengthMatch">8-32 characters</li>
+                                    <li id="numberMatch">a number</li>
+                                    <li id="lowerCaseMatch">a lower case letter</li>
+                                    <li id="upperCaseMatch">an upper case letter</li>
+                                    <li id="specialCharacterMatch">a special character</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-4" id="repeat_div">
+                            <input type="password" class="form-control" id="repeat_password" placeholder=" ">
+                            <label for="repeat_password">Repeat new password</label>
+                            <div class="invalid-feedback" id="repeat_password_message">
+                                The passwords don't match
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#profileModal">Cancel</button>
+                <button type="button" class="btn btn-success" id="changePasswordButton">Save</button>
             </div>
         </form>
     </div>

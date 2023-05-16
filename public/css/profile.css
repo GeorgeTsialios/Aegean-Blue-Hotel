@@ -30,6 +30,10 @@
     .daterangepicker.show-calendar {
         display: flex;
     }
+
+    #profileColumn {
+        max-width: 300px;
+    }
 }
 
 #fileInputHidden {
@@ -41,4 +45,25 @@
     height: 150px;
     object-fit: cover;
     border-radius: 50%;
+}
+
+.iti {
+    width: 100%;
+}
+
+.link-primary {
+    text-decoration: underline;
+}
+.link-primary:hover {
+    cursor: pointer;
+}
+
+#passwordList li.check {
+    list-style-image: url("../assets/check-lg-green.svg");
+    color: #198754;
+}
+
+#passwordList li.x {
+    list-style-image: url("../assets/x-lg.svg");
+    color: #dc3545;
 }
