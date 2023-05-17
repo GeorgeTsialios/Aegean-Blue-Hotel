@@ -2,9 +2,10 @@
   "name": "aegean_blue_hotel",
   "version": "1.0.0",
   "description": "",
-  "main": "server.mjs",
+  "main": "app.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.mjs"
   },
   "author": "C. Katsandris and G. Tsialios",
   "license": "ISC",
@@ -12,7 +13,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^7.0.7",
-    "pg": "^8.10.0"
+    "pg": "^8.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
