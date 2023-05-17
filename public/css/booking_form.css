@@ -1,0 +1,72 @@
+body {
+    background: linear-gradient(45deg, rgba(141,189,255,1) 0%, #ff7f50 100%); 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+label {
+    color: gray;
+}
+
+#country {
+    color: gray;
+}
+
+.country-select, .iti {
+    width: 100%;
+}
+
+.form-check-label {
+    color: #212529;
+}
+
+.btn-dark {
+    background-color: var(--brand-background-elements);
+}
+
+.btn-dark:hover {
+    background-color: var(--brand-background-elements-hover);
+}
+
+.intl-tel-input {
+    display: table-cell;
+}
+
+.iti__country-list {
+    white-space: normal; 
+}
+
+.intl-tel-input .selected-flag {
+    z-index: 4;
+}
+
+.intl-tel-input .country-list {
+    z-index: 5;
+}
+
+.input-group .intl-tel-input .form-control {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 0;
+}
+
+.parenthesis {
+    font-size: medium;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.form-control.optional:valid {
+    border-color: #ced4da;
+    padding-right: .75rem;
+    background: none;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}

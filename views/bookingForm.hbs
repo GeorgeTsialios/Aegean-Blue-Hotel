@@ -1,0 +1,209 @@
+<main> 
+    <form action="" method="get" class="needs-validation justify-content-center align-items-center my-auto mx-4" novalidate>
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="card d-flex shadow align-self-center align-self-lg-start mt-4 me-lg-4 w-100">
+                    <div class="card-title d-flex align-items-center px-4">
+                        <h5 class="fw-semibold my-3" id="booking_info_title">Booking information</h5>
+                    </div>
+                    <div class="card-body px-4 pt-2 pb-1 d-flex justify-content-center text-black">
+                        <div class="d-flex align-items-center w-100">
+                            <div class="container">
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Check-in date</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">{{checkInDate}}</p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Check-out date</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">{{checkOutDate}}</p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Length of stay</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">{{lengthOfStayString}}</p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Guests</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">{{guestsString}}</p>
+                                </div>
+                                <div class="row">  
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-0">Room Types</p>
+                                    <div class="col-sm-8 col-12 p-0 ps-sm-3">
+                                        {{#each roomTypesForBooking}}
+                                            <div>{{this.name}} <span class="no-wrap">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                    </svg>{{this.count}}</span>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mt-3 mt-sm-0 mb-1 mb-sm-3 mt-sm-3">Breakfast Included</p>
+                                    <div class="col-sm-8 p-0 ps-sm-3">
+                                        {{#if breakfastIncluded}}
+                                            <img src="/assets/check-lg.svg" alt="Yes" height="22" class="mb-sm-1 mt-sm-3">
+                                        {{/if}}
+                                        {{#unless breakfastIncluded}}
+                                            <img src="/assets/x-lg-black.svg" alt="No" height="18" class="mb-sm-1 mt-sm-3">
+                                        {{/unless}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mt-3 mt-sm-0 mb-1 ">Free Cancellation</p>
+                                    <div class="col-sm-8 p-0 ps-sm-3">
+                                        {{#if freeCancellationIncluded}}
+                                            <img src="/assets/check-lg.svg" alt="Yes" height="22" class="mb-sm-1">
+                                        {{/if}}
+                                        {{#unless freeCancellationIncluded}}
+                                            <img src="/assets/x-lg-black.svg" alt="No" height="18" class="mb-sm-1">
+                                        {{/unless}}
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <hr class="border border-1 opacity-100">
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-12 col-12 p-0 fw-semibold">Price summary</p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Original Price</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">{{originalPrice}}&euro;</p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Loyalty Discount</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">-{{discount}}&euro;</p>
+                                </div>
+                                <div class="row">  
+                                    <p class="col-sm-4 col-12 p-0 text-secondary fs-5 fw-semibold  mb-1 mb-sm-3">Total Price</p>
+                                    <p class="col-sm-8 col-12 fs-5 fw-semibold p-0 ps-sm-3">{{totalPrice}}&euro;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8 align-items-center">
+                <div class="card d-flex shadow mt-4 w-100">
+                    <div class="card-header d-flex align-items-center px-4">
+                        <h4 class="fw-semibold my-3" id="heading">Personal information</h4>
+                    </div>
+                    <div class="card-body p-4 pb-3 d-flex justify-content-center text-black">
+                        <div class="d-flex align-items-center w-100">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 px-0 pe-md-2">
+                                        <div class="form-floating mb-4">
+                                            <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" required>
+                                            <label for="fname">First name</label>
+                                            <div class="invalid-feedback">
+                                                Please provide a first name
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 px-0 ps-md-2">
+                                        <div class="form-floating mb-4 ">
+                                            <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" required>
+                                            <label for="lname">Last name</label>
+                                            <div class="invalid-feedback">
+                                                Please provide a last name
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 px-0 pe-md-2">
+                                        <div class="form-floating mb-4">
+                                            <input type="email" class="form-control" id="e-mail" placeholder=" " name="user_email" required>
+                                            <label for="e-mail">Email address</label>
+                                            <div class="invalid-feedback">
+                                                Please provide a valid email
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 px-0 ps-md-2">
+                                        <div class="form-floating mb-4" id="phone_container">
+                                            <input type="tel" class="form-control py-3" id="phone" name="user_phone" required>
+                                            <div class="invalid-feedback" id="phone_error_message">
+                                                Please provide a valid phone number
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto px-0">
+                                        <label class="form-check-label" for="TravelForWork">Are you travelling for work?</label>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check text-start form-switch">
+                                            <input class="form-check-input" type="checkbox" name="TravelForWork" role="switch" id="TravelForWork">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card d-flex shadow mt-4 mb-4 w-100">
+                    <div class="card-header d-flex align-items-center px-4">
+                        <h4 class="fw-semibold my-3" id="billing_address">Billing address <span class="parenthesis">(optional)</span></h4>
+                    </div>
+                    <div class="card-body p-4 d-flex justify-content-center text-black ">
+                        <div class="d-flex align-items-center w-100">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 px-0 pe-md-2">
+                                        <div class="form-floating mb-4">
+                                            <input type="text" class="form-control optional py-3" id="country" placeholder=" " name="user_country">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 px-0 ps-md-2">
+                                        <div class="form-floating mb-4">
+                                            <input type="text" class="form-control optional" id="city" placeholder=" " name="user_city">
+                                            <label for="city">City</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 px-0 pe-md-2">
+                                        <div class="form-floating mb-4 mb-md-0">
+                                            <input type="text" class="form-control optional" id="street_name" placeholder=" " name="user_street_name">
+                                            <label for="street_name">Street name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3 px-0 ps-md-2 pe-md-2">
+                                        <div class="form-floating mb-4 mb-md-0">
+                                            <input type="text" class="form-control optional" id="street_number" placeholder=" " name="user_street_number">
+                                            <label for="street_number">Street number</label>
+                                            <!-- <div class="invalid-feedback">
+                                                A street number must only contain numbers
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3 px-0 ps-md-2">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control optional" id="postal_code" placeholder=" " name="user_postal_code">
+                                            <label for="postal_code">Postal code</label>
+                                            <!-- <div class="invalid-feedback">
+                                                A postal code must only contain numbers
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="w-100 d-flex align-items-center justify-content-center btn btn-dark btn-lg mb-4" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" fill="currentColor" class="bi bi-lock-fill me-1" viewBox="0 0 20 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                    </svg>
+                    Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
+
+<script>
+     const accountEmail = `{{account.email}}`;
+</script>
