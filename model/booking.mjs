@@ -1,23 +1,19 @@
 class Booking {
-    constructor(madeByAccount, id, checkInDate, checkOutDate, numberOfAdults, numberOfChildren, numberOfInfants, totalPrice, breakfastIncluded, freeCancellationAllowed, dateChangeAllowed, isCancelled, dateCreated, guestInformation, roomRequests, roomOccupations) {
-        this.madeByAccount = madeByAccount;
+    constructor(id, checkInDate, checkOutDate, dateCreated, guests, totalPrice, breakfastIncluded, freeCancellationAllowed, dateChangeAllowed, isCancelled, madeByAccount, guestInformation, roomRequests, roomOccupations) {
         this.id = id;
-
+        
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-
-        this.guests = {
-            "adults": numberOfAdults,
-            "children": numberOfChildren,
-            "infants": numberOfInfants
-        };
-
+        this.dateCreated = dateCreated;
+        
+        this.guests = guests;
+        
         this.totalPrice = totalPrice;
         this.breakfastIncluded = breakfastIncluded;
         this.freeCancellationAllowed = freeCancellationAllowed;
         this.dateChangeAllowed = dateChangeAllowed;
         this.isCancelled = isCancelled;
-        this.dateCreated = dateCreated;
+        this.madeByAccount = madeByAccount;
 
         this.guestInformation = guestInformation;
 
