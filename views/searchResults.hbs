@@ -3,69 +3,7 @@
         <div>
             <div class="d-flex justify-content-center my-3 pb-3">
                 <div class="card container shadow" id="search_card">
-                    <div class="row px-0">
-                        <div class="col-lg-5 px-0 btn-group">
-                            <button id="daterange" type="button" class="btn btn-light">
-                               {{originalCheckInDate}} &#8211; {{originalCheckOutDate}}
-                            </button> 
-                        </div>
-                        <div class="col-lg-4 px-0 btn-group dropdown">
-                            <button id="guests" type="button" class="btn btn-light rounded-0" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                {{originalGuestsString}}
-                            </button>
-                            <div class="dropdown-menu container border">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col text-start ms-3 w-auto me-auto align-middle">
-                                        Adults: <div class="age-description text-secondary">(age: 12+)</div>
-                                    </div>
-                                    <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="adultsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
-                                            <span>-</span>
-                                        </button>
-                                        <p id="adultsCount" class="fw-semibold my-0 mx-3 text-center"></p>
-                                        <button id="adultsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
-                                            <span>+</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col text-start ms-3 w-auto align-middle">
-                                        Children: <div class="age-description text-secondary">(age: 2-11)</div>
-                                    </div>
-                                    <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="childrenCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
-                                            <span>-</span>
-                                        </button>
-                                        <p id="childrenCount" class="fw-semibold my-0 mx-3 text-center"></p>
-                                        <button id="childrenCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
-                                            <span>+</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col text-start ms-3 w-auto align-middle">
-                                        Infants: <div class="age-description text-secondary">(age: 0-1)</div>
-                                    </div>
-                                    <div class="col d-flex align-items-center justify-content-end me-3 my-1">
-                                        <button id="infantsCountMinus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
-                                            <span>-</span>
-                                        </button>
-                                        <p id="infantsCount" class="fw-semibold my-0 mx-3 text-center"></p>
-                                        <button id="infantsCountPlus" class="btn btn-outline-primary lh-1 guests rounded-5 countButton">
-                                            <span>+</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 px-0">
-                            <a href="search_results.html">
-                                <button type="button" id="search" class="btn btn-primary w-100 h-100">
-                                    Search
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+                    {{>searchFormPartial fromHome=0 originalCheckInDate=originalCheckInDate originalCheckOutDate=originalCheckOutDate adultsCount=adultsCount childrenCount=childrenCount infantsCount=infantsCount originalGuestsString=originalGuestsString}}                        
                 </div>
             </div>
             <h1 class="text-center mb-3 pb-3 display-5" id="results-header">Search Results</h1>
@@ -143,17 +81,20 @@
                                                 <div class="text-center fs-5 mt-4 fw-semibold" id="totalPrice">
                                                     Total Price: 0&euro;
                                                 </div>
-                                            <form action="/booking_form" class="d-flex flex-column" id="search_results_form">
-                                                <input type="hidden" name="checkInDate" id="checkInDate">
-                                                <input type="hidden" name="checkOutDate" id="checkOutDate">
-                                                <input type="hidden" name="adultsCount" id="adultsCountForm">
-                                                <input type="hidden" name="childrenCount" id="childrenCountForm">
-                                                <input type="hidden" name="infantsCount" id="infantsCountForm">
+                                            <form action="/bookingForm" class="d-flex flex-column" id="search_results_form">
+                                                <input type="hidden" name="checkInDate" id="checkInDateForm2">
+                                                <input type="hidden" name="checkOutDate" id="checkOutDateForm2">
+                                                <input type="hidden" name="adultsCount" id="adultsCountForm2">
+                                                <input type="hidden" name="childrenCount" id="childrenCountForm2">
+                                                <input type="hidden" name="infantsCount" id="infantsCountForm2">
                                                 {{#each ../roomTypes}}
                                                     <input type="hidden" name="{{this.code}}Count" id="{{this.code}}CountForm" value="0">
                                                 {{/each}}
-                                                <input type="hidden" name="brekfastIncluded" id="BreakfastIncludedForm" value="false">
+                                                <input type="hidden" name="breakfastIncluded" id="BreakfastIncludedForm" value="false">
                                                 <input type="hidden" name="freeCancellationIncluded" id="FreeCanellationIncludedForm" value="false">
+                                                <input type="hidden" name="originalPrice" id="originalPriceForm" value="0">
+                                                <input type="hidden" name="discount" id="discountForm" value="0">
+                                                <input type="hidden" name="totalPrice" id="totalPriceForm" value="0">
                                                 <div data-bs-toggle="tooltip" data-bs-title="" data-bs-custom-class="custom-tooltip" class="mt-4 mx-auto" id="BookButtonWrapper">
                                                     <button type="submit" class="btn btn-lg btn-primary" id="BookButton" disabled>Book</button>
                                                 </div>

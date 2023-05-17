@@ -12,13 +12,14 @@ const dates = {
 const roomTypes = [];
 
 let TotalPrice = 0;
+let TotalPriceWithDiscount = 0;
+let Discount = 0;
 const freeCancellationCoefficient = 1.2;
 const breakfastPriceperNightperPerson = 15;
 
 let account = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    initializeForm();
     await fetchRoomtypes();
     await fetchAccount();
     updateGuests("adultsCount","NULL");
@@ -54,17 +55,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const modalLinks = document.querySelectorAll(".modal-link");
     modalLinks.forEach((modalLink) =>  modalLink.addEventListener('click',populateModal));
+
+    document.querySelector("#search").addEventListener("click",populateForm1);
+    document.querySelector("#BookButton").addEventListener("click",populateForm2);  
 })
 
-function initializeForm() {
-    document.querySelector("#checkInDate").value = originalDates["check-in"].toLocaleDateString();
-    document.querySelector("#checkOutDate").value = originalDates["check-out"].toLocaleDateString();
+function populateForm2() {
+    document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString();
+    document.querySelector("#checkOutDateForm2").value = originalDates["check-out"].toLocaleDateString();
 
     // console.log(`Length of stay: ${originalDates["numberOfNights"]} nights`);
 
-    document.querySelector("#adultsCountForm").value = originalGuests["adultsCount"];
-    document.querySelector("#childrenCountForm").value = originalGuests["childrenCount"];
-    document.querySelector("#infantsCountForm").value = originalGuests["infantsCount"];
+    document.querySelector("#adultsCountForm2").value = originalGuests["adultsCount"];
+    document.querySelector("#childrenCountForm2").value = originalGuests["childrenCount"];
+    document.querySelector("#infantsCountForm2").value = originalGuests["infantsCount"];
+
+    document.querySelector("#originalPriceForm").value = TotalPrice;
+    document.querySelector("#discountForm").value = Discount;
+    document.querySelector("#totalPriceForm").value = TotalPriceWithDiscount?TotalPriceWithDiscount:TotalPrice;
+}
+
+function populateForm1() {
+    document.querySelector("#checkInDateForm1").value = dates["check-in"].toLocaleDateString();
+    document.querySelector("#checkOutDateForm1").value = dates["check-out"].toLocaleDateString();
+    document.querySelector("#adultsCountForm1").value = guests["adultsCount"];
+    document.querySelector("#childrenCountForm1").value = guests["childrenCount"];
+    document.querySelector("#infantsCountForm1").value = guests["infantsCount"];
 }
 
 async function fetchRoomtypes () {
@@ -150,9 +166,9 @@ function updateRooms(room, symbol) {
 }
 
 function updateTotal() {
-    let TotalPrice = 0;
-    let TotalPriceWithDiscount = 0;
-    let Discount = 0;
+    TotalPrice = 0;
+    TotalPriceWithDiscount = 0;
+    Discount = 0;
     let totalCapacity = 0;
     let freeCancellationSelected = document.querySelector("#FreeCancellation").checked;
     let breakfastSelected = document.querySelector("#BreakfastIncluded").checked;
