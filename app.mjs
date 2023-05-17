@@ -17,6 +17,6 @@ app.use('/api', Routers.ApiRouter.router);
 
 // ToDo: Add a NOT FOUND page
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT);
