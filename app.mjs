@@ -1,4 +1,4 @@
-import 'dotenv'
+import dotenv from 'dotenv';
 import express from 'express';
 import { engine } from 'express-handlebars';
 import * as Routers from './routers/index.mjs';
@@ -17,6 +17,7 @@ app.use('/api', Routers.ApiRouter.router);
 
 // ToDo: Add a NOT FOUND page
 
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT);

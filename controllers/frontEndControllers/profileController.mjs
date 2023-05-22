@@ -1,10 +1,10 @@
 import { ApiControllers } from "../index.mjs";
 
-function navigateToProfile(req, res, next) {
+async function navigateToProfile(req, res, next) {
     try {
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
-        const bookings = ApiControllers.BookingController.filterBookings({
+        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
+        const hotel = await ApiControllers.HotelController.returnHotel();
+        const bookings = await ApiControllers.BookingController.filterBookings({
             "madeByAccount": account.email
         });
 

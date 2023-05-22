@@ -1,9 +1,9 @@
 import { ApiControllers } from "../index.mjs";
 
-function navigateToLogin(req, res, next) {
+async function navigateToLogin(req, res, next) {
     try {
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
+        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
+        const hotel = await ApiControllers.HotelController.returnHotel();
         res.render(
             "login",
             {

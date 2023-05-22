@@ -137,7 +137,7 @@ function updateVisibleEntries() {
             node.setAttribute("draggable", "true");
             node.addEventListener("click", () => populateBookingConfirmation(entry.booking));
             node.addEventListener("dragstart", dragstart_handler);
-            node.textContent = `${entry.booking.guestInformation.lastName.toUpperCase()}, ${entry.booking.guestInformation.firstName.toUpperCase()}`;
+            node.textContent = `${entry.booking.guest.lastName.toUpperCase()}, ${entry.booking.guest.firstName.toUpperCase()}`;
             
             if (checkInDate < visibleStartOfWeek) {
                 node.classList.add("extendsLeft");
@@ -280,22 +280,22 @@ function populateBookingConfirmation(booking) {
         document.querySelector("#roomRequestsContainer").appendChild(divNode);
     }
 
-    document.querySelector("#bookingGuestFirstNameField").textContent = booking.guestInformation.firstName;
-    document.querySelector("#bookingGuestLastNameField").textContent = booking.guestInformation.lastName;
-    document.querySelector("#bookingGuestEmailField").textContent = booking.guestInformation.email;
-    document.querySelector("#bookingGuestPhoneNumberField").textContent = booking.guestInformation.phoneNumber;
+    document.querySelector("#bookingGuestFirstNameField").textContent = booking.guest.firstName;
+    document.querySelector("#bookingGuestLastNameField").textContent = booking.guest.lastName;
+    document.querySelector("#bookingGuestEmailField").textContent = booking.guest.email;
+    document.querySelector("#bookingGuestPhoneNumberField").textContent = booking.guest.phoneNumber;
     document.querySelector("#bookingGuestTravelsForWorkField").textContent = booking.strings.guestTravelsForWork;
-    document.querySelector("#bookingGuestAddressStreetField").textContent = booking.guestInformation.address.street;
-    document.querySelector("#bookingGuestAddressStreetNoField").textContent = booking.guestInformation.address.streetNo;
-    document.querySelector("#bookingGuestAddressCityField").textContent = booking.guestInformation.address.city;
-    document.querySelector("#bookingGuestAddressPostalCodeField").textContent = booking.guestInformation.address.postalCode;
-    document.querySelector("#bookingGuestAddressCountryField").textContent = booking.guestInformation.address.country;
+    document.querySelector("#bookingGuestAddressStreetField").textContent = booking.guest.address.street;
+    document.querySelector("#bookingGuestAddressStreetNoField").textContent = booking.guest.address.streetNo;
+    document.querySelector("#bookingGuestAddressCityField").textContent = booking.guest.address.city;
+    document.querySelector("#bookingGuestAddressPostalCodeField").textContent = booking.guest.address.postalCode;
+    document.querySelector("#bookingGuestAddressCountryField").textContent = booking.guest.address.country;
     document.querySelector("#bookingBreakfastIncludedField").textContent = booking.strings.breakfastIncluded;
     document.querySelector("#bookingFreeCancellationAllowedField").textContent = booking.strings.freeCancellationAllowed;
 }
 
 function populateCancelConfirmation() {
-    document.querySelector("#confirmationModalInfoMessage").innerHTML = `Are you sure you want to cancel ${bookingToCancel.guestInformation.lastName}, ${bookingToCancel.guestInformation.firstName}'s booking for ${bookingToCancel.strings.checkInDate} &#8211; ${bookingToCancel.strings.checkOutDate}?`;
+    document.querySelector("#confirmationModalInfoMessage").innerHTML = `Are you sure you want to cancel ${bookingToCancel.guest.lastName}, ${bookingToCancel.guest.firstName}'s booking for ${bookingToCancel.strings.checkInDate} &#8211; ${bookingToCancel.strings.checkOutDate}?`;
     if (bookingToCancel.freeCancellationAllowed) {
         document.querySelector("#confirmationModalRefundMessage").textContent = `They will get a full refund, since they are entitled to free cancellation.`;
     }

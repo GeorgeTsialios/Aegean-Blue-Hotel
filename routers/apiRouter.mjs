@@ -8,6 +8,7 @@ router.post("/changeAccount", ApiControllers.AccountController.changeAccount);
 router.post("/changePassword", ApiControllers.AccountController.changePassword);
 router.post("/uploadProfilePicture", ApiControllers.AccountController.uploadProfilePicture);
 
+router.get("/booking/:id", ApiControllers.BookingController.getBooking);
 router.get("/bookings", ApiControllers.BookingController.getBookings);
 router.get("/cancelBooking/:id", ApiControllers.BookingController.cancelBooking);
 router.get("/changeBookingDates/:id/:checkInDate/:checkOutDate", ApiControllers.BookingController.changeBookingDates);

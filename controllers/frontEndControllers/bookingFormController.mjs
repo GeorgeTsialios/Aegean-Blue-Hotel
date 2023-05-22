@@ -1,9 +1,9 @@
 import { ApiControllers } from "../index.mjs";
 
-function navigateToBookingForm(req, res, next) {
+async function navigateToBookingForm(req, res, next) {
     try {
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
+        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
+        const hotel = await ApiControllers.HotelController.returnHotel();
         const checkInDate = new Date(req.query.checkInDate);
         const checkOutDate = new Date(req.query.checkOutDate);
         const lengthOfStayString = `${(checkOutDate -checkInDate) / (1000 * 3600 * 24)} ${(checkOutDate -checkInDate) / (1000 * 3600 * 24) === 1 ? "night" : "nights"}`;
@@ -13,7 +13,7 @@ function navigateToBookingForm(req, res, next) {
         const guestsString = `${adultsCount} ${(adultsCount === 1) ? "adult" : "adults"} • ${childrenCount} ${(childrenCount === 1) ? "child" : "children"} • ${infantsCount} ${(infantsCount === 1) ? "infant" : "infants"}`;
 
         const roomTypesForBooking = [];
-        const roomTypes = ApiControllers.RoomTypeController.returnRoomTypes();
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         roomTypes.forEach(roomType => {
             let roomTypeCodeCount = `${roomType.code}Count`;
             let roomTypeCount = Number(req.query[roomTypeCodeCount]);

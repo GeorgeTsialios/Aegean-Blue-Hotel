@@ -8,11 +8,10 @@ Date.prototype.addDays = function (days) {
 
 function navigateToSearchResults(req, res, next) {
     try {
-        const roomTypes = ApiControllers.RoomTypeController.returnRoomTypes();
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
-        const originalCheckInDate = req.query.checkInDate? new Date(req.query.checkInDate).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"}): new Date().addDays(1).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"});
-        const originalCheckOutDate = req.query.checkOutDate? new Date(req.query.checkOutDate).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"}): new Date().addDays(2).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"});
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
+        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
+        const hotel = await ApiControllers.HotelController.returnHotel();
+        
         const originalAdultsCount = req.query.adultsCount? Number(req.query.adultsCount) :1;
         const originalChildrenCount = req.query.childrenCount? Number(req.query.childrenCount) :0;
         const originalInfantsCount = req.query.infantsCount? Number(req.query.infantsCount) :0;
