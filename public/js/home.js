@@ -37,8 +37,8 @@ function updateGuests(elem, symbol) {
 }
 
 function sendForm() {
-    document.querySelector("input[name=checkInDate]").value = dates['check-in'].toLocaleDateString();
-    document.querySelector("input[name=checkOutDate]").value = dates['check-out'].toLocaleDateString();
+    document.querySelector("input[name=checkInDate]").value = dates['check-in'].toLocaleDateString("en-us");
+    document.querySelector("input[name=checkOutDate]").value = dates['check-out'].toLocaleDateString("en-us");
     document.querySelector("input[name=adultsCount]").value = guests['adultsCount'];
     document.querySelector("input[name=childrenCount]").value = guests['childrenCount'];
     document.querySelector("input[name=infantsCount]").value = guests['infantsCount'];
@@ -54,7 +54,7 @@ $(() => {
         (start, end) => {
             dates['check-in'] = start.toDate();
             dates['check-out'] = end.toDate();
-            document.querySelector("#daterange").innerHTML = `${dates['check-in'].toLocaleDateString("default", {"month": "short", "day": "numeric", "year": "numeric"})} &#8211 ${dates['check-out'].toLocaleDateString("default", {"month": "short", "day": "numeric", "year": "numeric"})}`
+            document.querySelector("#daterange").innerHTML = `${dates['check-in'].toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"})} &#8211 ${dates['check-out'].toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"})}`
         }
     );
 });
