@@ -153,3 +153,8 @@
     font-size: large; 
     margin-bottom: 2px;
 }
+
+#search_card {
+    margin-left: 12px; 
+    margin-right: 12px;
+}

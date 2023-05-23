@@ -61,8 +61,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 })
 
 function populateForm2() {
-    document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString();
-    document.querySelector("#checkOutDateForm2").value = originalDates["check-out"].toLocaleDateString();
+    document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString("en-us");
+    document.querySelector("#checkOutDateForm2").value = originalDates["check-out"].toLocaleDateString("en-us");
 
     // console.log(`Length of stay: ${originalDates["numberOfNights"]} nights`);
 
@@ -76,8 +76,8 @@ function populateForm2() {
 }
 
 function populateForm1() {
-    document.querySelector("#checkInDateForm1").value = dates["check-in"].toLocaleDateString();
-    document.querySelector("#checkOutDateForm1").value = dates["check-out"].toLocaleDateString();
+    document.querySelector("#checkInDateForm1").value = dates["check-in"].toLocaleDateString("en-us");
+    document.querySelector("#checkOutDateForm1").value = dates["check-out"].toLocaleDateString("en-us");
     document.querySelector("#adultsCountForm1").value = guests["adultsCount"];
     document.querySelector("#childrenCountForm1").value = guests["childrenCount"];
     document.querySelector("#infantsCountForm1").value = guests["infantsCount"];
@@ -268,7 +268,7 @@ $(() => {
         (start, end) => {
             dates['check-in'] = start.toDate();
             dates['check-out'] = end.toDate();
-            document.querySelector("#daterange").innerHTML = `${dates['check-in'].toLocaleDateString("default", {"month": "short", "day": "numeric", "year": "numeric"})} &#8211 ${dates['check-out'].toLocaleDateString("default", {"month": "short", "day": "numeric", "year": "numeric"})}`
+            document.querySelector("#daterange").innerHTML = `${dates['check-in'].toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"})} &#8211 ${dates['check-out'].toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"})}`
             checkFormChange();
         }
     );

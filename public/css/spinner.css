@@ -1,0 +1,8 @@
+#container {
+    height: 100vh;
+}
+
+#spinner {
+    width: 6rem; 
+    height: 6rem;
+}

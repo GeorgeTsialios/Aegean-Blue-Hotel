@@ -246,6 +246,8 @@
         "check-out": new Date (`{{originalCheckOutDate}}`)
     }
 
+    console.log(originalDates["check-in"]);
+
     originalDates["numberOfNights"] = (originalDates["check-out"] - originalDates["check-in"]) / (1000 * 3600 * 24);
 
     const accountEmail = `{{account.email}}`;
