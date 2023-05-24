@@ -12,8 +12,6 @@ const dates = {
 let TotalPrice = 0;
 let TotalPriceWithDiscount = 0;
 let Discount = 0;
-const freeCancellationCoefficient = 1.2;
-const breakfastPriceperNightperPerson = 15;
 
 document.addEventListener("DOMContentLoaded", async () => {
     updateGuests("adultsCount","NULL");
