@@ -93,7 +93,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6 px-0 pe-md-2">
                                         <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" required>
+                                            <input type="text" class="form-control" id="fname" placeholder=" " name="user_fname" {{#if account}}value="{{account.firstName}}"{{/if}} required>
                                             <label for="fname">First name</label>
                                             <div class="invalid-feedback">
                                                 Please provide a first name
@@ -102,7 +102,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 px-0 ps-md-2">
                                         <div class="form-floating mb-4 ">
-                                            <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" required>
+                                            <input type="text" class="form-control" id="lname" placeholder=" " name="user_lname" {{#if account}}value="{{account.lastName}}"{{/if}} required>
                                             <label for="lname">Last name</label>
                                             <div class="invalid-feedback">
                                                 Please provide a last name
@@ -113,7 +113,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6 px-0 pe-md-2">
                                         <div class="form-floating mb-4">
-                                            <input type="email" class="form-control" id="e-mail" placeholder=" " name="user_email" required>
+                                            <input type="email" class="form-control" id="e-mail" placeholder=" " name="user_email" {{#if account}}value="{{account.email}}"{{/if}} required>
                                             <label for="e-mail">Email address</label>
                                             <div class="invalid-feedback">
                                                 Please provide a valid email
@@ -122,7 +122,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 px-0 ps-md-2">
                                         <div class="form-floating mb-4" id="phone_container">
-                                            <input type="tel" class="form-control py-3" id="phone" name="user_phone" required>
+                                            <input type="tel" class="form-control py-3" id="phone" name="user_phone" {{#if account}}{{#if account.phoneNumber}}value="{{account.phoneNumber}}"{{/if}}{{/if}} required>
                                             <div class="invalid-feedback" id="phone_error_message">
                                                 Please provide a valid phone number
                                             </div>
@@ -205,5 +205,5 @@
 </main>
 
 <script>
-     const accountEmail = `{{account.email}}`;
+    const account = {{#if accountJSON}}JSON.parse(`{{accountJSON}}`.replaceAll("&quot;", "\"")){{/if}}{{#unless accountJSON}}null{{/unless}};
 </script>

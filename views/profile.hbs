@@ -256,5 +256,6 @@
 </div>
 
 <script>
-    const accountEmail = `{{account.email}}`;
+    const account = {{#if accountJSON}}JSON.parse(`{{accountJSON}}`.replaceAll("&quot;", "\"")){{/if}}{{#unless accountJSON}}null{{/unless}};
+    const accountBookings = JSON.parse(`{{accountBookingsJSON}}`.replaceAll("&quot;", "\""));
 </script>

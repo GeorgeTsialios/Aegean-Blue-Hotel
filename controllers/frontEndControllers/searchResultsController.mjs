@@ -52,6 +52,7 @@ async function navigateToSearchResults(req, res, next) {
                     <script src = "/js/search_results.js"></script>
                 `,
                 account: account,
+                accountJSON: account ? JSON.stringify(account) : null,
                 hotel: hotel,
                 originalCheckInDate: originalCheckInDate,
                 originalCheckOutDate: originalCheckOutDate,
@@ -59,7 +60,8 @@ async function navigateToSearchResults(req, res, next) {
                 originalChildrenCount: originalChildrenCount,
                 originalInfantsCount: originalInfantsCount,
                 originalGuestsString: originalGuestsString,
-                roomTypes: roomTypes
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0]))
             }
         );
     }

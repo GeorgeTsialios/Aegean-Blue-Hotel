@@ -9,18 +9,6 @@ Date.prototype.subtractDays = function (days) {
     return date;
 }
 
-class Entry {
-    constructor(booking, room, index) {
-        this.booking = booking;
-        this.room = room;
-        this.index = index;
-    }
-}
-
-const rooms = [];
-const bookings = [];
-let allEntries = [];
-
 let dateCells;
 let currentMonthPlaceholder;
 let visibleStartOfWeek;
@@ -30,12 +18,10 @@ let roomRackRows = {};
 let roomOverlaps = {};
 let bookingToCancel = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     dateCells = document.querySelectorAll(".dayHeader");
     currentMonthPlaceholder = document.querySelector("#calendarCurrentMonth");
 
-    await fetchRooms();
-    await fetchBookings();
     calendarGoToToday();
 
     document.querySelector("#calendarButtonToday").addEventListener("click", calendarGoToToday);
@@ -85,27 +71,6 @@ function getStartOfWeek(date) {
     return output;
 }
 
-async function fetchRooms() {
-    const response = await fetch("/api/rooms");
-    const data = await response.json();
-
-    for (let room of data) {
-        rooms.push(room);
-    }
-}
-
-async function fetchBookings(startDate, endDate) {
-    const response = await fetch("/api/bookings?isCancelled=false");
-    const data = await response.json();
-
-    for (let booking of data) {
-        bookings.push(booking);
-        for (let room of booking.roomOccupations) {
-            allEntries.push(new Entry(booking, room, booking.roomOccupations.indexOf(room)));
-        }
-    }
-}
-
 function updateDateCells() {
     for (let i=0; i<7; i++) {
         const currentDate = visibleStartOfWeek.addDays(i);
@@ -124,7 +89,6 @@ function updateDateCells() {
 function updateVisibleEntries() {
     document.querySelectorAll("td").forEach(elem => elem.innerHTML = "");
     roomRackRows = {};
-    // currentEntries = [];
     for (let entry of allEntries) {
         const checkInDate = new Date(entry.booking.checkInDate);
         const checkOutDate = new Date(entry.booking.checkOutDate);

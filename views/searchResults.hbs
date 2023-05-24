@@ -246,10 +246,9 @@
         "check-out": new Date (`{{originalCheckOutDate}}`)
     }
 
-    console.log(originalDates["check-in"]);
-
     originalDates["numberOfNights"] = (originalDates["check-out"] - originalDates["check-in"]) / (1000 * 3600 * 24);
 
-    const accountEmail = `{{account.email}}`;
+    const account = {{#if accountJSON}}JSON.parse(`{{accountJSON}}`.replaceAll("&quot;", "\"")){{/if}}{{#unless accountJSON}}null{{/unless}};
+    const roomTypes = JSON.parse(`{{roomTypesJSON}}`.replaceAll("&quot;", "\""));
 
 </script>

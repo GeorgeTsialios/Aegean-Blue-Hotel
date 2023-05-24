@@ -54,6 +54,7 @@ async function navigateToBookingForm(req, res, next) {
                 </script>
                 `,
                 account: account,
+                accountJSON: account ? JSON.stringify(account) : null,
                 hotel: hotel,
                 roomTypes: roomTypes,
                 checkInDate: checkInDate.toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"}),

@@ -28,7 +28,9 @@ async function navigateToProfile(req, res, next) {
                 ongoingBookings: bookings.filter(booking => booking.checkInDate <= new Date() && booking.checkOutDate >= new Date()),
                 upcomingBookings: bookings.filter(booking => booking.checkInDate > new Date()),
                 pastBookings: bookings.filter(booking => booking.checkOutDate < new Date()),
+                accountBookingsJSON: JSON.stringify(bookings),
                 account: account,
+                accountJSON: account ? JSON.stringify(account) : null,
                 hotel: hotel,
                 roomTypes: roomTypes
             }

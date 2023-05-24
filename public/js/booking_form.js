@@ -11,10 +11,7 @@ const phoneContainer = document.querySelector("#phone_container");
 
 let iti = null;
 
-let account = null;
-
-document.addEventListener("DOMContentLoaded",async () => {
-    await fetchAccount();
+document.addEventListener("DOMContentLoaded", () => {
     email.addEventListener('blur',validateEmail);
     phone.addEventListener('blur',(event) => {
       validatePhone(event);
@@ -24,7 +21,6 @@ document.addEventListener("DOMContentLoaded",async () => {
     country.addEventListener('focus',() => country.style.color="black");
 
     validate();
-    completeForm();
     iti = window.intlTelInput(phone,{
         utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
         initialCountry: "gr",
@@ -36,7 +32,7 @@ document.addEventListener("DOMContentLoaded",async () => {
           .then(data => callback(data.country_code))
           .catch(() => callback("us"));
         }
-      });
+    });
 
     setPhoneDropdownSize();
     window.addEventListener('resize',setPhoneDropdownSize);
@@ -50,11 +46,6 @@ const errorMap = {
     3:"Too long",
     4:"Invalid number"
 };
-
-async function fetchAccount() {
-  const response = await fetch(`/api/account/${accountEmail}`);
-  account = await response.json();
-}
 
 function validate() {
   form.addEventListener('submit', (event) => {
@@ -82,30 +73,30 @@ function validate() {
 }
 
 function validateEmail(event) {
-  if (!emailRegex.test(email.value)) {
-      email.setCustomValidity("E-mail is not valid");
-      email.classList.remove("is-valid");
-      email.classList.add("is-invalid");
-      event.preventDefault();
-      event.stopPropagation();
-  }
-  else {
-      email.setCustomValidity("");
-      email.classList.remove("is-invalid");
-      email.classList.add("is-valid");
-  }
+    if (!emailRegex.test(email.value)) {
+        email.setCustomValidity("E-mail is not valid");
+        email.classList.remove("is-valid");
+        email.classList.add("is-invalid");
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    else {
+        email.setCustomValidity("");
+        email.classList.remove("is-invalid");
+        email.classList.add("is-valid");
+    }
 }
 
 function validatePhone(event) {
     console.log(iti.getNumber());
-      if (iti.isValidNumber() && phoneRegex.test(phone.value)) {
+    if (iti.isValidNumber() && phoneRegex.test(phone.value)) {
         phone.setCustomValidity("");
         phone.parentElement.classList.remove("is-invalid");
         phone.parentElement.classList.add("is-valid");
         phone.classList.remove("is-invalid");
         phone.classList.add("is-valid");
-      } 
-      else {
+    } 
+    else {
         phone.setCustomValidity("Phone is not valid");
         phone.parentElement.classList.remove("is-valid");
         phone.parentElement.classList.add("is-invalid");
@@ -116,7 +107,7 @@ function validatePhone(event) {
         document.querySelector("#phone_error_message").textContent = `${errorMap[errorCode]}`;
         event.preventDefault();
         event.stopPropagation();
-      }
+    }
 }
 
 // function validateStreetNumber(event) {
@@ -148,14 +139,4 @@ function submitForm() {
 function setPhoneDropdownSize() {
     const PhoneDropdown = document.querySelector("#iti-0__country-listbox");
     PhoneDropdown.style.width = `${phoneContainer.offsetWidth}px`;
-}
-
-function completeForm() {
-    if (account) {
-        document.querySelector("#fname").value = account.firstName;
-        document.querySelector("#lname").value = account.lastName;
-        email.value = account.email;
-        if (account.phoneNumber)
-            phone.value = account.phoneNumber;
-    }
 }

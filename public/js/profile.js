@@ -33,14 +33,9 @@ const errorMap = {
 let iti = initializeIti();
 const PhoneDropdown = document.querySelector("#iti-0__country-listbox");
 
-let account = null;
-const accountBookings = [];
 let bookingToEdit = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetchAccount();
-    fetchAccountBookings();
-    
     document.querySelector(".iti__flag-container").addEventListener("click", setPhoneDropdownSize);
     window.addEventListener('resize',setPhoneDropdownSize);
     document.querySelector("#e-mail").addEventListener("keyup", validateEmail);
@@ -64,21 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#fileInputHidden").click();
     })
     document.querySelector("#fileInputHidden").addEventListener("change", updateProfilePhoto);
-})
-
-async function fetchAccount() {
-    const response = await fetch(`/api/account/${accountEmail}`);
-    account = await response.json();
-}
-
-async function fetchAccountBookings() {
-    const response = await fetch(`/api/bookings?madeByAccount=${accountEmail}`);
-    const data = await response.json();
-    
-    for (let booking of data) {
-        accountBookings.push(booking);
-    }
-}
+});
 
 function populateProfileInfo() {
     document.querySelector("#fname").value = account.firstName;
@@ -188,7 +169,7 @@ async function handleSaveProfile() {
     const validationResult = validateProfileForm();
     if (validationResult) {
         const data = {
-            "accountId": accountEmail,
+            "accountId": account.email,
             "firstName": document.querySelector("#fname").value,
             "lastName": document.querySelector("#lname").value,
             "email": document.querySelector("#e-mail").value,
@@ -214,7 +195,7 @@ async function handleChangePassword() {
     const validationResult = validateChangePasswordForm();
     if (validationResult) {
         const data = {
-            "accountId": accountEmail,
+            "accountId": account.email,
             "oldPassword": document.querySelector("#old_password").value,
             "newPassword": document.querySelector("#new_password").value
         };
@@ -264,7 +245,7 @@ async function updateProfilePhoto() {
         const imageData = file ? await readPhoto(file) : null;
     
         const data = {
-            "accountId": accountEmail,
+            "accountId": account.email,
             "profilePicture": imageData
         }
         await fetch(`/api/uploadProfilePicture`, {
@@ -456,7 +437,6 @@ function initializeIti() {
         utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
         initialCountry: "gr",
         preferredCountries: ["gr"],
-        // responsiveDropdown: true,
         separateDialCode: true,
         geoIpLookup: callback => {
         fetch("https://ipapi.co/json")

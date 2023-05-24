@@ -9,19 +9,13 @@ const dates = {
     "check-out": new Date (2023,5,2)
 }
 
-const roomTypes = [];
-
 let TotalPrice = 0;
 let TotalPriceWithDiscount = 0;
 let Discount = 0;
 const freeCancellationCoefficient = 1.2;
 const breakfastPriceperNightperPerson = 15;
 
-let account = null;
-
 document.addEventListener("DOMContentLoaded", async () => {
-    await fetchRoomtypes();
-    await fetchAccount();
     updateGuests("adultsCount","NULL");
     updateGuests("childrenCount","NULL");
     updateGuests("infantsCount","NULL");
@@ -41,9 +35,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelector("#FreeCanellationIncludedForm").value = document.querySelector("#FreeCancellation").checked;
     });
 
-    roomTypes.forEach((room) => {
-        document.querySelector(`#${room[0].code}CountPlus`).addEventListener("click", () => {updateRooms(room, "Plus");  updateTotal();} );
-        document.querySelector(`#${room[0].code}CountMinus`).addEventListener("click", () => {updateRooms(room, "Minus"); updateTotal();} );
+    roomTypes.forEach((roomType) => {
+        document.querySelector(`#${roomType[0].code}CountPlus`).addEventListener("click", () => {updateRooms(roomType, "Plus");  updateTotal();} );
+        document.querySelector(`#${roomType[0].code}CountMinus`).addEventListener("click", () => {updateRooms(roomType, "Minus"); updateTotal();} );
     });
 
     const countButtons = document.querySelectorAll(".countButton");
@@ -81,20 +75,6 @@ function populateForm1() {
     document.querySelector("#adultsCountForm1").value = guests["adultsCount"];
     document.querySelector("#childrenCountForm1").value = guests["childrenCount"];
     document.querySelector("#infantsCountForm1").value = guests["infantsCount"];
-}
-
-async function fetchRoomtypes () {
-    const response = await fetch(`/api/roomTypes`);
-    const data = await response.json();
-    
-    for (let roomType of data) {
-        roomTypes.push([roomType,0]);
-    }
-}
-
-async function fetchAccount() {
-    const response = await fetch(`/api/account/${accountEmail}`);
-    account = await response.json();
 }
 
 function populateModal(event) {
@@ -153,16 +133,16 @@ function populateModal(event) {
    }
 }
 
-function updateRooms(room, symbol) {
+function updateRooms(roomType, symbol) {
     const lowerLimit = 0;
-    (symbol === "Minus") ? room[1]-- : room[1]++;
+    (symbol === "Minus") ? roomType[1]-- : roomType[1]++;
 
-    document.querySelector(`#${room[0].code}CountForm`).value = room[1];
+    document.querySelector(`#${roomType[0].code}CountForm`).value = roomType[1];
     
-    document.querySelector(`#${room[0].code}CountMinus`).disabled = (room[1] <= lowerLimit);
-    document.querySelector(`#${room[0].code}CountPlus`).disabled = (room[1] >= 9);
+    document.querySelector(`#${roomType[0].code}CountMinus`).disabled = (roomType[1] <= lowerLimit);
+    document.querySelector(`#${roomType[0].code}CountPlus`).disabled = (roomType[1] >= 9);
     
-    document.querySelector(`#${room[0].code}Count`).textContent = room[1];
+    document.querySelector(`#${roomType[0].code}Count`).textContent = roomType[1];
 }
 
 function updateTotal() {
@@ -173,10 +153,10 @@ function updateTotal() {
     let freeCancellationSelected = document.querySelector("#FreeCancellation").checked;
     let breakfastSelected = document.querySelector("#BreakfastIncluded").checked;
 
-    roomTypes.forEach((room) => TotalPrice += (originalDates["numberOfNights"] * room[1] * room[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
+    roomTypes.forEach((roomType) => TotalPrice += (originalDates["numberOfNights"] * roomType[1] * roomType[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
     if (TotalPrice !== 0) {
         TotalPrice += breakfastSelected?(originalGuests["numberOfGuests"] * originalDates["numberOfNights"] * breakfastPriceperNightperPerson):0;
-        if (account.accountLevel.discount !== 0){
+        if (account && account.accountLevel.discount !== 0){
             Discount = TotalPrice * (account.accountLevel.discount);
             TotalPriceWithDiscount = TotalPrice - Discount;
             if (!Number.isInteger(TotalPrice))
@@ -202,8 +182,8 @@ function updateTotal() {
         document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
         document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
     }
-    for (let room of roomTypes)
-        totalCapacity += room[0].capacity * room[1];
+    for (let roomType of roomTypes)
+        totalCapacity += roomType[0].capacity * roomType[1];
     document.querySelector("#BookButton").disabled = (totalCapacity < originalGuests["numberOfGuests"]);
 
     const tooltip = bootstrap.Tooltip.getInstance('#BookButtonWrapper');

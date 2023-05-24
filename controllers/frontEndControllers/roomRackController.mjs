@@ -2,10 +2,11 @@ import { ApiControllers } from "../index.mjs";
 
 async function navigateToRoomRack(req, res, next) {
     try {
-        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
+        const account = await ApiControllers.AccountController.returnAccount(req.session.accountId);
         const hotel = await ApiControllers.HotelController.returnHotel();
         const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         const rooms = await ApiControllers.RoomController.returnRooms();
+        const bookings = await ApiControllers.BookingController.filterBookings({ isCancelled: false });
         res.render(
             "roomRack",
             {
@@ -17,9 +18,11 @@ async function navigateToRoomRack(req, res, next) {
                     <script src="/js/room_rack.js"></script>
                 `,
                 rooms: rooms,
+                roomsJSON: JSON.stringify(rooms),
                 account: account,
                 hotel: hotel,
-                roomTypes: roomTypes
+                roomTypes: roomTypes,
+                bookingsJSON: JSON.stringify(bookings)
             }
         );
     }
