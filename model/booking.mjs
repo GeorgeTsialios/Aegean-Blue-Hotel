@@ -40,9 +40,21 @@ class Booking {
             "checkOutDate": this.dateToString(this.checkOutDate),
             "guests": this.getFullNumberOfGuests(),
             "totalPrice": this.totalPrice.toLocaleString("default", { style: "currency", currency: "EUR" }),
-            "guestTravelsForWork": (this.guest.travelsForWork) ? "Yes" : "No",
-            "breakfastIncluded": (this.breakfastIncluded) ? "Yes" : "No",
-            "freeCancellationAllowed": (this.freeCancellationAllowed) ? "Yes" : "No"
+            "guestTravelsForWork": {
+                "source": (this.guest.travelsForWork) ? "/assets/check-lg.svg" : "/assets/x-lg-black.svg",
+                "description": (this.guest.travelsForWork) ? "Yes" : "No",
+                "height": (this.guest.travelsForWork) ? "22" : "18"
+            },
+            "breakfastIncluded": {
+                "source": (this.breakfastIncluded) ? "/assets/check-lg.svg" : "/assets/x-lg-black.svg",
+                "description": (this.breakfastIncluded) ? "Yes" : "No",
+                "height": (this.breakfastIncluded) ? "22" : "18"
+            },
+            "freeCancellationAllowed": {
+                "source": (this.freeCancellationAllowed) ? "/assets/check-lg.svg" : "/assets/x-lg-black.svg",
+                "description": (this.freeCancellationAllowed) ? "Yes" : "No",
+                "height": (this.freeCancellationAllowed) ? "22" : "18"
+            }
         };
     }
 
