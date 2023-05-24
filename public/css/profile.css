@@ -67,3 +67,7 @@
     list-style-image: url("/assets/x-lg.svg");
     color: #dc3545;
 }
+
+#fileSizeWarning {
+    color: rgb(var(--bs-secondary-rgb));
+}

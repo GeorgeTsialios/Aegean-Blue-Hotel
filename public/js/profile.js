@@ -240,34 +240,42 @@ async function handleChangePassword() {
 }
 
 async function updateProfilePhoto() {
-    const profilePhotoContainer = document.querySelector("#profilePhotoContainer");
-    profilePhotoContainer.innerHTML = "";
-    const img = document.createElement("img");
-    img.classList.add("card-img-top", "mt-3", "profilePhotoImg");
-    img.src = URL.createObjectURL(document.querySelector("#fileInputHidden").files[0]);
-    profilePhotoContainer.appendChild(img);
-
     const readPhoto = (blob) => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(blob);
     });
-    const file = document.querySelector("#fileInputHidden").files[0];
-    const imageData = file ? await readPhoto(file) : null;
 
-    const data = {
-        "accountId": accountEmail,
-        "profilePicture": imageData
+    const file = document.querySelector("#fileInputHidden").files[0];
+    
+    if (file.size > 5000000) {
+        document.querySelector("#fileSizeWarning").style.color = "red";
     }
-    const response = await fetch(`/api/uploadProfilePicture`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        mode: "cors",
-        body: JSON.stringify(data)
-    });
+    else {
+        document.querySelector("#fileSizeWarning").style.color = "";
+
+        const profilePhotoContainer = document.querySelector("#profilePhotoContainer");
+        profilePhotoContainer.innerHTML = "";
+        const img = document.createElement("img");
+        img.classList.add("card-img-top", "mt-3", "profilePhotoImg");
+        img.src = URL.createObjectURL(file);
+        profilePhotoContainer.appendChild(img);
+        const imageData = file ? await readPhoto(file) : null;
+    
+        const data = {
+            "accountId": accountEmail,
+            "profilePicture": imageData
+        }
+        await fetch(`/api/uploadProfilePicture`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+    }
 }
 
 function validateEmail() {
