@@ -1,10 +1,13 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
 async function navigateToLogin(req, res, next) {
     try {
-        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
-        const hotel = await ApiControllers.HotelController.returnHotel();
-        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        await DatabaseClient.endConnection(client);
         res.render(
             "login",
             {

@@ -1,10 +1,13 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
 async function navigateToBookingForm(req, res, next) {
     try {
-        const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
-        const hotel = await ApiControllers.HotelController.returnHotel();
-        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        await DatabaseClient.endConnection(client);
         const checkInDate = new Date(req.query.checkInDate);
         const checkOutDate = new Date(req.query.checkOutDate);
         const lengthOfStayString = `${(checkOutDate -checkInDate) / (1000 * 3600 * 24)} ${(checkOutDate -checkInDate) / (1000 * 3600 * 24) === 1 ? "night" : "nights"}`;
@@ -20,7 +23,7 @@ async function navigateToBookingForm(req, res, next) {
             if (roomTypeCount > 0)
                 roomTypesForBooking.push({
                     code: roomType.code,
-                    name: roomType.name,
+                    name: roomType.name, 
                     count: roomTypeCount
                 });
         });

@@ -1,5 +1,3 @@
-import pkg from "pg";
-import dotenv from "dotenv";
 import { RoomType } from "./roomType.mjs";
 import { Room } from "./room.mjs";
 
@@ -66,13 +64,9 @@ class Booking {
         return date.toLocaleDateString("en-US", { "month": "short", "day": "numeric", "year": "numeric" });
     }
 
-    static async queryBooking(bookingId) {
+    static async queryBooking(client, bookingId) {
         try {
-            dotenv.config()
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const result = await client.query('select * from public.booking b join public.guest g on b.id = g.booking_id join public.billing_address ba on g.billing_address_id = ba.id where b.id = $1;', [bookingId]);
-            await client.end();
 
             if (result.rows.length === 0) return null;
 
@@ -106,8 +100,8 @@ class Booking {
                 }
             );
 
-            await booking.queryRoomRequests();
-            await booking.queryRoomOccupations();
+            await booking.queryRoomRequests(client);
+            await booking.queryRoomOccupations(client);
 
             return booking;
         }
@@ -118,13 +112,9 @@ class Booking {
         }
     }
 
-    static async queryBookings(constraints) {
+    static async queryBookings(client, constraints) {
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query("select * from public.booking b join public.guest g on b.id = g.booking_id join public.billing_address ba on g.billing_address_id = ba.id where " + Object.keys(constraints).map(key => `${key} = $${Object.keys(constraints).indexOf(key) + 1}`).join(" and ") + ";", Object.values(constraints));
-            await client.end();
 
             const bookings = [];
 
@@ -159,8 +149,8 @@ class Booking {
                     }
                 );
 
-                await booking.queryRoomRequests();
-                await booking.queryRoomOccupations();
+                await booking.queryRoomRequests(client);
+                await booking.queryRoomOccupations(client);
 
                 bookings.push(booking);
             }
@@ -173,17 +163,13 @@ class Booking {
         }
     }
 
-    async queryRoomRequests() {
+    async queryRoomRequests(client) {
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query("select * from public.room_type_request where booking_id = $1;", [this.id]);
-            await client.end();
 
             this.roomRequests = [];
 
-            const roomTypes = await RoomType.queryRoomTypes();
+            const roomTypes = await RoomType.queryRoomTypes(client);
 
             for (let row of res.rows) {
                 this.roomRequests.push({
@@ -198,17 +184,11 @@ class Booking {
         }
     }
 
-    async queryRoomOccupations() {
+    async queryRoomOccupations(client) {
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query("select * from public.room_occupation where booking_id = $1;", [this.id]);
-            await client.end();
-
+            const rooms = await Room.queryRooms(client);
             this.roomOccupations = [];
-
-            const rooms = await Room.queryRooms();
 
             for (let row of res.rows) {
                 this.roomOccupations.push(rooms.find(room => room.number === row.room_number));
@@ -220,15 +200,11 @@ class Booking {
         }
     }
 
-    async cancel() {
+    async cancel(client) {
         this.isCancelled = true;
 
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             await client.query("update public.booking set is_cancelled = true where id = $1;", [this.id]);
-            await client.end();
         }
         catch (err) {
             console.error(err);
@@ -236,7 +212,7 @@ class Booking {
         }
     }
 
-    async changeDates(checkInDate, checkOutDate) {
+    async changeDates(client, checkInDate, checkOutDate) {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.strings.checkInDate = this.dateToString(this.checkInDate);
@@ -244,11 +220,7 @@ class Booking {
         this.dateChangeAllowed = false;
 
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             await client.query("update public.booking set check_in_date = $1, check_out_date = $2, date_change_allowed = false where id = $3;", [this.checkInDate, this.checkOutDate, this.id]);
-            await client.end();
         }
         catch (err) {
             console.error(err);

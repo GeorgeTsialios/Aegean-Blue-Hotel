@@ -1,14 +1,14 @@
 import bcrypt from "bcrypt";
 import { Account } from "../../model/account.mjs";
-import { AccountLevel } from "../../model/accountLevel.mjs";
 import { AccountLevelController } from "./index.mjs";
 import { Photo } from "../../model/photo.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
 import fs from "fs/promises";
 
-async function returnAccount(accountId) {
+async function returnAccount(client, accountId) {
     if (accountId) {
-        return await Account.queryAccount(accountId);
+        return await Account.queryAccount(client, accountId);
     }
     else {
         return null;
@@ -17,11 +17,13 @@ async function returnAccount(accountId) {
 
 async function changeAccount(req, res, next) {
     try {
-        const account = await returnAccount(req.body.accountId);
-        await account.changeAccountInfo(req.body.firstName, req.body.lastName, req.body.phoneNumber);
+        const client = await DatabaseClient.createConnection();
+        const account = await returnAccount(client, req.body.accountId);
+        await account.changeAccountInfo(client, req.body.firstName, req.body.lastName, req.body.phoneNumber);
         if (req.body.accountId !== req.body.email) {
-            await account.changeEmail(req.body.email);
+            await account.changeEmail(client, req.body.email);
         }
+        await DatabaseClient.endConnection(client);
         res.sendStatus(200);
     }
     catch (err) {
@@ -31,14 +33,17 @@ async function changeAccount(req, res, next) {
 
 async function changePassword(req, res, next) {
     try {
-        const account = await returnAccount(req.body.accountId);
+        const client = await DatabaseClient.createConnection();
+        const account = await returnAccount(client, req.body.accountId);
         
         if (account.password !== req.body.oldPassword) {
+            await DatabaseClient.endConnection(client);
             res.sendStatus(401);
             return;
         }
         
-        await account.changePassword(req.body.newPassword);
+        await account.changePassword(client, req.body.newPassword);
+        await DatabaseClient.endConnection(client);
         res.sendStatus(200);
     }
     catch (err) {
@@ -48,12 +53,14 @@ async function changePassword(req, res, next) {
 
 async function uploadProfilePicture(req, res, next) {
     try {
-        const account = await returnAccount(req.body.accountId);
+        const client = await DatabaseClient.createConnection();
+        const account = await returnAccount(client, req.body.accountId);
         const filename = `/profilePictures/${account.email}.jpg`;
         const buffer = Buffer.from(req.body.profilePicture.replace(/^data:image\/\w+;base64,/, ""), 'base64');
         await fs.writeFile(`./public${filename}`, buffer);
 
-        await account.changeProfilePicture(new Photo(filename, `${account.email} profile picture`));
+        await account.changeProfilePicture(client, new Photo(filename, `${account.email} profile picture`));
+        await DatabaseClient.endConnection(client);
         res.sendStatus(200);
     }
     catch (err) {
@@ -63,7 +70,10 @@ async function uploadProfilePicture(req, res, next) {
 
 async function getAccount(req, res, next) {
     try {
-        res.send(JSON.stringify(await returnAccount(req.params.accountId)));
+        const client = await DatabaseClient.createConnection();
+        const account = await returnAccount(client, req.params.accountId)
+        await DatabaseClient.endConnection(client);
+        res.send(JSON.stringify(account));
     }
     catch (err) {
         next(err);
@@ -72,7 +82,8 @@ async function getAccount(req, res, next) {
 
 async function createAccount(req, res, next) {
     try {
-        const accountLevels = await AccountLevelController.returnAccountLevels();
+        const client = await DatabaseClient.createConnection();
+        const accountLevels = await AccountLevelController.returnAccountLevels(client);
 
         const account = new Account(
             req.body.firstName,
@@ -84,7 +95,8 @@ async function createAccount(req, res, next) {
             null,
             accountLevels[0]
         );
-        await account.createAccount();
+        await account.createAccount(client);
+        await DatabaseClient.endConnection(client);
         res.sendStatus(200);
     }
     catch (err) {
@@ -92,4 +104,4 @@ async function createAccount(req, res, next) {
     }
 }
 
-export { returnAccount, changeAccount, changePassword, uploadProfilePicture, getAccount, createAccount }
+export { returnAccount, changeAccount, changePassword, uploadProfilePicture, getAccount, createAccount, checkAuthentication }

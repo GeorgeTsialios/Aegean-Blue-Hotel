@@ -1,6 +1,3 @@
-import pkg from 'pg';
-import dotenv from 'dotenv';
-
 class AccountLevel {
     constructor(name, discount, maxCompletedBookings) {
         this.name = name;
@@ -8,13 +5,9 @@ class AccountLevel {
         this.maxCompletedBookings = maxCompletedBookings;
     }
 
-    static async queryAccountLevels() {
+    static async queryAccountLevels(client) {
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query('select * from public.account_level;');
-            await client.end();
 
             const accountLevels = [];
 

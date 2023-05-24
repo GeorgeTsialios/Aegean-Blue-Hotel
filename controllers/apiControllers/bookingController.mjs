@@ -1,10 +1,11 @@
 import { Booking } from '../../model/booking.mjs';
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
-async function returnBooking(id) {
-    return await Booking.queryBooking(id);
+async function returnBooking(client, id) {
+    return await Booking.queryBooking(client, id);
 }
 
-async function filterBookings(query) {
+async function filterBookings(client, query) {
     const constraints = {};
 
     if ("madeByAccount" in query) {
@@ -14,16 +15,19 @@ async function filterBookings(query) {
         constraints["is_cancelled"] = query.isCancelled;
     }
 
-    return await Booking.queryBookings(constraints);
+    return await Booking.queryBookings(client, constraints);
 }
 
 async function getBooking(req, res, next) {
     try {
-        const result = await returnBooking(req.params.id);
+        const client = await DatabaseClient.createConnection();
+        const result = await returnBooking(client, req.params.id);
         if (!result) {
+            await DatabaseClient.endConnection(client);
             res.sendStatus(404);
             return;
         }
+        await DatabaseClient.endConnection(client);
         res.send(JSON.stringify(result));
     }
     catch (err) {
@@ -33,7 +37,10 @@ async function getBooking(req, res, next) {
 
 async function getBookings(req, res, next) {
     try {
-        res.send(JSON.stringify(await filterBookings(req.query)));
+        const client = await DatabaseClient.createConnection();
+        const bookings = await filterBookings(client, req.query);
+        await DatabaseClient.endConnection(client);
+        res.send(JSON.stringify(bookings));
     }
     catch (err) {
         next(err);
@@ -42,17 +49,21 @@ async function getBookings(req, res, next) {
 
 async function cancelBooking(req, res, next) {
     try {
-        const booking = await returnBooking(req.params.id);
+        const client = await DatabaseClient.createConnection();
+        const booking = await returnBooking(client, req.params.id);
         if (!booking) {
+            await DatabaseClient.endConnection(client);
             res.sendStatus(404);
             return;
         }
 
         if (!booking.isCancelled) {
-            booking.cancel();
+            await booking.cancel(client);
+            await DatabaseClient.endConnection(client);
             res.sendStatus(200);
         }
         else {
+            await DatabaseClient.endConnection(client);
             res.sendStatus(400);
         }
     }
@@ -63,17 +74,21 @@ async function cancelBooking(req, res, next) {
 
 async function changeBookingDates(req, res, next) {
     try {
-        const booking = await returnBooking(req.params.id);
+        const client = await DatabaseClient.createConnection();
+        const booking = await returnBooking(client, req.params.id);
         if (!booking) {
+            await DatabaseClient.endConnection(client);
             res.sendStatus(404);
             return;
         }
 
         if (!booking.isCancelled && booking.dateChangeAllowed) {
-            booking.changeDates(new Date(req.params.checkInDate), new Date(req.params.checkOutDate));
+            await booking.changeDates(client, new Date(req.params.checkInDate), new Date(req.params.checkOutDate));
+            await DatabaseClient.endConnection(client);
             res.sendStatus(200);
         }
         else {
+            await DatabaseClient.endConnection(client);
             res.sendStatus(400);
         }
     }

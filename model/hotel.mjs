@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-import pkg from 'pg';
 import { Photo } from './photo.mjs';
 
 class Hotel {
@@ -14,15 +12,10 @@ class Hotel {
         this.coverPhoto = this.photos[0];
     }
 
-    static async queryHotel() {
+    static async queryHotel(client) {
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query('select * from public.hotel;');
             const res1 = await client.query('select * from public.photo where type = \'hotel\';');
-
-            await client.end();
 
             const photos = [];
             for (let row of res1.rows) {

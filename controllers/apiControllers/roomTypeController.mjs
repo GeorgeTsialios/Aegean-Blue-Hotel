@@ -1,12 +1,15 @@
 import { RoomType } from "../../model/roomType.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
-async function returnRoomTypes() {
-    return await RoomType.queryRoomTypes();
+async function returnRoomTypes(client) {
+    return await RoomType.queryRoomTypes(client);
 }
 
 async function getRoomTypes(req, res, next) {
     try {
-        res.send(JSON.stringify(await returnRoomTypes()));
+        const client = await DatabaseClient.createConnection();
+        await DatabaseClient.endConnection(client);
+        res.send(JSON.stringify(await returnRoomTypes(client)));
     }
     catch (err) {
         next(err);

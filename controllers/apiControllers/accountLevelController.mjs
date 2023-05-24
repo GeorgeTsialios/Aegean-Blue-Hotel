@@ -1,7 +1,7 @@
 import { AccountLevel } from "../../model/accountLevel.mjs";
 
-async function returnAccountLevels() {
-    return await AccountLevel.queryAccountLevels();
+async function returnAccountLevels(client) {
+    return await AccountLevel.queryAccountLevels(client);
 }
 
 export { returnAccountLevels }

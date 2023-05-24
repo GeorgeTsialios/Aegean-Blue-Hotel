@@ -1,5 +1,3 @@
-import pkg from 'pg';
-import dotenv from 'dotenv';
 import { Photo } from './photo.mjs';
 
 class RoomType {
@@ -16,11 +14,8 @@ class RoomType {
         this.coverPhoto = this.photos[0];
     }
     
-    static async queryRoomTypes() {
+    static async queryRoomTypes(client) {
         try {
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query('select * from public.room_type;');
             
             const roomTypes = [];
@@ -41,7 +36,6 @@ class RoomType {
                 roomTypes.push(new RoomType(row.code, row.name, parseInt(row.size), parseInt(row.capacity), parseFloat(row.price), amenities, photos));
             }
                 
-            await client.end();
             return roomTypes;
         }
         catch (err) {

@@ -1,12 +1,16 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
 async function navigateToRoomRack(req, res, next) {
     try {
-        const account = await ApiControllers.AccountController.returnAccount(req.session.accountId);
-        const hotel = await ApiControllers.HotelController.returnHotel();
-        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
-        const rooms = await ApiControllers.RoomController.returnRooms();
-        const bookings = await ApiControllers.BookingController.filterBookings({ isCancelled: false });
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        const rooms = await ApiControllers.RoomController.returnRooms(client);
+        const bookings = await ApiControllers.BookingController.filterBookings(client, { isCancelled: false });
+        await DatabaseClient.endConnection(client);
+        
         res.render(
             "roomRack",
             {

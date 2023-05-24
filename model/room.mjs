@@ -1,5 +1,3 @@
-import pkg from 'pg';
-import dotenv from 'dotenv';
 import { RoomType } from './roomType.mjs';
 
 class Room {
@@ -8,15 +6,10 @@ class Room {
         this.roomType = roomType;
     }
 
-    static async queryRooms() {
+    static async queryRooms(client) {
         try {
-            const roomTypes = await RoomType.queryRoomTypes();
-
-            dotenv.config();
-            const client = new pkg.Client({connectionString: process.env.DATABASE_URL});
-            await client.connect();
             const res = await client.query('select * from public.room;');
-            await client.end();
+            const roomTypes = await RoomType.queryRoomTypes(client);
 
             const rooms = [];
 
