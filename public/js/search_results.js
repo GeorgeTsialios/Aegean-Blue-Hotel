@@ -5,8 +5,8 @@ const guests = {
 }
 
 const dates = {
-    "check-in": new Date(2023,4,31),
-    "check-out": new Date (2023,5,2)
+    "check-in": null,
+    "check-out": null
 }
 
 let TotalPrice = 0;
@@ -56,8 +56,6 @@ function populateForm2() {
     document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString("en-us");
     document.querySelector("#checkOutDateForm2").value = originalDates["check-out"].toLocaleDateString("en-us");
 
-    // console.log(`Length of stay: ${originalDates["numberOfNights"]} nights`);
-
     document.querySelector("#adultsCountForm2").value = originalGuests["adultsCount"];
     document.querySelector("#childrenCountForm2").value = originalGuests["childrenCount"];
     document.querySelector("#infantsCountForm2").value = originalGuests["infantsCount"];
@@ -68,8 +66,8 @@ function populateForm2() {
 }
 
 function populateForm1() {
-    document.querySelector("#checkInDateForm1").value = dates["check-in"].toLocaleDateString("en-us");
-    document.querySelector("#checkOutDateForm1").value = dates["check-out"].toLocaleDateString("en-us");
+    document.querySelector("#checkInDateForm1").value = dates["check-in"]? dates["check-in"].toLocaleDateString("en-us"):originalDates["check-in"].toLocaleDateString("en-us");
+    document.querySelector("#checkOutDateForm1").value = dates["check-out"]?dates["check-out"].toLocaleDateString("en-us"):originalDates["check-out"].toLocaleDateString("en-us");
     document.querySelector("#adultsCountForm1").value = guests["adultsCount"];
     document.querySelector("#childrenCountForm1").value = guests["childrenCount"];
     document.querySelector("#infantsCountForm1").value = guests["infantsCount"];
