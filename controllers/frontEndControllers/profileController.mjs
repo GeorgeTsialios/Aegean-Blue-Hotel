@@ -4,6 +4,7 @@ async function navigateToProfile(req, res, next) {
     try {
         const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
         const hotel = await ApiControllers.HotelController.returnHotel();
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         const bookings = await ApiControllers.BookingController.filterBookings({
             "madeByAccount": account.email
         });
@@ -28,7 +29,8 @@ async function navigateToProfile(req, res, next) {
                 upcomingBookings: bookings.filter(booking => booking.checkInDate > new Date()),
                 pastBookings: bookings.filter(booking => booking.checkOutDate < new Date()),
                 account: account,
-                hotel: hotel
+                hotel: hotel,
+                roomTypes: roomTypes
             }
         );
     }

@@ -5,6 +5,7 @@ async function navigateToBookingConfirmation(req, res, next) {
         const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
         const hotel = await ApiControllers.HotelController.returnHotel();
         const booking = await ApiControllers.BookingController.returnBooking(req.params.bookingId);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         if (!booking) {
             res.send("Not found.");
         }
@@ -15,7 +16,8 @@ async function navigateToBookingConfirmation(req, res, next) {
                     title: "Booking Confirmation",
                     hotel: hotel,
                     booking: booking,
-                    account: account
+                    account: account,
+                    roomTypes: roomTypes
                 }
             );
         }

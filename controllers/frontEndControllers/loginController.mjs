@@ -4,6 +4,7 @@ async function navigateToLogin(req, res, next) {
     try {
         const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
         const hotel = await ApiControllers.HotelController.returnHotel();
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         res.render(
             "login",
             {
@@ -15,7 +16,8 @@ async function navigateToLogin(req, res, next) {
                     <script src = "/js/login.js"></script>
                 `,
                 account: account,
-                hotel: hotel
+                hotel: hotel,
+                roomTypes: roomTypes
             }
         );
     }

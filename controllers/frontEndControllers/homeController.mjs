@@ -4,6 +4,7 @@ async function navigateToHome(req, res, next) {
     try {
         const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
         const hotel = await ApiControllers.HotelController.returnHotel();
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         res.render(
             "home",
             {
@@ -19,7 +20,8 @@ async function navigateToHome(req, res, next) {
                     <script src="/js/home.js"></script>
                 `,
                 hotel: hotel,
-                account: account
+                account: account,
+                roomTypes: roomTypes
             }
         );
     }

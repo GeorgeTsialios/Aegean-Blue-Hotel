@@ -29,11 +29,9 @@
                             Rooms
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Standard Single Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Executive Double Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Deluxe Double Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Superior Triple Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Penthouse Suites</a></li>
+                            {{#each roomTypes}}
+                            <li><a class="dropdown-item" href="#">{{this.name}}</a></li>
+                            {{/each}}
                         </ul>
                     </li>
                     <li class="nav-item">

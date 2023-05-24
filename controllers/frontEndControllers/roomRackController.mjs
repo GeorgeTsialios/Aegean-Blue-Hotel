@@ -4,6 +4,7 @@ async function navigateToRoomRack(req, res, next) {
     try {
         const account = await ApiControllers.AccountController.returnAccount("christoskatsandris@outlook.com");
         const hotel = await ApiControllers.HotelController.returnHotel();
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes();
         const rooms = await ApiControllers.RoomController.returnRooms();
         res.render(
             "roomRack",
@@ -17,7 +18,8 @@ async function navigateToRoomRack(req, res, next) {
                 `,
                 rooms: rooms,
                 account: account,
-                hotel: hotel
+                hotel: hotel,
+                roomTypes: roomTypes
             }
         );
     }
