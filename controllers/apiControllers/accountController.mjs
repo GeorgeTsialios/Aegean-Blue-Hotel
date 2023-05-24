@@ -6,6 +6,16 @@ import * as DatabaseClient from "../../model/databaseClient.mjs";
 
 import fs from "fs/promises";
 
+async function checkAuthentication(client, email, password) {
+    try {
+        return await Account.checkAuthentication(client, email, password);
+    }
+    catch (err) {
+        console.error(err);
+        console.log("-------------------------------");
+    }
+}   
+
 async function returnAccount(client, accountId) {
     if (accountId) {
         return await Account.queryAccount(client, accountId);

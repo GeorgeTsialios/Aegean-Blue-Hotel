@@ -14,8 +14,20 @@ class Account {
         this.accountLevel = accountLevel;
     }
 
-    static async queryAccount(accountId) {
+    static async checkAuthentication(client, email, password) {
         try {
+            const res = await client.query('select email,password from public.account where email = $1;', [email]);
+            if (res.rows.length > 0) 
+                return await bcrypt.compare(password, res.rows[0].password); 
+                
+            return  false;
+        }
+        catch (err) {
+            console.error(err);
+            console.log("-------------------------------");
+        }
+    }
+
     static async queryAccount(client, accountId) {
         try {
             const res = await client.query('select * from public.account a left join public.photo p on a.photo_source = p.source join public.account_level al on a.account_level = al.name where email = $1;', [accountId]);
@@ -41,11 +53,11 @@ class Account {
         }
     }
 
-    async createAccount() {
+    static async createAccount(client, firstName, lastName, email, password) {
         try {
             await client.query(
                 'insert into public.account values ($1, $2, $3, $4, $5, $6, $7, $8);',
-                [this.firstName, this.lastName, this.email, this.phoneNumber, this.password, this.isAdministrator, this.photo.source, this.accountLevel.name]
+                [firstName, lastName, email, null, await bcrypt.hash(password,10), false, null, "Loyalty level 0"]
             );
         }
         catch (err) {
@@ -72,7 +84,7 @@ class Account {
     }
 
     async changeEmail(client, newEmail) {
-
+        
         try {
             await client.query(
                 'update public.account set email = $1 where email = $2;',

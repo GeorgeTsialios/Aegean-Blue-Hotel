@@ -61,3 +61,13 @@ label {
 .invalid-feedback-login, .invalid-feedback-register {
     display: none;
 }
+
+.error {
+    color: #CC0000;
+    font-weight: 700;
+}
+
+.error-svg {
+    min-width: 16px; 
+    min-height: 16px;
+}

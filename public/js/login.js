@@ -13,29 +13,45 @@ const repeatPassword = document.querySelector("#repeat_password");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const email = document.querySelector("#e-mail");
 let state = "login";
+let form = document.querySelector("form");
 
 document.addEventListener("DOMContentLoaded",() => {
+    let firstTime = true;
     document.querySelector("#toRegister").addEventListener("click",changetoRegister);
     document.querySelector("#toLogin").addEventListener("click",changetoLogin);
     document.querySelector("#toPwdForgot").addEventListener("click",changetoPwdForgot);
 
     document.querySelectorAll("#passwordList>li").forEach((item) => item.classList.add("x"));
 
-    email.addEventListener("blur",validateEmail);
+    email.addEventListener("blur",(event) => {
+        email.addEventListener("keyup",validateEmail);
+        validateEmail(event);
+    });
+
+    password.addEventListener("blur",(event) => {
+        password.addEventListener("keyup",validatePassword);
+        validatePassword(event);
+    });
+
     validate();
+    
+    repeatPassword.addEventListener("keyup",validateRepeatPassword);
+})
+
+function changetoRegister() {
+    state = "register";
+    form.action = "/doRegister";
+
     password.addEventListener("keyup",(event) => {
         validatePassword(event);
         if (state === "register")
             validateRepeatPassword(event);
     });
-})
 
-function changetoRegister() {
-    state = "register";
     document.querySelector(".invalid-feedback-register").classList.add("invalid-feedback");
     document.querySelector(".invalid-feedback-login").classList.remove("invalid-feedback");
     resetCustomValidity();
-    document.querySelector("form").classList.remove("was-validated");
+    form.classList.remove("was-validated");
     document.querySelectorAll(".register-only").forEach((element) => element.style.display = "block");
     document.querySelectorAll(".register-only>input").forEach((element) => element.required = true);
     document.querySelectorAll(".login-only").forEach((element) => element.style.display = "none");
@@ -49,10 +65,11 @@ function changetoRegister() {
 
 function changetoLogin() {
     state = 'login';
+    form.action = "/doLogin";
     document.querySelector(".invalid-feedback-login").classList.add("invalid-feedback");
     document.querySelector(".invalid-feedback-register").classList.remove("invalid-feedback");
     resetCustomValidity();
-    document.querySelector("form").classList.remove("was-validated");
+    form.classList.remove("was-validated");
     document.querySelectorAll(".login-only").forEach((element) => element.style.display = "block");
     document.querySelectorAll(".register-only").forEach((element) => element.style.display = "none");
     document.querySelectorAll(".register-only>input").forEach((element) => {
@@ -70,7 +87,7 @@ function changetoLogin() {
 function changetoPwdForgot() {
     state = "pwdforgot";
     resetCustomValidity();
-    document.querySelector("form").classList.remove("was-validated");
+    form.classList.remove("was-validated");
     document.querySelector("#toPwdForgot").style.display = "none";
     
     document.querySelectorAll(".password").forEach((element) => element.style.display = "none");
@@ -88,11 +105,7 @@ function changetoPwdForgot() {
 }
 
 function validate(){
-    form = document.querySelector("form");
     form.addEventListener('submit', (event) => {
-
-        email.addEventListener("keyup",validateEmail);
-        repeatPassword.addEventListener("keyup",validateRepeatPassword);
 
         if (!form.checkValidity()) {
             event.preventDefault();
@@ -104,7 +117,6 @@ function validate(){
             validatePassword(event);
         if (state === "register")
             validateRepeatPassword(event);
-        
 
         form.classList.add('was-validated');
     }, false);

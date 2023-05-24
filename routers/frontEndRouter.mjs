@@ -12,6 +12,9 @@ router.get("/searchResults", FrontEndControllers.SearchResultsController.navigat
 router.get("/bookingForm", FrontEndControllers.BookingFormController.navigateToBookingForm);
 router.get("/toBank", FrontEndControllers.ToBankController.navigateToBank);
 router.get("/fromBank", FrontEndControllers.FromBankController.navigateFromBank);
+router.post("/doLogin", FrontEndControllers.LoginController.doLogin);
+router.post("/doRegister", FrontEndControllers.LoginController.doRegister);
+router.get("/doLogout", FrontEndControllers.LoginController.doLogout);
 
 async function error404(req, res, next) {
     res.status(404);
