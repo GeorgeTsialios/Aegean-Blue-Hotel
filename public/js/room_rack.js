@@ -265,17 +265,19 @@ function populateBookingConfirmation(booking) {
     document.querySelector("#bookingTotalPriceField").textContent = booking.strings.totalPrice;
 
     document.querySelector("#roomRequestsContainer").innerHTML = "";
-    for (let roomType of booking.roomRequests) {
+    for (let roomRequest of booking.roomRequests) {
         const divNode = document.createElement("div");
         divNode.classList.add("row", "align-items-center", "justify-content-center", "mb-3");
         const imgNode = document.createElement("img");
-        imgNode.src = roomType.coverPhoto.source;
+        imgNode.src = roomRequest.roomType.coverPhoto.source;
         imgNode.classList.add("col-6", "col-lg-3");
-        imgNode.alt = roomType.coverPhoto.description;
+        imgNode.alt = roomRequest.roomType.coverPhoto.description;
         divNode.appendChild(imgNode);
         const pNode = document.createElement("p");
         pNode.classList.add("col-6", "col-lg-4");
-        pNode.textContent = `${roomType.name}`;
+        pNode.innerHTML = `${roomRequest.roomType.name} <span style="white-space: nowrap;">(<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>${roomRequest.quantity})</span>`;
         divNode.appendChild(pNode);
         document.querySelector("#roomRequestsContainer").appendChild(divNode);
     }
@@ -284,14 +286,20 @@ function populateBookingConfirmation(booking) {
     document.querySelector("#bookingGuestLastNameField").textContent = booking.guest.lastName;
     document.querySelector("#bookingGuestEmailField").textContent = booking.guest.email;
     document.querySelector("#bookingGuestPhoneNumberField").textContent = booking.guest.phoneNumber;
-    document.querySelector("#bookingGuestTravelsForWorkField").textContent = booking.strings.guestTravelsForWork;
+    document.querySelector("#bookingGuestTravelsForWorkField").src = booking.strings.guestTravelsForWork.source;
+    document.querySelector("#bookingGuestTravelsForWorkField").alt = booking.strings.guestTravelsForWork.description;
+    document.querySelector("#bookingGuestTravelsForWorkField").height = booking.strings.guestTravelsForWork.height;
     document.querySelector("#bookingGuestAddressStreetField").textContent = booking.guest.address.street;
     document.querySelector("#bookingGuestAddressStreetNoField").textContent = booking.guest.address.streetNo;
     document.querySelector("#bookingGuestAddressCityField").textContent = booking.guest.address.city;
     document.querySelector("#bookingGuestAddressPostalCodeField").textContent = booking.guest.address.postalCode;
     document.querySelector("#bookingGuestAddressCountryField").textContent = booking.guest.address.country;
-    document.querySelector("#bookingBreakfastIncludedField").textContent = booking.strings.breakfastIncluded;
-    document.querySelector("#bookingFreeCancellationAllowedField").textContent = booking.strings.freeCancellationAllowed;
+    document.querySelector("#bookingBreakfastIncludedField").src = booking.strings.breakfastIncluded.source;
+    document.querySelector("#bookingBreakfastIncludedField").alt = booking.strings.breakfastIncluded.description;
+    document.querySelector("#bookingBreakfastIncludedField").height = booking.strings.breakfastIncluded.height;
+    document.querySelector("#bookingFreeCancellationAllowedField").src = booking.strings.freeCancellationAllowed.source;
+    document.querySelector("#bookingFreeCancellationAllowedField").alt = booking.strings.freeCancellationAllowed.description;
+    document.querySelector("#bookingFreeCancellationAllowedField").height = booking.strings.freeCancellationAllowed.height;
 }
 
 function populateCancelConfirmation() {

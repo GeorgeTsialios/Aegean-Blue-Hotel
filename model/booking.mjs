@@ -106,8 +106,8 @@ class Booking {
                 }
             );
 
-            booking.queryRoomRequests();
-            booking.queryRoomOccupations();
+            await booking.queryRoomRequests();
+            await booking.queryRoomOccupations();
 
             return booking;
         }
@@ -186,7 +186,10 @@ class Booking {
             const roomTypes = await RoomType.queryRoomTypes();
 
             for (let row of res.rows) {
-                this.roomRequests.push([roomTypes.find(roomType => roomType.code === row.room_type_code), row.quantity]);
+                this.roomRequests.push({
+                    roomType: roomTypes.find(roomType => roomType.code === row.room_type_code), 
+                    quantity: row.quantity
+                });
             }
         }
         catch (err) {
