@@ -1,5 +1,5 @@
 import express from "express";
-import { FrontEndControllers } from '../controllers/index.mjs';
+import { ApiControllers, FrontEndControllers } from '../controllers/index.mjs';
 
 const router = express.Router();
 
@@ -13,4 +13,27 @@ router.get("/bookingForm", FrontEndControllers.BookingFormController.navigateToB
 router.get("/toBank", FrontEndControllers.ToBankController.navigateToBank);
 router.get("/fromBank", FrontEndControllers.FromBankController.navigateFromBank);
 
-export { router } 
+async function error404(req, res, next) {
+    res.status(404);
+
+    if (req.accepts('html')) {
+        const account = await ApiControllers.AccountController.returnAccount(req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel();
+        res.render(
+            'notFound',
+            {
+                title: "Page not found",
+                hotel: hotel,
+                account: account
+            }
+        );
+    }
+    else if (req.accepts('json')) {
+        res.send({ error: 'Not found' });
+    }
+    else {
+        res.type('txt').send('Not found');
+    }
+}
+
+export { router, error404 } 

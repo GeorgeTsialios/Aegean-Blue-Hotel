@@ -3,7 +3,10 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import * as Routers from './routers/index.mjs';
 
+dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -15,9 +18,6 @@ app.set('view engine', '.hbs');
 app.use('/', Routers.FrontEndRouter.router);
 app.use('/api', Routers.ApiRouter.router);
 
-// ToDo: Add a NOT FOUND page
-
-dotenv.config();
-const PORT = process.env.PORT || 3000;
+app.use(Routers.FrontEndRouter.error404);
 
 app.listen(PORT);
