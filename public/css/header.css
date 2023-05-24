@@ -22,6 +22,10 @@ header, footer, .offcanvas {
     background-color: var(--brand-background);
 }
 
+.offcanvas.offcanvas-start {
+    width: 300px;
+}
+
 #accountDropdown {
     max-width: 80px;
     overflow: hidden;
