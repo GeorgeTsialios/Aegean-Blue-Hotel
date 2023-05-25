@@ -14,6 +14,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const email = document.querySelector("#e-mail");
 let state = "login";
 let form = document.querySelector("form");
+const errors = document.querySelectorAll(".error");
 
 document.addEventListener("DOMContentLoaded",() => {
     let firstTime = true;
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded",() => {
 function changetoRegister() {
     state = "register";
     form.action = "/doRegister";
+    deleteErrors();
 
     password.addEventListener("keyup",(event) => {
         validatePassword(event);
@@ -66,6 +68,7 @@ function changetoRegister() {
 function changetoLogin() {
     state = 'login';
     form.action = "/doLogin";
+    deleteErrors();
     document.querySelector(".invalid-feedback-login").classList.add("invalid-feedback");
     document.querySelector(".invalid-feedback-register").classList.remove("invalid-feedback");
     resetCustomValidity();
@@ -87,6 +90,7 @@ function changetoLogin() {
 function changetoPwdForgot() {
     state = "pwdforgot";
     resetCustomValidity();
+    deleteErrors();
     form.classList.remove("was-validated");
     document.querySelector("#toPwdForgot").style.display = "none";
     
@@ -102,6 +106,10 @@ function changetoPwdForgot() {
 
     document.querySelector("#heading").textContent = "Restore your password";
     document.querySelector(".btn-dark").textContent = "Restore";
+}
+
+function deleteErrors() {
+    errors.forEach((element) => element.innerHTML = "");
 }
 
 function validate(){
