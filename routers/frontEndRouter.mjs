@@ -15,6 +15,8 @@ router.get("/toBank", FrontEndControllers.ToBankController.navigateToBank);
 router.get("/fromBank", FrontEndControllers.FromBankController.navigateFromBank);
 router.post("/doLogin", FrontEndControllers.LoginController.doLogin);
 router.post("/doRegister", FrontEndControllers.LoginController.doRegister);
+router.post("/doRestorePassword", FrontEndControllers.LoginController.doRestorePassword);
+router.get("/restorePassword/:email/:password", FrontEndControllers.LoginController.navigateToRestorePassword);
 router.get("/doLogout", FrontEndControllers.LoginController.doLogout);
 router.get("/email", FrontEndControllers.EmailController.previewEmail);
 

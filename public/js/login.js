@@ -14,7 +14,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const email = document.querySelector("#e-mail");
 let state = "login";
 let form = document.querySelector("form");
-const errors = document.querySelectorAll(".error");
+const errors = document.querySelectorAll(".error, .success");
 
 document.addEventListener("DOMContentLoaded",() => {
     let firstTime = true;
@@ -89,6 +89,7 @@ function changetoLogin() {
 
 function changetoPwdForgot() {
     state = "pwdforgot";
+    form.action = "/doRestorePassword";
     resetCustomValidity();
     deleteErrors();
     form.classList.remove("was-validated");

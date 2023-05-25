@@ -67,7 +67,12 @@ label {
     font-weight: 700;
 }
 
-.error-svg {
+.success {
+    color: #198754;
+    font-weight: 700;
+}
+
+.error-svg, .success-svg {
     min-width: 16px; 
     min-height: 16px;
 }

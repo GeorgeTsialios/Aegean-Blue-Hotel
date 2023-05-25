@@ -53,6 +53,17 @@ class Account {
         }
     }
 
+    static async queryAccountCredentials(client, email, password) {
+        try {
+            const res = await client.query('select * from public.account where email = $1 and password = $2;', [email, password]);
+            return res.rows.length > 0;
+        }
+        catch (err) {
+            console.error(err);
+            console.log("-------------------------------");
+        }
+    }
+
     static async createAccount(client, firstName, lastName, email, password) {
         try {
             await client.query(
@@ -99,7 +110,8 @@ class Account {
     }
 
     async changePassword(client, newPassword) {
-        this.password = newPassword;
+        const hash = await bcrypt.hash(newPassword,10)
+        this.password = hash;
 
         try {
             await client.query(
@@ -126,6 +138,10 @@ class Account {
             console.error(err);
             console.log("-------------------------------");
         }
+    }
+
+    async checkPassword(password) {
+        return bcrypt.compare(password, this.password);
     }
 }
 

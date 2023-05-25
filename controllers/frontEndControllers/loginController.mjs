@@ -26,6 +26,7 @@ async function navigateToLogin(req, res, next) {
                 roomTypes: roomTypes,
                 accountNotFound: req.query.accountNotFound,
                 emailInUse: req.query.emailInUse,
+                restoreAccount: req.query.restoreAccount,
                 referer: req.query.referer? req.query.referer.replaceAll("_","&"): req.headers.referer,
                 login: true
             } 
@@ -90,7 +91,12 @@ async function doRegister(req, res, next) {
                         layout: "spinnerLayout",
                         title: "Account Creation",
                         hotel: hotel,
-                        account: {firstName: req.body.user_fname}
+                        preheaderText: `Hello, ${req.body.user_fname}! Welcome to Aegean Blue Hotel! We're very excited to have you on board.`,
+                        headerText: `Your account is ready!`,
+                        message1Text: `Hello, ${req.body.user_fname}! Welcome to Aegean Blue Hotel!`,
+                        message2Text: `We're very excited to have you on board. Have a minute to take a look on our website and make your first booking!`,
+                        buttonText: `Get started`,
+                        buttonHref: `https://aegean-blue-hotel.fly.dev/`
                     }
                 )
             });
@@ -106,4 +112,147 @@ async function doRegister(req, res, next) {
     }
 }
 
-export { navigateToLogin, doLogin, doLogout, doRegister }
+async function doRestorePassword(req, res, next) {
+    try {
+        const renderer = hbs.create();
+        const client = await DatabaseClient.createConnection();
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const account = await Account.queryAccount(client, req.body.user_email)
+        await DatabaseClient.endConnection(client);
+
+        if (!account) {
+            res.redirect(`/login?accountNotFound=true&referer=${req.body.referer.replaceAll("&","_")}`);
+        }
+        else {
+            res.redirect(`/login?restoreAccount=true&referer=${req.body.referer.replaceAll("&","_")}`);
+            await EmailController.sendEmail({
+                to: account.email,
+                from: 'Aegean Blue Hotel <aegean-blue-hotel@outlook.com>',
+                subject: `Restore your password`,
+                html: await renderer.render(
+                    "views/emails/accountCreation.hbs",
+                    {
+                        layout: "spinnerLayout",
+                        title: "Restore your password",
+                        hotel: hotel,
+                        preheaderText: `Hello, ${account.firstName}! Here are the steps to restore your password.`,
+                        headerText: `Restore your password`,
+                        message1Text: `Hello, ${account.firstName}! It looks like you forgot your password.`,
+                        message2Text: `No worries, we're here to help! Simply click the button below and follow the steps to restore your password. In case you didn't request this email, you can safely ignore it. Your password will remain safe.`,
+                        buttonText: `Restore password`,
+                        buttonHref: `https://aegean-blue-hotel.fly.dev/restorePassword/${encodeURIComponent(account.email)}/${encodeURIComponent(account.password)}`
+                    }
+                )
+            });
+        }
+    }
+    catch (err) {
+        next(err);
+    }
+}
+
+async function navigateToRestorePassword(req, res, next) {
+    try {
+        const renderer = hbs.create();
+        const client = await DatabaseClient.createConnection();
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const accountFound = await Account.queryAccountCredentials(client, decodeURIComponent(req.params.email), decodeURIComponent(req.params.password));
+
+        if (accountFound) {
+            const account = await Account.queryAccount(client, req.params.email);
+            req.session.accountId = account.email;
+            res.render(
+                "restoreAccountComplete",
+                {
+                    title: "Account restored",
+                    hotel: hotel,
+                    account: account
+                }
+            );
+
+            const newPassword = generatePassword();
+            await account.changePassword(client, newPassword);
+            await EmailController.sendEmail({
+                to: account.email,
+                from: 'Aegean Blue Hotel <aegean-blue-hotel@outlook.com>',
+                subject: `Your account is restored`,
+                html: await renderer.render(
+                    "views/emails/accountCreation.hbs",
+                    {
+                        layout: "spinnerLayout",
+                        title: "Your account is restored",
+                        hotel: hotel,
+                        preheaderText: `Hello, ${account.firstName}! You have successfully restored your account.`,
+                        headerText: `Your account is restored`,
+                        message1Text: `Hello, ${account.firstName}! You have successfully restored your account.`,
+                        message2Text: `Your new password is ${newPassword}. We suggest that you change it immediately in your profile settings, to keep your account secure.`,
+                        buttonText: `Go to your profile`,
+                        buttonHref: `https://aegean-blue-hotel.fly.dev/profile`
+                    }
+                )
+            });    
+        }
+        else {
+            res.render(
+                "restoreAccountComplete",
+                {
+                    title: "Account restored",
+                    hotel: hotel,
+                    error: true
+                }
+            );
+        }
+
+        await DatabaseClient.endConnection(client);
+    }
+    catch (err) {
+        next(err);
+    }
+}
+
+function generatePassword() {
+    const length = getRandomInt(10, 16);
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const specialChars = '!@#$%^&*()_-+=';
+    
+    let password = '';
+    
+    // Ensure at least one character from each type
+    password += getRandomCharacter(lowercase);
+    password += getRandomCharacter(uppercase);
+    password += getRandomCharacter(numbers);
+    password += getRandomCharacter(specialChars);
+    
+    // Fill the remaining characters randomly
+    while (password.length < length) {
+        const characterSet = lowercase + uppercase + numbers + specialChars;
+        password += getRandomCharacter(characterSet);
+    }
+    
+    // Shuffle the password
+    password = shuffleString(password);
+    
+    return password;
+}
+  
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+  
+function getRandomCharacter(characterSet) {
+    const randomIndex = getRandomInt(0, characterSet.length - 1);
+    return characterSet[randomIndex];
+}
+  
+function shuffleString(string) {
+    const array = string.split('');
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array.join('');
+}
+
+export { navigateToLogin, doLogin, doLogout, doRegister, doRestorePassword, navigateToRestorePassword }
