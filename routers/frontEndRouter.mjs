@@ -15,6 +15,7 @@ router.get("/fromBank", FrontEndControllers.FromBankController.navigateFromBank)
 router.post("/doLogin", FrontEndControllers.LoginController.doLogin);
 router.post("/doRegister", FrontEndControllers.LoginController.doRegister);
 router.get("/doLogout", FrontEndControllers.LoginController.doLogout);
+router.get("/email", FrontEndControllers.EmailController.previewEmail);
 
 async function error404(req, res, next) {
     res.status(404);

@@ -1,6 +1,8 @@
 import { ApiControllers } from "../index.mjs";
 import { Account } from "../../model/account.mjs";
 import * as DatabaseClient from "../../model/databaseClient.mjs";
+import { EmailController } from "./emailController.mjs";
+import hbs from 'express-handlebars';
 
 async function navigateToLogin(req, res, next) {
     try {
@@ -41,9 +43,10 @@ async function doLogin(req, res, next) {
         await DatabaseClient.endConnection(client);
         const referer = req.body.referer.split("/").slice(3).join("/").replaceAll("/","%2F");
 
-        if (accountExists){
-            req.session.accountId = req.body.user_email;
-            res.redirect(`/${referer}`);
+        if (accountExists) {
+            Promise.resolve()
+                   .then(() => {req.session.accountId = req.body.user_email})
+                   .then(() => {res.redirect(`/${referer}`)});
         }
         else {
             res.redirect(`/login?accountNotFound=true&referer=${req.body.referer.replaceAll("&","_")}`);
@@ -66,7 +69,9 @@ async function doLogout(req, res, next) {
 
 async function doRegister(req, res, next) {
     try {
+        const renderer = hbs.create();
         const client = await DatabaseClient.createConnection();
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
 
         if (await Account.queryAccount(client, req.body.user_email)){
             res.redirect(`/login?emailInUse=true&referer=${req.body.referer.replaceAll("&","_")}`);
@@ -74,6 +79,21 @@ async function doRegister(req, res, next) {
         }
         else {
             await Account.createAccount(client, req.body.user_fname, req.body.user_lname, req.body.user_email, req.body.user_password);
+
+            await EmailController.sendEmail({
+                to: req.body.user_email,
+                from: 'Aegean Blue Hotel <aegean-blue-hotel@outlook.com>',
+                subject: `Welcome to ${hotel.name}`,
+                html: await renderer.render(
+                    "views/emails/accountCreation.hbs",
+                    {
+                        layout: "spinnerLayout",
+                        title: "Account Creation",
+                        hotel: hotel,
+                        account: {firstName: req.body.user_fname}
+                    }
+                )
+            });
             await DatabaseClient.endConnection(client);
         
             const referer = req.body.referer.split("/").slice(3).join("/").replaceAll("/","%2F");
