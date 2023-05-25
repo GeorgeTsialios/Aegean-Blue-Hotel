@@ -1,5 +1,6 @@
 import express from "express";
 import { ApiControllers, FrontEndControllers } from '../controllers/index.mjs';
+import * as DatabaseClient from '../model/databaseClient.mjs';
 
 const router = express.Router();
 
@@ -21,14 +22,18 @@ async function error404(req, res, next) {
     res.status(404);
 
     if (req.accepts('html')) {
-        const account = await ApiControllers.AccountController.returnAccount(req.session.accountId);
-        const hotel = await ApiControllers.HotelController.returnHotel();
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        await DatabaseClient.endConnection(client);
         res.render(
             'notFound',
             {
                 title: "Page not found",
                 hotel: hotel,
-                account: account
+                account: account,
+                roomTypes: roomTypes
             }
         );
     }
