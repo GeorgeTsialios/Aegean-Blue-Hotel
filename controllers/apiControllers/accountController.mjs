@@ -46,7 +46,7 @@ async function changePassword(req, res, next) {
         const client = await DatabaseClient.createConnection();
         const account = await returnAccount(client, req.body.accountId);
         
-        if (account.password !== req.body.oldPassword) {
+        if (!account.checkPassword(req.body.oldPassword)) {
             await DatabaseClient.endConnection(client);
             res.sendStatus(401);
             return;
