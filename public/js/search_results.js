@@ -59,10 +59,6 @@ function populateForm2() {
     document.querySelector("#adultsCountForm2").value = originalGuests["adultsCount"];
     document.querySelector("#childrenCountForm2").value = originalGuests["childrenCount"];
     document.querySelector("#infantsCountForm2").value = originalGuests["infantsCount"];
-
-    document.querySelector("#originalPriceForm").value = TotalPrice;
-    document.querySelector("#discountForm").value = Discount;
-    document.querySelector("#totalPriceForm").value = TotalPriceWithDiscount?TotalPriceWithDiscount:TotalPrice;
 }
 
 function populateForm1() {

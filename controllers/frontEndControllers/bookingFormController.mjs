@@ -24,13 +24,10 @@ async function navigateToBookingForm(req, res, next) {
                 roomTypesForBooking.push({
                     code: roomType.code,
                     name: roomType.name, 
-                    count: roomTypeCount
+                    count: roomTypeCount,
+                    price: roomType.price
                 });
         });
-
-        const originalPrice =  !Number.isInteger(Number(req.query.originalPrice))? Number(req.query.originalPrice).toFixed(2) : Number(req.query.originalPrice);
-        const discount = !Number.isInteger(Number(req.query.discount))? Number(req.query.discount).toFixed(2) : Number(req.query.discount);
-        const totalPrice = !Number.isInteger(Number(req.query.totalPrice))? Number(req.query.totalPrice).toFixed(2) : Number(req.query.totalPrice);
 
         const breakfastIncluded = req.query.breakfastIncluded === "true";
         const freeCancellationIncluded = req.query.freeCancellationIncluded === "true";
@@ -68,11 +65,9 @@ async function navigateToBookingForm(req, res, next) {
                 infantsCount: infantsCount,
                 guestsString: guestsString,
                 roomTypesForBooking: roomTypesForBooking,
+                roomTypesForBookingJSON: JSON.stringify(roomTypesForBooking),
                 breakfastIncluded: breakfastIncluded,
-                freeCancellationIncluded: freeCancellationIncluded,
-                originalPrice: originalPrice,
-                discount: discount,
-                totalPrice: totalPrice
+                freeCancellationIncluded: freeCancellationIncluded
             }
         );
     }

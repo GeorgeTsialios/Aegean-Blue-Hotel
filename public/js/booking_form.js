@@ -3,21 +3,20 @@ const phoneRegex = /^[0-9\(\)\-\s]+$/;
 const email = document.querySelector("#e-mail");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const form = document.querySelector("form");
-// const streetNumber = document.querySelector("#street_number");
-// const postalCode = document.querySelector("#postal_code");
-// const NumberRegex = /^[0-9]+$/;
 const country = document.querySelector("#country");
 const phoneContainer = document.querySelector("#phone_container");
 
 let iti = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    updateTotal();
     email.addEventListener('blur',validateEmail);
     phone.addEventListener('blur',(event) => {
-      validatePhone(event);
-      phone.addEventListener('focus',validatePhone);
+        validatePhone(event);
+        phone.addEventListener('focus',validatePhone);
     });
-    // streetNumber.addEventListener('blur',validateStreetNumber);
+   
     country.addEventListener('focus',() => country.style.color="black");
 
     validate();
@@ -38,6 +37,29 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('resize',setPhoneDropdownSize);
 })
 
+function updateTotal() {
+    TotalPrice = 0;
+    TotalPriceWithDiscount = 0;
+    Discount = 0;
+    let totalCapacity = 0;
+
+    roomTypes.forEach((roomType) => TotalPrice += (numberOfNights * Number(roomType.count) * Number(roomType.price) * (freeCancellationSelected?freeCancellationCoefficient:1)));
+        TotalPrice += breakfastSelected?(numberOfGuests * numberOfNights * breakfastPriceperNightperPerson):0;
+            Discount = TotalPrice * (account? account.accountLevel.discount: 0);
+            TotalPriceWithDiscount = TotalPrice - Discount;
+            if (!Number.isInteger(TotalPrice))
+                TotalPrice = TotalPrice.toFixed(2);
+            if (!Number.isInteger(Discount))
+                Discount = Discount.toFixed(2);
+            if (!Number.isInteger(TotalPriceWithDiscount)) 
+                TotalPriceWithDiscount = TotalPriceWithDiscount.toFixed(2);
+
+            document.querySelector("#originalPrice").innerHTML = `${TotalPrice}&euro;`;
+            document.querySelector("#discount").innerHTML = `-${Discount}&euro;`;
+            document.querySelector("#totalPrice").innerHTML = `${TotalPriceWithDiscount}&euro;`;
+            document.querySelector("#totalPriceForm").value = TotalPriceWithDiscount;
+} 
+
 const errorMap = {
     "-99": "Please provide a valid phone number",
     0:"Invalid number",
@@ -52,7 +74,6 @@ function validate() {
 
     email.addEventListener("keyup",validateEmail);
     phone.addEventListener("keyup",validatePhone);
-    // streetNumber.addEventListener("keyup",validateStreetNumber);
 
     if (!form.checkValidity()) {
         event.preventDefault();
@@ -61,7 +82,6 @@ function validate() {
 
     validateEmail(event);
     validatePhone(event);
-    // validateStreetNumber(event);
   
     form.classList.add('was-validated');
 
@@ -88,7 +108,6 @@ function validateEmail(event) {
 }
 
 function validatePhone(event) {
-    console.log(iti.getNumber());
     if (iti.isValidNumber() && phoneRegex.test(phone.value)) {
         phone.setCustomValidity("");
         phone.parentElement.classList.remove("is-invalid");
@@ -110,29 +129,7 @@ function validatePhone(event) {
     }
 }
 
-// function validateStreetNumber(event) {
-//     if (streetNumber.value === "")
-//         streetNumber.classList.add("optional");
-//     else {
-//         streetNumber.classList.remove("optional");
-//         if (!NumberRegex.test(streetNumber.value)) {
-//             streetNumber.setCustomValidity("Street number is not valid");
-//             streetNumber.classList.remove("is-valid");
-//             streetNumber.classList.add("is-invalid");
-//             event.preventDefault();
-//             event.stopPropagation();
-//         }
-//         else {
-//             streetNumber.setCustomValidity("");
-//             streetNumber.classList.remove("is-invalid");
-//             streetNumber.classList.add("is-valid");
-//         }
-
-//     }
-// }
-
 function submitForm() {
-    console.log("Send form");
     phone.value = iti.getNumber();
 }
 
