@@ -89,14 +89,43 @@ class Booking {
                     'insert into public.room_type_request values ($1, $2, $3);',
                     [newBookingID, roomType.code, roomType.count]
                 );
-            }
 
-            // await bookingInfo.roomTypesForBooking.forEach(async (roomType) => {
-            //     await client.query(
-            //         'insert into public.room_type_request values ($1, $2, $3);',
-            //         [newBookingID, roomType.code, roomType.count]
-            //     );
-            // });  
+                for (let i=0; i<roomType.count; i++) {
+
+                    result = await client.query(
+                       `select available_rooms."number"
+                        from( (select r."number"
+                              from room r 
+                              where room_type = $1
+                              except 
+                              select r."number"
+                              from room r 
+                              where room_type = $1 and r."number" in (select room_number 
+                                                                            from room_occupation ro
+                                                                         where ro.booking_id in (select id
+                                                                                                    from booking 
+                                                                                                    where $2 < check_out_date and $3 > check_in_date)))) as available_rooms
+                        order by available_rooms."number"
+                        limit 1`,
+                        [roomType.code, bookingInfo.checkInDate, bookingInfo.checkOutDate]
+                    );
+
+                    if (result.rows.length === 0)
+                        result = await client.query(
+                                       `select r."number"
+                                        from room r 
+                                        where room_type = $1
+                                        order by r."number"
+                                        limit 1`,
+                                        [roomType.code]
+                                );
+
+                    await client.query(
+                        'insert into public.room_occupation values ($1, $2);',
+                        [newBookingID, result.rows[0].number]
+                    );
+                }
+            } 
 
             return newBookingID;
         }
