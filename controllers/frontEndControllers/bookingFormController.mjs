@@ -37,12 +37,12 @@ async function navigateToBookingForm(req, res, next) {
             {
                 title: "Booking Form",
                 linkTags: `
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
+                <link rel="stylesheet" href="/css/intlTelInput.css">
                 <link rel="stylesheet" href="/css/booking_form.css">
                 <link rel="stylesheet" href="/css/countryselect.css">
                 `,
                 scriptTags: `
-                <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+                <script src="/js/intlTelInput.js"></script>
                 <script src = "/js/booking_form.js"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
                 <script src="/js/countryselect.min.js"></script>

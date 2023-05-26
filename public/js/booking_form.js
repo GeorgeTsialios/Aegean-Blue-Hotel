@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     validate();
     iti = window.intlTelInput(phone,{
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+        utilsScript: "/js/utils.js",
         initialCountry: "gr",
         preferredCountries: ["gr"],
         separateDialCode: true,
