@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
-        location.href = `/bookingConfirmation/NX7kEPpXqm`;
-    },5000)
-})
+        location.href = `/bookingConfirmation/${newBookingID}`;
+    },5000);
+});

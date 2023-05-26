@@ -1,7 +1,10 @@
-
+const form = document.querySelector("form");
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    form.action = "/fromBank";
+    document.querySelector("#bookingInfo").value = JSON.stringify(bookingInfo);
     setTimeout(() => {
-        location.href = "/fromBank";
-    },5000)
-})
+        form.submit();
+    },5000);
+});

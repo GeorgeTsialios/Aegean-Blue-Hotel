@@ -1,5 +1,5 @@
 <main> 
-    <form action="/toBank" method="get" class="needs-validation justify-content-center align-items-center my-auto mx-4" novalidate>
+    <form action="/toBank" method="post" class="needs-validation justify-content-center align-items-center my-auto mx-4" novalidate>
         <div class="row">
             <div class="col-12 col-lg-4">
                 <div class="card d-flex shadow align-self-center align-self-lg-start mt-4 me-lg-4 mb-lg-4 w-100">
@@ -67,15 +67,15 @@
                                 </div>
                                 <div class="row">
                                     <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Original Price</p>
-                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">{{originalPrice}}&euro;</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3" id="originalPrice"></p>
                                 </div>
                                 <div class="row">
                                     <p class="col-sm-4 col-12 p-0 text-secondary mb-1 mb-sm-3">Loyalty Discount</p>
-                                    <p class="col-sm-8 col-12 p-0 ps-sm-3">-{{discount}}&euro;</p>
+                                    <p class="col-sm-8 col-12 p-0 ps-sm-3" id="discount"></p>
                                 </div>
                                 <div class="row">  
                                     <p class="col-sm-4 col-12 p-0 text-secondary fs-5 fw-semibold  mb-1 mb-sm-3">Total Price</p>
-                                    <p class="col-sm-8 col-12 fs-5 fw-semibold p-0 ps-sm-3">{{totalPrice}}&euro;</p>
+                                    <p class="col-sm-8 col-12 fs-5 fw-semibold p-0 ps-sm-3" id="totalPrice"></p>
                                 </div>
                             </div>
                         </div>
@@ -174,18 +174,12 @@
                                         <div class="form-floating mb-4 mb-md-0">
                                             <input type="text" class="form-control optional" id="street_number" placeholder=" " name="user_street_number">
                                             <label for="street_number">Street number</label>
-                                            <!-- <div class="invalid-feedback">
-                                                A street number must only contain numbers
-                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-3 px-0 ps-md-2">
                                         <div class="form-floating">
                                             <input type="text" class="form-control optional" id="postal_code" placeholder=" " name="user_postal_code">
                                             <label for="postal_code">Postal code</label>
-                                            <!-- <div class="invalid-feedback">
-                                                A postal code must only contain numbers
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -201,9 +195,27 @@
                 </button>
             </div>
         </div>
+        <input type="hidden" name="checkInDate" value="{{checkInDate}}">
+        <input type="hidden" name="checkOutDate" value="{{checkOutDate}}">
+        <input type="hidden" name="adultsCount" value="{{adultsCount}}">
+        <input type="hidden" name="childrenCount" value="{{childrenCount}}">
+        <input type="hidden" name="infantsCount" value="{{infantsCount}}">
+        {{#each roomTypesForBooking}}
+            <input type="hidden" name="{{this.code}}Count" value="{{this.count}}">
+        {{/each}}
+        <input type="hidden" name="breakfastIncluded" value="{{breakfastIncluded}}">
+        <input type="hidden" name="freeCancellationIncluded" value="{{freeCancellationIncluded}}">
+        <input type="hidden" name="totalPrice" id="totalPriceForm">
     </form>
 </main>
 
 <script>
     const account = {{#if accountJSON}}JSON.parse(`{{accountJSON}}`.replaceAll("&quot;", "\"")){{/if}}{{#unless accountJSON}}null{{/unless}};
+    const freeCancellationSelected = "{{freeCancellationIncluded}}" === "true";
+    const breakfastSelected = "{{breakfastIncluded}}" === "true";
+    const roomTypes = JSON.parse(`{{roomTypesForBookingJSON}}`.replaceAll("&quot;", "\""));
+    const numberOfNights = Number("{{lengthOfStayString}}".split(" ")[0]);
+    const freeCancellationCoefficient = {{hotel.freeCancellationPriceCoefficient}};
+    const breakfastPriceperNightperPerson = {{hotel.breakfastPrice}};
+    const numberOfGuests = {{adultsCount}} + {{childrenCount}};
 </script>

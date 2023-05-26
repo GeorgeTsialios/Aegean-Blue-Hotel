@@ -64,24 +64,24 @@
     <h6 class="col-lg-8">Billing address</h6>
 </div>
 <div class="row justify-content-center">
-    <p class="col-6 col-lg-3 text-secondary">Street</p>
-    <p class="col-6 col-lg-4" id="bookingGuestAddressStreetField">{{booking.guest.address.street}}</p>
-</div>
-<div class="row justify-content-center">
-    <p class="col-6 col-lg-3 text-secondary">Street no.</p>
-    <p class="col-6 col-lg-4" id="bookingGuestAddressStreetNoField">{{booking.guest.address.streetNo}}</p>
+    <p class="col-6 col-lg-3 text-secondary">Country</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressCountryField">{{#if booking.guest.address.country}}{{booking.guest.address.country}}{{/if}}{{#unless booking.guest.address.country}}Not specified{{/unless}}</p>
 </div>
 <div class="row justify-content-center">
     <p class="col-6 col-lg-3 text-secondary">City</p>
-    <p class="col-6 col-lg-4" id="bookingGuestAddressCityField">{{booking.guest.address.city}}</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressCityField">{{#if booking.guest.address.city}}{{booking.guest.address.city}}{{/if}}{{#unless booking.guest.address.city}}Not specified{{/unless}}</p>
+</div>
+<div class="row justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Street</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressStreetField">{{#if booking.guest.address.street}}{{booking.guest.address.street}}{{/if}}{{#unless booking.guest.address.street}}Not specified{{/unless}}</p>
+</div> 
+<div class="row justify-content-center">
+    <p class="col-6 col-lg-3 text-secondary">Street no.</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressStreetNoField">{{#if booking.guest.address.streetNo}}{{booking.guest.address.streetNo}}{{/if}}{{#unless booking.guest.address.streetNo}}Not specified{{/unless}}</p>
 </div>
 <div class="row justify-content-center">
     <p class="col-6 col-lg-3 text-secondary">Postal code</p>
-    <p class="col-6 col-lg-4" id="bookingGuestAddressPostalCodeField">{{booking.guest.address.postalCode}}</p>
-</div>
-<div class="row justify-content-center">
-    <p class="col-6 col-lg-3 text-secondary">Country</p>
-    <p class="col-6 col-lg-4" id="bookingGuestAddressCountryField">{{booking.guest.address.country}}</p>
+    <p class="col-6 col-lg-4" id="bookingGuestAddressPostalCodeField">{{#if booking.guest.address.postalCode}}{{booking.guest.address.postalCode}}{{/if}}{{#unless booking.guest.address.postalCode}}Not specified{{/unless}}</p>
 </div>
 <div class="row justify-content-center mt-3">
     <h6 class="col-lg-8">Extra options</h6>

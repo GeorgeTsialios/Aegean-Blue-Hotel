@@ -64,9 +64,61 @@ class Booking {
         return date.toLocaleDateString("en-US", { "month": "short", "day": "numeric", "year": "numeric" });
     }
 
+    static async createBooking(client, bookingInfo) {
+        try {
+            const newBookingID = Booking.generateBookingID();
+            let result = null;
+            await client.query(
+                'insert into public.booking values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);',
+                [newBookingID, bookingInfo.adultsCount, bookingInfo.childrenCount, bookingInfo.infantsCount, bookingInfo.checkInDate, bookingInfo.checkOutDate, bookingInfo.breakfastIncluded, bookingInfo.freeCancellationIncluded, true, bookingInfo.totalPrice, false, new Date(), bookingInfo.madeByAccount]
+            ); 
+
+            if (bookingInfo.guest.address.city || bookingInfo.guest.address.postalCode || bookingInfo.guest.address.street || bookingInfo.guest.address.streetNo)
+                result = await client.query(
+                                           'insert into public.billing_address values (DEFAULT,$1, $2, $3, $4, $5) returning id;',
+                                            [bookingInfo.guest.address.country, bookingInfo.guest.address.city, bookingInfo.guest.address.postalCode, bookingInfo.guest.address.street, bookingInfo.guest.address.streetNo]
+                                            );
+            
+            await client.query(
+                'insert into public.guest values ($1, $2, $3, $4, $5, $6, $7);',
+                [newBookingID,bookingInfo.guest.firstName, bookingInfo.guest.lastName, bookingInfo.guest.email, bookingInfo.guest.phoneNumber, bookingInfo.guest.travelsForWork,result? result.rows[0].id:null]
+            );
+
+            for (let roomType of bookingInfo.roomTypesForBooking) {
+                await client.query(
+                    'insert into public.room_type_request values ($1, $2, $3);',
+                    [newBookingID, roomType.code, roomType.count]
+                );
+            }
+
+            // await bookingInfo.roomTypesForBooking.forEach(async (roomType) => {
+            //     await client.query(
+            //         'insert into public.room_type_request values ($1, $2, $3);',
+            //         [newBookingID, roomType.code, roomType.count]
+            //     );
+            // });  
+
+            return newBookingID;
+        }
+        catch (err) {
+            console.error(err);
+            console.log("-------------------------------");
+            return null;
+        }
+    }
+
+    static generateBookingID() {
+        const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let bookingID = '';
+        for ( let i = 0; i < 15; i++ ) 
+            bookingID += characters.charAt(Math.floor(Math.random() * characters.length));
+    
+        return bookingID;
+    }
+
     static async queryBooking(client, bookingId) {
         try {
-            const result = await client.query('select * from public.booking b join public.guest g on b.id = g.booking_id join public.billing_address ba on g.billing_address_id = ba.id where b.id = $1;', [bookingId]);
+            const result = await client.query('select * from public.booking b join public.guest g on b.id = g.booking_id left join public.billing_address ba on g.billing_address_id = ba.id where b.id = $1;', [bookingId]);
 
             if (result.rows.length === 0) return null;
 
@@ -114,7 +166,7 @@ class Booking {
 
     static async queryBookings(client, constraints) {
         try {
-            const res = await client.query("select * from public.booking b join public.guest g on b.id = g.booking_id join public.billing_address ba on g.billing_address_id = ba.id where " + Object.keys(constraints).map(key => `${key} = $${Object.keys(constraints).indexOf(key) + 1}`).join(" and ") + ";", Object.values(constraints));
+            const res = await client.query("select * from public.booking b join public.guest g on b.id = g.booking_id left join public.billing_address ba on g.billing_address_id = ba.id where " + Object.keys(constraints).map(key => `${key} = $${Object.keys(constraints).indexOf(key) + 1}`).join(" and ") + ";", Object.values(constraints));
 
             const bookings = [];
 
