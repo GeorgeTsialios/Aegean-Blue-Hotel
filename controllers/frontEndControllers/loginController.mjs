@@ -88,7 +88,6 @@ async function doRegister(req, res, next) {
                 html: await renderer.render(
                     "views/emails/accountCreated.hbs",
                     {
-                        layout: "emailLayout",
                         title: "Account Created",
                         hotel: hotel,
                         preheaderText: `Hello, ${req.body.user_fname}! Welcome to Aegean Blue Hotel! We're very excited to have you on board.`,
@@ -129,7 +128,6 @@ async function doRestorePassword(req, res, next) {
                 html: await renderer.render(
                     "views/emails/accountRestoreRequested.hbs",
                     {
-                        layout: "emailLayout",
                         title: "Restore your password",
                         hotel: hotel,
                         preheaderText: `Hello, ${account.firstName}! Here are the steps to restore your password.`,
@@ -174,7 +172,6 @@ async function navigateToRestorePassword(req, res, next) {
                 html: await renderer.render(
                     "views/emails/accountRestored.hbs",
                     {
-                        layout: "emailLayout",
                         title: "Your account is restored",
                         hotel: hotel,
                         preheaderText: `Hello, ${account.firstName}! You have successfully restored your account.`,
@@ -185,7 +182,7 @@ async function navigateToRestorePassword(req, res, next) {
                         buttonHref: `https://aegean-blue-hotel.fly.dev/profile`
                     }
                 )
-            });    
+            });
         }
         else {
             res.render(

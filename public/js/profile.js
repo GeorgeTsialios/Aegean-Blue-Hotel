@@ -159,8 +159,14 @@ async function handleModalResult(event) {
     }
     else if (event.currentTarget.textContent === "Confirm change") {
         if (originalDates["check-in"].getTime() !== dates["check-in"].getTime() && originalDates["check-out"].getTime() !== dates["check-out"].getTime()) {
-            await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
+            const result = await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
+            
+            if (result.status === 200) {
             location.reload();
+        }
+            else if (result.status === 403) {
+                document.querySelector(".error").style.cssText = "display: flex !important;";
+            }
         }
     }
 }

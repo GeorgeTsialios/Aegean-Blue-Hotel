@@ -1,5 +1,6 @@
 import { Booking } from '../../model/booking.mjs';
 import * as DatabaseClient from "../../model/databaseClient.mjs";
+import { RoomTypeController } from './index.mjs';
 
 async function returnBooking(client, id) {
     return await Booking.queryBooking(client, id);
@@ -83,9 +84,25 @@ async function changeBookingDates(req, res, next) {
         }
 
         if (!booking.isCancelled && booking.dateChangeAllowed) {
-            await booking.changeDates(client, new Date(req.params.checkInDate), new Date(req.params.checkOutDate));
-            await DatabaseClient.endConnection(client);
-            res.sendStatus(200);
+            const availableRoomTypes = await RoomTypeController.returnAvailableRoomTypes(client, new Date(req.params.checkInDate), new Date(req.params.checkOutDate));
+
+            let available = true;
+
+            for (let roomTypeRequest of booking.roomRequests) {
+                if (parseInt(availableRoomTypes.find(roomType => roomType.code === roomTypeRequest.roomType.code).count) < roomTypeRequest.quantity) {
+                    available = false;
+                    break;
+                }
+            }
+
+            if (!available) {
+                res.sendStatus(403);
+            }
+            else {
+                await booking.changeDates(client, new Date(req.params.checkInDate), new Date(req.params.checkOutDate));
+                await DatabaseClient.endConnection(client);
+                res.sendStatus(200);
+            }
         }
         else {
             await DatabaseClient.endConnection(client);

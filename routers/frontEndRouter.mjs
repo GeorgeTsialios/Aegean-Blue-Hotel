@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/", FrontEndControllers.HomeController.navigateToHome);
 router.get("/bookingConfirmation/:bookingId", FrontEndControllers.BookingConfirmationController.navigateToBookingConfirmation);
+router.get("/manageBooking/:bookingId", FrontEndControllers.ManageBookingController.navigateToManageBooking);
 router.get("/login", FrontEndControllers.LoginController.navigateToLogin);
 router.get("/profile", FrontEndControllers.ProfileController.navigateToProfile);
 router.get("/roomRack", FrontEndControllers.RoomRackController.navigateToRoomRack);

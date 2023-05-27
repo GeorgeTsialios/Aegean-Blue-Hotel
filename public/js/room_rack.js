@@ -253,11 +253,11 @@ function populateBookingConfirmation(booking) {
     document.querySelector("#bookingGuestTravelsForWorkField").src = booking.strings.guestTravelsForWork.source;
     document.querySelector("#bookingGuestTravelsForWorkField").alt = booking.strings.guestTravelsForWork.description;
     document.querySelector("#bookingGuestTravelsForWorkField").height = booking.strings.guestTravelsForWork.height;
-    document.querySelector("#bookingGuestAddressStreetField").textContent = booking.guest.address.street;
-    document.querySelector("#bookingGuestAddressStreetNoField").textContent = booking.guest.address.streetNo;
-    document.querySelector("#bookingGuestAddressCityField").textContent = booking.guest.address.city;
-    document.querySelector("#bookingGuestAddressPostalCodeField").textContent = booking.guest.address.postalCode;
-    document.querySelector("#bookingGuestAddressCountryField").textContent = booking.guest.address.country;
+    document.querySelector("#bookingGuestAddressStreetField").textContent = booking.guest.address.street ? booking.guest.address.street : "Not specified";
+    document.querySelector("#bookingGuestAddressStreetNoField").textContent = booking.guest.address.streetNo ? booking.guest.address.streetNo : "Not specified";
+    document.querySelector("#bookingGuestAddressCityField").textContent = booking.guest.address.city ? booking.guest.address.city : "Not specified";
+    document.querySelector("#bookingGuestAddressPostalCodeField").textContent = booking.guest.address.postalCode ? booking.guest.address.postalCode : "Not specified";
+    document.querySelector("#bookingGuestAddressCountryField").textContent = booking.guest.address.country ? booking.guest.address.country : "Not specified";
     document.querySelector("#bookingBreakfastIncludedField").src = booking.strings.breakfastIncluded.source;
     document.querySelector("#bookingBreakfastIncludedField").alt = booking.strings.breakfastIncluded.description;
     document.querySelector("#bookingBreakfastIncludedField").height = booking.strings.breakfastIncluded.height;

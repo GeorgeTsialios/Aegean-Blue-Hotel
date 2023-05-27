@@ -1,0 +1,70 @@
+<main class="my-auto">
+    <div class="container">
+        <div class="accordion mb-4" id="booking-accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="booking-{{booking.id}}-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#booking-{{booking.id}}-collapse" aria-expanded="false" aria-controls="booking-{{booking.id}}-collapse">
+                        {{booking.strings.checkInDate}} &#8211; {{booking.strings.checkOutDate}} {{#if booking.isCancelled}}<span class="cancelled ms-1">(cancelled)</span>{{/if}}
+                    </button>
+                </h2>
+                <div id="booking-{{booking.id}}-collapse" class="accordion-collapse show" aria-labelledby="booking-{{booking.id}}-header" data-bs-parent="#booking-accordion">
+                    <div class="accordion-body">
+                        <div class="d-flex flex-column flex-lg-row justify-content-between">
+                            <div class="d-flex flex-column flex-lg-row align-items-lg-center">
+                                <div class="text-secondary me-3">Booking code: {{booking.id}}</div>
+                                <a href="/bookingConfirmation/{{booking.id}}" target="_blank" class="link-primary">Open booking confirmation</a>
+                            </div>
+                            {{#unless changesNotAllowed}}
+                            <div class="d-flex mt-3 mt-lg-0 align-items-center justify-content-center">
+                                <button type="button" id="booking-{{booking.id}}-changeDatesButton" class="btn btn-warning changeDatesButton me-2" data-bs-toggle="modal" data-bs-target="#modal">Change dates</button>
+                                <button type="button" id="booking-{{booking.id}}-cancelButton" class="btn btn-danger cancelBookingButton" data-bs-toggle="modal" data-bs-target="#modal">Cancel</button>
+                            </div>
+                            {{/unless}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="modalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+                <p id="modalRefund"></p>
+                <button id="daterange" type="button" class="btn btn-light w-100"></button>
+                <div class="dateRangeContainer w-100 h-100"></div>
+                <p id="modalActionWarning" class="fw-bold mt-3">This action cannot be undone.</p>
+                <div class="d-flex justify-content-center mt-3 mb-4 error" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mt-1 me-2 error-svg" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                    Sorry, we're not available on these dates.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="modalButton"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const booking = JSON.parse(`{{bookingJSON}}`.replaceAll("&quot;","\""));
+
+    const originalDates = {
+        "check-in": new Date(booking.checkInDate),
+        "check-out": new Date(booking.checkOutDate)
+    }
+    const dates = {
+        "check-in": new Date(booking.checkInDate),
+        "check-out": new Date(booking.checkOutDate)
+    };
+</script>

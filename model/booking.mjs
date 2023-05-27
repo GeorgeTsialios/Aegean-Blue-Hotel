@@ -302,6 +302,47 @@ class Booking {
 
         try {
             await client.query("update public.booking set check_in_date = $1, check_out_date = $2, date_change_allowed = false where id = $3;", [this.checkInDate, this.checkOutDate, this.id]);
+
+            for (let roomOccupation of this.roomOccupations) {
+                await client.query("delete from public.room_occupation where booking_id = $1 and room_number = $2;", [this.id, roomOccupation.number]);
+            }
+
+            for (let roomTypeRequest of this.roomRequests) {
+                for (let i=0; i<roomTypeRequest.quantity; i++) {
+                    let result = await client.query(
+                       `select available_rooms."number"
+                        from( (select r."number"
+                              from room r 
+                              where room_type = $1
+                              except 
+                              select r."number"
+                              from room r 
+                              where room_type = $1 and r."number" in (select room_number 
+                                                                            from room_occupation ro
+                                                                         where ro.booking_id in (select id
+                                                                                                    from booking 
+                                                                                                    where $2 < check_out_date and $3 > check_in_date)))) as available_rooms
+                        order by available_rooms."number"
+                        limit 1`,
+                        [roomTypeRequest.roomType.code, this.checkInDate, this.checkOutDate]
+                    );
+
+                    if (result.rows.length === 0)
+                        result = await client.query(
+                                       `select r."number"
+                                        from room r 
+                                        where room_type = $1
+                                        order by r."number"
+                                        limit 1`,
+                                        [roomTypeRequest.roomType.code]
+                                );
+
+                    await client.query(
+                        'insert into public.room_occupation values ($1, $2);',
+                        [this.id, result.rows[0].number]
+                    );
+                }
+            }
         }
         catch (err) {
             console.error(err);
