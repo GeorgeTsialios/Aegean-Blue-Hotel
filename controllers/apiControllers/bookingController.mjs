@@ -114,4 +114,24 @@ async function changeBookingDates(req, res, next) {
     }
 }
 
-export { returnBooking, filterBookings, getBooking, getBookings, cancelBooking, changeBookingDates }
+async function changeBookingRoomOccupations(req, res, next) {
+    try {
+        const client = await DatabaseClient.createConnection();
+        const booking = await returnBooking(client, req.params.id);
+        if (!booking) {
+            await DatabaseClient.endConnection(client);
+            res.sendStatus(404);
+            return;
+        }
+
+        await booking.changeRoomOccupations(client, req.params.oldRoom, req.params.newRoom);
+
+        await DatabaseClient.endConnection(client);
+        res.sendStatus(200);
+    }
+    catch (err) {
+        res.sendStatus(403);
+    }
+}
+
+export { returnBooking, filterBookings, getBooking, getBookings, cancelBooking, changeBookingDates, changeBookingRoomOccupations }

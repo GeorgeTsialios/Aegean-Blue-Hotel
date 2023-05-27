@@ -349,6 +349,17 @@ class Booking {
             console.log("-------------------------------");
         }
     }
+
+    async changeRoomOccupations(client, oldRoomNumber, newRoomNumber) {
+        try {
+            const rooms = await Room.queryRooms(client);
+            await client.query(`update public.room_occupation set room_number = $1 where booking_id = $2 and room_number = $3;`, [newRoomNumber, this.id, oldRoomNumber]);
+            this.roomOccupations[this.roomOccupations.indexOf(this.roomOccupations.find(room => room.number === oldRoomNumber))] = rooms.find(room => room.number === newRoomNumber);
+        }
+        catch (err) {
+            throw err;
+        }
+    }
 }
 
 export { Booking }

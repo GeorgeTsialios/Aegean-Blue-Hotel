@@ -200,24 +200,25 @@ function dragover_handler(event) {
     event.dataTransfer.dropEffect = "move";
 }
 
-function drop_handler(event) {
+async function drop_handler(event) {
     event.preventDefault();
     const eventData = event.dataTransfer.getData("entryID").split("-");
-    let entry;
+    const roomNumber = parseInt(event.currentTarget.id.split("-")[1]);
 
-    for (let i=0; i<allEntries.length; i++) {
-        if (allEntries[i].booking.id === eventData[1] && allEntries[i].room.number === parseInt(eventData[2]) && allEntries[i].index === parseInt(eventData[3])) {
-            allEntries[i].room = rooms.find(room => room.number === parseInt(event.currentTarget.id.split("-")[1]));
-            entry = allEntries[i];
-        }
-    }
-    for (let i=0; i<bookings.length; i++) {
-        if (bookings[i].id === entry.booking.id) {
-            bookings[i].roomOccupations[entry.index] = entry.room;
-        }
-    }
+    const entry = allEntries[allEntries.indexOf(allEntries.find(entry => entry.booking.id === eventData[1] && entry.room.number === parseInt(eventData[2]) && entry.index === parseInt(eventData[3])))];
+    const booking = bookings[bookings.indexOf(bookings.find(booking => booking.id === entry.booking.id))];
 
-    updateVisibleEntries();
+    const result = await fetch(`/api/changeBookingRoomOccupations/${booking.id}/${parseInt(eventData[2])}/${roomNumber}`);
+
+    if (result.status === 200) {
+        entry.room = rooms.find(room => room.number === roomNumber);
+        booking.roomOccupations[entry.index] = entry.room;
+    
+        updateVisibleEntries();
+    }
+    else {
+        console.log("error");
+    }
 }
 
 function populateBookingConfirmation(booking) {
