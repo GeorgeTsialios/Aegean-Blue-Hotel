@@ -11,6 +11,7 @@ async function navigateToSearchResults(req, res, next) {
     try {
         const client = await DatabaseClient.createConnection();
         const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        const availableRoomTypes = await ApiControllers.RoomTypeController.returnAvailableRoomTypes(client,new Date(req.query.checkInDate),new Date(req.query.checkOutDate));
         const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
         const hotel = await ApiControllers.HotelController.returnHotel(client);
         await DatabaseClient.endConnection(client);
@@ -55,7 +56,9 @@ async function navigateToSearchResults(req, res, next) {
                 originalInfantsCount: originalInfantsCount,
                 originalGuestsString: originalGuestsString,
                 roomTypes: roomTypes,
-                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0]))
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
+                //availableRoomTypes: availableRoomTypes,
+                availableRoomTypesJSON: JSON.stringify(availableRoomTypes)
             }
         );
     }

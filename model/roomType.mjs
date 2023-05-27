@@ -43,6 +43,38 @@ class RoomType {
             console.log("-------------------------------");
         }
     }
+
+    static async queryAvailableRoomTypes(client, checkInDate, checkOutDate) {
+        try {
+            const availableRoomTypes = [];
+            const result = await client.query(
+                                            `select	room_type, (count_all - count_unavailable) as count_available 
+                                             from (select room_type,count(*) as count_all 
+                                                   from room r 
+                                                   group by room_type 
+                                                   order by room_type) as table1 natural join   (select code as room_type,count("number") as count_unavailable 
+                                                                                                 from room_type rt left join	( select room_type,r."number" 
+                                                                                                                               from room r 
+                                                                                                                                 where   r."number" in (select room_number 
+                                                                                                                                                         from room_occupation ro
+                                                                                                                                                      where ro.booking_id in (select id
+                                                                                                                                                                                 from booking 
+                                                                                                                                                                                 where $1 < check_out_date and $2 > check_in_date))) as tem on rt.code = tem.room_type 						   	     
+                                                                                                 group by code 
+                                                                                                 order by code) as table2`,
+                                            [checkInDate, checkOutDate]);
+            for (let row of result.rows) {
+                availableRoomTypes.push({code: row.room_type, count: row.count_available});
+            }
+            console.log(availableRoomTypes);
+            return availableRoomTypes;
+        }
+        catch (err) {
+            console.error(err);
+            console.log("-------------------------------");
+        }
+    }
+
 }
 
 export { RoomType }

@@ -26,7 +26,7 @@
                                                 <div class="col-lg">
                                                     <img src="{{this.coverPhoto.source}}" alt="{{this.coverPhoto.description}}" class="img-fluid" width="250">
                                                 </div>
-                                                <div class="col-lg">
+                                                <div class="col-lg" id="{{this.code}}FirstCell">
                                                     <a href="#" data-bs-toggle="modal" class="link-primary modal-link" id="{{this.code}}-link" data-bs-target="#profileModal" >{{this.name}}</a>
                                                     <div class="d-flex align-items-center justify-content-center mt-1 mt-lg-3">
                                                         {{#if this.capacityBiggerThanThree}}
@@ -58,9 +58,11 @@
                                                 <span>-</span>
                                             </button>
                                             <p id="{{this.code}}Count" class="fw-semibold my-0 mx-3 text-center">0</p>
-                                            <button id="{{this.code}}CountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
-                                                <span>+</span>
-                                            </button>
+                                            <div data-bs-toggle="tooltip" data-bs-title="" data-bs-custom-class="custom-tooltip" class="d-flex align-items-center justify-content-center" id="{{this.code}}PlusWrapper">
+                                                <button id="{{this.code}}CountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
+                                                    <span>+</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
                                     {{#unless @index}}
@@ -213,5 +215,6 @@
     const roomTypes = JSON.parse(`{{roomTypesJSON}}`.replaceAll("&quot;", "\""));
     const freeCancellationCoefficient = {{hotel.freeCancellationPriceCoefficient}};
     const breakfastPriceperNightperPerson = {{hotel.breakfastPrice}};
-
+    const availableRoomTypes = JSON.parse(`{{availableRoomTypesJSON}}`.replaceAll("&quot;", "\""));
+    console.log(availableRoomTypes);
 </script>

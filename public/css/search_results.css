@@ -149,6 +149,12 @@
     font-weight: lighter;
 }
 
+.red-statement {
+    color: #CC0000;
+    font-size: smaller; 
+    font-weight: 500;
+}
+
 .room-capacity {
     font-size: large; 
     margin-bottom: 2px;

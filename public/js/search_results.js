@@ -34,23 +34,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     roomTypes.forEach((roomType) => {
+        document.querySelector(`#${roomType[0].code}PlusWrapper`).setAttribute("data-bs-title","No more rooms available.");
+        let PlusTooltipTriggerList = document.querySelectorAll(`#${roomType[0].code}PlusWrapper`);
+        let PlusTooltipList = [...PlusTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    });
+
+    roomTypes.forEach((roomType) => {
+        initializePlusButtons(roomType);
         document.querySelector(`#${roomType[0].code}CountPlus`).addEventListener("click", () => {updateRooms(roomType, "Plus");  updateTotal();} );
         document.querySelector(`#${roomType[0].code}CountMinus`).addEventListener("click", () => {updateRooms(roomType, "Minus"); updateTotal();} );
     });
+
+    insertRedStatements();
 
     const countButtons = document.querySelectorAll(".countButton");
     countButtons.forEach((Button) => Button.addEventListener('click',() => checkFormChange()));
 
     document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"]} more ${(originalGuests["numberOfGuests"] === 1)?"person":"people"}.`);
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    const BookTooltipTriggerList = document.querySelectorAll('#BookButtonWrapper');
+    const BookTooltipList = [...BookTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
     const modalLinks = document.querySelectorAll(".modal-link");
     modalLinks.forEach((modalLink) =>  modalLink.addEventListener('click',populateModal));
 
     document.querySelector("#search").addEventListener("click",populateForm1);
-    document.querySelector("#BookButton").addEventListener("click",populateForm2);  
+    document.querySelector("#BookButton").addEventListener("click",populateForm2);
+
 })
+
+function insertRedStatements() {
+    availableRoomTypes.forEach((roomType) => {
+        if (Number(roomType.count) === 1 || Number(roomType.count) === 2) {
+            const redStatement = document.createElement('div');
+            redStatement.innerHTML = `Only ${roomType.count} ${Number(roomType.count) === 1 ? "room" : "rooms"} left`;
+            redStatement.classList.add("red-statement");
+            redStatement.classList.add("mt-1"); 
+            redStatement.classList.add("mt-lg-3");
+            document.querySelector(`#${roomType.code}FirstCell`).appendChild(redStatement);
+        } 
+    });
+}
 
 function populateForm2() {
     document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString("en-us");
@@ -125,15 +148,36 @@ function populateModal(event) {
    }
 }
 
+function initializePlusButtons(roomType) {
+    const upperLimit = Number(availableRoomTypes.find((availableRoomType) => availableRoomType.code === roomType[0].code).count);
+    const tooltip = bootstrap.Tooltip.getInstance(`#${roomType[0].code}PlusWrapper`);   
+    
+    document.querySelector(`#${roomType[0].code}CountPlus`).disabled = (roomType[1] >= upperLimit);
+    
+    if (roomType[1] >= upperLimit) 
+        tooltip.enable();
+    else 
+        tooltip.disable();
+}
+
 function updateRooms(roomType, symbol) {
     const lowerLimit = 0;
+    const upperLimit = Number(availableRoomTypes.find((availableRoomType) => availableRoomType.code === roomType[0].code).count);
+    const tooltip = bootstrap.Tooltip.getInstance(`#${roomType[0].code}PlusWrapper`);   
+
     (symbol === "Minus") ? roomType[1]-- : roomType[1]++;
 
     document.querySelector(`#${roomType[0].code}CountForm`).value = roomType[1];
     
     document.querySelector(`#${roomType[0].code}CountMinus`).disabled = (roomType[1] <= lowerLimit);
-    document.querySelector(`#${roomType[0].code}CountPlus`).disabled = (roomType[1] >= 9);
-    
+    document.querySelector(`#${roomType[0].code}CountPlus`).disabled = (roomType[1] >= upperLimit);
+    if (roomType[1] >= upperLimit) {
+        tooltip.enable();
+        tooltip.show();
+    }
+    else 
+        tooltip.disable();
+
     document.querySelector(`#${roomType[0].code}Count`).textContent = roomType[1];
 }
 
@@ -185,8 +229,8 @@ function updateTotal() {
     else {
         tooltip.enable();
         document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"] - totalCapacity} more ${(originalGuests["numberOfGuests"] - totalCapacity === 1)?"person":"people"}.`);
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        const BookTooltipTriggerList = document.querySelectorAll('#BookButtonWrapper')
+        const BookTooltipList = [...BookTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     }
 } 
 

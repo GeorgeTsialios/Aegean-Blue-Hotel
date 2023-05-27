@@ -5,6 +5,10 @@ async function returnRoomTypes(client) {
     return await RoomType.queryRoomTypes(client);
 }
 
+async function returnAvailableRoomTypes(client,checkInDate,checkOutDate) {
+    return await RoomType.queryAvailableRoomTypes(client,checkInDate,checkOutDate);
+}
+
 async function getRoomTypes(req, res, next) {
     try {
         const client = await DatabaseClient.createConnection();
@@ -16,4 +20,4 @@ async function getRoomTypes(req, res, next) {
     }
 }
 
-export { getRoomTypes, returnRoomTypes }
+export { getRoomTypes, returnRoomTypes, returnAvailableRoomTypes }
