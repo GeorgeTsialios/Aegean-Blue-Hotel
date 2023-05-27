@@ -130,7 +130,7 @@ async function changeBookingRoomOccupations(req, res, next) {
         res.sendStatus(200);
     }
     catch (err) {
-        res.sendStatus(403);
+        res.sendStatus(400);
     }
 }
 

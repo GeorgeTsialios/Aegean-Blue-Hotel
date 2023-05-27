@@ -208,6 +208,9 @@ async function drop_handler(event) {
     const entry = allEntries[allEntries.indexOf(allEntries.find(entry => entry.booking.id === eventData[1] && entry.room.number === parseInt(eventData[2]) && entry.index === parseInt(eventData[3])))];
     const booking = bookings[bookings.indexOf(bookings.find(booking => booking.id === entry.booking.id))];
 
+    const loadingModal = new bootstrap.Modal(document.querySelector("#loadingModal"));
+    loadingModal.show();
+
     const result = await fetch(`/api/changeBookingRoomOccupations/${booking.id}/${parseInt(eventData[2])}/${roomNumber}`);
 
     if (result.status === 200) {
@@ -217,8 +220,11 @@ async function drop_handler(event) {
         updateVisibleEntries();
     }
     else {
-        console.log("error");
+        const errorModal = new bootstrap.Modal(document.querySelector("#errorModal"));
+        errorModal.show();
     }
+
+    loadingModal.hide();
 }
 
 function populateBookingConfirmation(booking) {
