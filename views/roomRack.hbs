@@ -139,21 +139,5 @@
 </div>
 
 <script>
-    class Entry {
-        constructor(booking, room, index) {
-            this.booking = booking;
-            this.room = room;
-            this.index = index;
-        }
-    }
-
     const rooms = JSON.parse(`{{roomsJSON}}`.replaceAll("&quot;", "\""));
-    const bookings = JSON.parse(`{{bookingsJSON}}`.replaceAll("&quot;", "\""));
-    const allEntries = [];
-
-    for (let booking of bookings) {
-        for (let room of booking.roomOccupations) {
-            allEntries.push(new Entry(booking, room, booking.roomOccupations.indexOf(room)));
-        }
-    }
 </script>

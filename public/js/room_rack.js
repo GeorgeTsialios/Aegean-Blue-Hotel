@@ -9,11 +9,24 @@ Date.prototype.subtractDays = function (days) {
     return date;
 }
 
+class Entry {
+    constructor(booking, room, index) {
+        this.booking = booking;
+        this.room = room;
+        this.index = index;
+    }
+}
+
+let today = new Date();
+let visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(0,0,0,0));
+let visibleEndOfWeek = visibleStartOfWeek.addDays(6);
+
+let loadingModal;
+let bookings;
+let allEntries = [];
+
 let dateCells;
 let currentMonthPlaceholder;
-let visibleStartOfWeek;
-let visibleEndOfWeek;
-let today;
 let roomRackRows = {};
 let roomOverlaps = {};
 let bookingToCancel = null;
@@ -36,6 +49,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+async function fetchBookings(startDate, endDate) {
+    loadingModal = bootstrap.Modal.getInstance(document.querySelector("#loadingModal"));
+    if (!loadingModal) {
+        loadingModal = new bootstrap.Modal(document.querySelector("#loadingModal"));
+    }
+
+    loadingModal.show();
+
+    bookings = [];
+    allEntries = [];
+    
+    bookings = await fetch(`/api/bookings?isCancelled=false&checkInDateBefore=${encodeURIComponent(endDate.toString())}&checkOutDateAfter=${encodeURIComponent(startDate.toString())}`).then(response => response.json());
+    
+    for (let booking of bookings) {
+        for (let room of booking.roomOccupations) {
+            allEntries.push(new Entry(booking, room, booking.roomOccupations.indexOf(room)));
+        }
+    }
+
+    updateVisibleEntries();
+    loadingModal.hide();
+}
+
 function addBooking(date) {
     
 }
@@ -44,22 +80,25 @@ function calendarGoToToday() {
     today = new Date();
     visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(0,0,0,0));
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
+    
     updateDateCells();
-    updateVisibleEntries();
+    fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
 }
 
 function calendarGoToPrevWeek() {
     visibleStartOfWeek = visibleStartOfWeek.subtractDays(7);
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
+    
     updateDateCells();
-    updateVisibleEntries();
+    fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
 }
 
 function calendarGoToNextWeek() {
     visibleStartOfWeek = visibleStartOfWeek.addDays(7);
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
+    
     updateDateCells();
-    updateVisibleEntries();
+    fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
 }
 
 function getStartOfWeek(date) {
@@ -208,7 +247,9 @@ async function drop_handler(event) {
     const entry = allEntries[allEntries.indexOf(allEntries.find(entry => entry.booking.id === eventData[1] && entry.room.number === parseInt(eventData[2]) && entry.index === parseInt(eventData[3])))];
     const booking = bookings[bookings.indexOf(bookings.find(booking => booking.id === entry.booking.id))];
 
-    const loadingModal = new bootstrap.Modal(document.querySelector("#loadingModal"));
+    if (!loadingModal) {
+        loadingModal = new bootstrap.Modal(document.querySelector("#loadingModal"));
+    }
     loadingModal.show();
 
     const result = await fetch(`/api/changeBookingRoomOccupations/${booking.id}/${parseInt(eventData[2])}/${roomNumber}`);

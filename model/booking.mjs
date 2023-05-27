@@ -195,7 +195,25 @@ class Booking {
 
     static async queryBookings(client, constraints) {
         try {
-            const res = await client.query("select * from public.booking b join public.guest g on b.id = g.booking_id left join public.billing_address ba on g.billing_address_id = ba.id where " + Object.keys(constraints).map(key => `${key} = $${Object.keys(constraints).indexOf(key) + 1}`).join(" and ") + ";", Object.values(constraints));
+            const res = await client.query(
+                `select * 
+                from public.booking b 
+                    join public.guest g on b.id = g.booking_id 
+                    left join public.billing_address ba on g.billing_address_id = ba.id 
+                where ` + 
+                
+                Object.keys(constraints).map(key => {
+                    if (!key.includes("~")) {
+                        return `${key} = $${Object.keys(constraints).indexOf(key) + 1}`;
+                    }
+                    else if (key.split("~")[1] === "before") {
+                        return `${key.split("~")[0]} <= $${Object.keys(constraints).indexOf(key) + 1}`;
+                    }
+                    else {
+                        return `${key.split("~")[0]} >= $${Object.keys(constraints).indexOf(key) + 1}`;
+                    }
+                }).join(" and ") + ";", Object.values(constraints)
+            );
 
             const bookings = [];
 

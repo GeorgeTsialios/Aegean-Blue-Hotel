@@ -8,7 +8,6 @@ async function navigateToRoomRack(req, res, next) {
         const hotel = await ApiControllers.HotelController.returnHotel(client);
         const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
         const rooms = await ApiControllers.RoomController.returnRooms(client);
-        const bookings = await ApiControllers.BookingController.filterBookings(client, { isCancelled: false });
         await DatabaseClient.endConnection(client);
         
         res.render(
@@ -25,8 +24,7 @@ async function navigateToRoomRack(req, res, next) {
                 roomsJSON: JSON.stringify(rooms),
                 account: account,
                 hotel: hotel,
-                roomTypes: roomTypes,
-                bookingsJSON: JSON.stringify(bookings)
+                roomTypes: roomTypes
             }
         );
     }
