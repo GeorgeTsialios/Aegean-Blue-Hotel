@@ -119,8 +119,8 @@ function updateDateCells() {
             "bg-primary rounded-5 d-inline-block px-1 text-light" : "";
     }
 
-    const startMonth = visibleStartOfWeek.toLocaleString("default", {"month": "long", "year": "numeric"});
-    const endMonth = visibleEndOfWeek.toLocaleString("default", {"month": "long", "year": "numeric"});
+    const startMonth = visibleStartOfWeek.toLocaleString("en-us", {"month": "long", "year": "numeric"});
+    const endMonth = visibleEndOfWeek.toLocaleString("en-us", {"month": "long", "year": "numeric"});
 
     currentMonthPlaceholder.textContent = (startMonth === endMonth) ? startMonth : `${startMonth} - ${endMonth}`;
 }
