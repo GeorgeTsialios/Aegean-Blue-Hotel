@@ -1,0 +1,14 @@
+<main class="d-flex justify-content-center align-items-center login my-auto">
+    <div class="card d-inline-flex m-4 shadow" style="border-radius: 1rem;">
+        <div class="d-inline-flex p-5 justify-content-center text-black ">
+            <div class="d-flex flex-column">
+                <h3 class="mb-4">{{#if notFound}}Page not found{{/if}}{{#if notAllowed}}Access denied{{/if}}{{#if serverError}}Page not working{{/if}}</h3>
+                <img {{#if notFound}}src="/assets/page-not-found.jpg"{{/if}}{{#if notAllowed}}src="/assets/no-entry.jpg" width="280px" height="400px"{{/if}}{{#if serverError}}src="/assets/fatty-corgi.jpg" width="470px" height="340px" {{/if}} class="align-self-center mb-4" width="200" alt="Page not found image">
+                <p class="mb-4">{{#if notFound}}Oops, seems like you've reached a page that doesn't exist.{{/if}}{{#if notAllowed}}Oops, seems like you're not allowed to access this page.{{/if}}{{#if serverError}}Oops, seems like our server encountered an error and could not complete your request.{{/if}}</p>
+                <a href="/" class="align-self-center">
+                    <button type="button" class="btn btn-primary">Go back to the home page</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
