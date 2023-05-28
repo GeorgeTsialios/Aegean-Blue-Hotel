@@ -33,7 +33,8 @@ async function navigateToProfile(req, res, next) {
                 account: account,
                 accountJSON: account ? JSON.stringify(account) : null,
                 hotel: hotel,
-                roomTypes: roomTypes
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             }
         );
     }

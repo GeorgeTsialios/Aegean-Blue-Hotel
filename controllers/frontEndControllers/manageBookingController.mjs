@@ -17,7 +17,8 @@ async function navigateToManageBooking(req, res, next) {
                 {
                     title: "Booking not found",
                     hotel: hotel,
-                    roomTypes: roomTypes
+                    roomTypes: roomTypes,
+                    roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
                 }
             )
         }
@@ -78,6 +79,7 @@ function renderVerification(res, hotel, roomTypes, invalidPasscode) {
             `,
             hotel: hotel,
             roomTypes: roomTypes,
+            roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             invalidPasscode: invalidPasscode
         }
     );
@@ -106,6 +108,7 @@ function renderManageBooking(res, hotel, roomTypes, booking) {
             `,
             hotel: hotel,
             roomTypes: roomTypes,
+            roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             booking: booking,
             bookingJSON: JSON.stringify(booking),
             changesNotAllowed: booking.isCancelled || new Date() >= booking.checkInDate.subtractDays(3)

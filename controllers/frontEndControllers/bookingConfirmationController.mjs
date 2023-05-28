@@ -21,7 +21,8 @@ async function navigateToBookingConfirmation(req, res, next) {
                     hotel: hotel,
                     booking: booking,
                     account: account,
-                    roomTypes: roomTypes
+                    roomTypes: roomTypes,
+                    roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
                 }
             );
         }

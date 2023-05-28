@@ -120,19 +120,6 @@
     width: 10px; 
 }
 
-.modal img {
-    height: 400px;
-    object-fit: cover;
-}
-
-.modal-body li {
-    list-style-image: url("/assets/check-lg.svg");
-}
-
-.modal-body .btn-close {
-    z-index: 99;
-}
-
 .form-check :hover {
     cursor: pointer;
 }

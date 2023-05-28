@@ -24,7 +24,8 @@ async function navigateToRoomRack(req, res, next) {
                 roomsJSON: JSON.stringify(rooms),
                 account: account,
                 hotel: hotel,
-                roomTypes: roomTypes
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             }
         );
     }

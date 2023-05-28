@@ -127,3 +127,16 @@ header, footer, .offcanvas {
 .emailDiv {
     font-size: small;
 }
+
+#roomTypeModal img {
+    height: 400px;
+    object-fit: cover;
+}
+
+#roomTypeModal .modal-body li {
+    list-style-image: url("/assets/check-lg.svg");
+}
+
+#roomTypeModal .modal-body .btn-close {
+    z-index: 99;
+}

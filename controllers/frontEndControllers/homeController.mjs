@@ -24,7 +24,8 @@ async function navigateToHome(req, res, next) {
                 `,
                 hotel: hotel,
                 account: account,
-                roomTypes: roomTypes
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             }
         );
     }

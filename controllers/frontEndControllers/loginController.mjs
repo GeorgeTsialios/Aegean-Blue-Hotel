@@ -24,6 +24,7 @@ async function navigateToLogin(req, res, next) {
                 account: account,
                 hotel: hotel,
                 roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
                 accountNotFound: req.query.accountNotFound,
                 emailInUse: req.query.emailInUse,
                 restoreAccount: req.query.restoreAccount,
