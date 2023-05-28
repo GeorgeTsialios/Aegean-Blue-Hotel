@@ -162,8 +162,8 @@ async function handleModalResult(event) {
             const result = await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
             
             if (result.status === 200) {
-            location.reload();
-        }
+                location.reload();
+            }
             else if (result.status === 403) {
                 document.querySelector(".error").style.cssText = "display: flex !important;";
             }
@@ -179,7 +179,7 @@ async function handleSaveProfile() {
             "firstName": document.querySelector("#fname").value,
             "lastName": document.querySelector("#lname").value,
             "email": document.querySelector("#e-mail").value,
-            "phoneNumber": iti.getNumber()
+            "phoneNumber": phone.value ? iti.getNumber() : null
         };
         const response = await fetch(`/api/changeAccount`, {
             method: "POST",
@@ -283,7 +283,7 @@ function validateEmail() {
 
 function validatePhone() {
     const phone = document.querySelector("#phone");
-    if (iti.isValidNumber() && phoneRegex.test(phone.value)) {
+    if ((!phone.value) || (iti.isValidNumber() && phoneRegex.test(phone.value))) {
         phone.setCustomValidity("");
         phone.parentElement.classList.remove("is-invalid");
         phone.parentElement.classList.add("is-valid");
