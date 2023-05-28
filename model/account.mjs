@@ -53,6 +53,33 @@ class Account {
         }
     }
 
+    static async queryAccounts(client) {
+        try {
+            const res = await client.query('select first_name, last_name, email, is_administrator from public.account;');
+
+            const accounts = [];
+
+            for (let row of res.rows) {
+                accounts.push(new Account(
+                    row.first_name,
+                    row.last_name,
+                    row.email,
+                    null,
+                    null,
+                    row.is_administrator,
+                    null,
+                    null
+                ));
+            }
+
+            return accounts;
+        }
+        catch (err) {
+            console.error(err);
+            console.log("-------------------------------");
+        }
+    }
+
     static async queryAccountCredentials(client, email, password) {
         try {
             const res = await client.query('select * from public.account where email = $1 and password = $2;', [email, password]);
@@ -132,10 +159,10 @@ class Account {
                     `insert into public.photo values ($1, $2, 'profile');`,
                     [newProfilePicture.source, newProfilePicture.description]
                 )
-            await client.query(
-                'update public.account set photo_source = $1 where email = $2;',
+                await client.query(
+                    'update public.account set photo_source = $1 where email = $2;',
                     [newProfilePicture.source, this.email]
-            );
+                );
             }
 
             this.photo = newProfilePicture;
@@ -148,6 +175,15 @@ class Account {
 
     async checkPassword(password) {
         return bcrypt.compare(password, this.password);
+    }
+
+    async changeAdminState(client) {
+        this.isAdministrator = !this.isAdministrator;
+
+        await client.query(
+            'update public.account set is_administrator = $1 where email = $2;',
+            [this.isAdministrator, this.email]
+        );
     }
 }
 

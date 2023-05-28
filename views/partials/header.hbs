@@ -83,6 +83,7 @@
                         <li><h6 class="dropdown-header">Administrator options</h6></li>
                         <li><a class="dropdown-item" href="/roomRack">Room rack</a></li>
                         <li><a class="dropdown-item" href="/manageHotel">Manage hotel</a></li>
+                        <li><button class="dropdown-item" id="manageAdminsButton" data-bs-toggle="modal" data-bs-target="#manageAdminsModal">Manage admins</button></li>
                         {{/if}}
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/doLogout">Logout</a></li>
@@ -94,3 +95,52 @@
         </div>
     </div>
 </header>
+
+<div class="modal fade" id="manageAdminsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="manageAdminsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="manageAdminsModalLabel">Manage administrators</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#manageAdminsModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2" id="manageAdminsSearchForm">
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#8dbcff" class="bi bi-search ms-3 me-1" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        <input type="text" class="form-control me-2" id="manageAdminsSearchInput" placeholder="Search accounts">
+                    </div>
+                    <ul class="list-group list-group-flush" id="manageAdminsSearchRecommendations">
+
+                    </ul>
+                </div>
+
+                <div>
+                    <table class="table" id="accountsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#manageAdminsModal">Cancel</button>
+                <button type="button" class="btn btn-success" id="manageAdminsModalButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/header.js"></script>
+
+<script>
+    const accountIsAdministrator = true;
+</script>

@@ -3,10 +3,12 @@ import { ApiControllers } from "../controllers/index.mjs";
 
 const router = express.Router();
 
+router.get("/accounts", ApiControllers.AccountController.getAccounts);
 router.get("/account/:accountId", ApiControllers.AccountController.getAccount);
 router.post("/changeAccount", ApiControllers.AccountController.changeAccount);
 router.post("/changePassword", ApiControllers.AccountController.changePassword);
 router.post("/uploadProfilePicture", ApiControllers.AccountController.uploadProfilePicture);
+router.put("/adminAccounts", ApiControllers.AccountController.saveAdmins);
 
 router.get("/booking/:id", ApiControllers.BookingController.getBooking);
 router.get("/bookings", ApiControllers.BookingController.getBookings);
