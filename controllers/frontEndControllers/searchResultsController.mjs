@@ -1,4 +1,5 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
 Date.prototype.addDays = function (days) {
     const date = new Date(this.valueOf());
@@ -6,20 +7,32 @@ Date.prototype.addDays = function (days) {
     return date;
 }
 
-function navigateToSearchResults(req, res, next) {
+async function navigateToSearchResults(req, res, next) {
     try {
-        const roomTypes = ApiControllers.RoomTypeController.returnRoomTypes();
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
-        const originalCheckInDate = req.query.checkInDate? new Date(req.query.checkInDate).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"}): new Date().addDays(1).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"});
-        const originalCheckOutDate = req.query.checkOutDate? new Date(req.query.checkOutDate).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"}): new Date().addDays(2).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"});
+        const client = await DatabaseClient.createConnection();
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        const availableRoomTypes = await ApiControllers.RoomTypeController.returnAvailableRoomTypes(client,new Date(req.query.checkInDate),new Date(req.query.checkOutDate));
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        await DatabaseClient.endConnection(client);
+ 
+        const originalCheckInArray = req.query.checkInDate.split("/");
+        originalCheckInArray.forEach((el,index,array) => { array[index] = Number(array[index]); });
+         
+        const originalCheckInDate = new Date(originalCheckInArray[2],originalCheckInArray[0]-1,originalCheckInArray[1]).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"});
+        
+  
+        const originalCheckOutArray = req.query.checkOutDate.split("/");
+        originalCheckOutArray.forEach((el,index,array) => { array[index] = Number(array[index]); }); 
+        const originalCheckOutDate = new Date(originalCheckOutArray[2],originalCheckOutArray[0]-1,originalCheckOutArray[1]).toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"});
+     
         const originalAdultsCount = req.query.adultsCount? Number(req.query.adultsCount) :1;
         const originalChildrenCount = req.query.childrenCount? Number(req.query.childrenCount) :0;
         const originalInfantsCount = req.query.infantsCount? Number(req.query.infantsCount) :0;
-
+ 
         const originalGuestsString = `${originalAdultsCount} ${(originalAdultsCount === 1) ? "adult" : "adults"} • ${originalChildrenCount} ${(originalChildrenCount === 1) ? "child" : "children"} • ${originalInfantsCount} ${(originalInfantsCount === 1) ? "infant" : "infants"}`;
-        
-        res.render(
+         
+        res.render( 
             "searchResults",
             {
                 title: "Search Results",
@@ -34,6 +47,7 @@ function navigateToSearchResults(req, res, next) {
                     <script src = "/js/search_results.js"></script>
                 `,
                 account: account,
+                accountJSON: account ? JSON.stringify(account) : null,
                 hotel: hotel,
                 originalCheckInDate: originalCheckInDate,
                 originalCheckOutDate: originalCheckOutDate,
@@ -41,7 +55,9 @@ function navigateToSearchResults(req, res, next) {
                 originalChildrenCount: originalChildrenCount,
                 originalInfantsCount: originalInfantsCount,
                 originalGuestsString: originalGuestsString,
-                roomTypes: roomTypes
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
+                availableRoomTypesJSON: JSON.stringify(availableRoomTypes)
             }
         );
     }

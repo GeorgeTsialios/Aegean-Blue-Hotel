@@ -5,23 +5,15 @@ const guests = {
 }
 
 const dates = {
-    "check-in": new Date(2023,4,31),
-    "check-out": new Date (2023,5,2)
+    "check-in": null,
+    "check-out": null
 }
-
-const roomTypes = [];
 
 let TotalPrice = 0;
 let TotalPriceWithDiscount = 0;
 let Discount = 0;
-const freeCancellationCoefficient = 1.2;
-const breakfastPriceperNightperPerson = 15;
-
-let account = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await fetchRoomtypes();
-    await fetchAccount();
     updateGuests("adultsCount","NULL");
     updateGuests("childrenCount","NULL");
     updateGuests("infantsCount","NULL");
@@ -41,128 +33,106 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelector("#FreeCanellationIncludedForm").value = document.querySelector("#FreeCancellation").checked;
     });
 
-    roomTypes.forEach((room) => {
-        document.querySelector(`#${room[0].code}CountPlus`).addEventListener("click", () => {updateRooms(room, "Plus");  updateTotal();} );
-        document.querySelector(`#${room[0].code}CountMinus`).addEventListener("click", () => {updateRooms(room, "Minus"); updateTotal();} );
+    roomTypes.forEach((roomType) => {
+        document.querySelector(`#${roomType[0].code}PlusWrapper`).setAttribute("data-bs-title","No more rooms available.");
+        let PlusTooltipTriggerList = document.querySelectorAll(`#${roomType[0].code}PlusWrapper`);
+        let PlusTooltipList = [...PlusTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     });
+
+    roomTypes.forEach((roomType) => {
+        initializePlusButtons(roomType);
+        document.querySelector(`#${roomType[0].code}CountPlus`).addEventListener("click", () => {updateRooms(roomType, "Plus");  updateTotal();} );
+        document.querySelector(`#${roomType[0].code}CountMinus`).addEventListener("click", () => {updateRooms(roomType, "Minus"); updateTotal();} );
+    });
+
+    insertRedStatements();
 
     const countButtons = document.querySelectorAll(".countButton");
     countButtons.forEach((Button) => Button.addEventListener('click',() => checkFormChange()));
 
     document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"]} more ${(originalGuests["numberOfGuests"] === 1)?"person":"people"}.`);
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    const BookTooltipTriggerList = document.querySelectorAll('#BookButtonWrapper');
+    const BookTooltipList = [...BookTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
     const modalLinks = document.querySelectorAll(".modal-link");
     modalLinks.forEach((modalLink) =>  modalLink.addEventListener('click',populateModal));
 
     document.querySelector("#search").addEventListener("click",populateForm1);
-    document.querySelector("#BookButton").addEventListener("click",populateForm2);  
+    document.querySelector("#BookButton").addEventListener("click",populateForm2);
+
 })
 
-function populateForm2() {
-    document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString();
-    document.querySelector("#checkOutDateForm2").value = originalDates["check-out"].toLocaleDateString();
+function insertRedStatements() {
+    availableRoomTypes.forEach((roomType) => {
+        if (Number(roomType.count) <= 3) {
+            const redStatement = document.createElement('div');
+            redStatement.classList.add("red-statement");
+            redStatement.classList.add("mt-1"); 
+            redStatement.classList.add("mt-lg-3");
+            if (Number(roomType.count) === 0)
+                redStatement.innerHTML = `No rooms left`;
+            else 
+                redStatement.innerHTML = `Only ${roomType.count} ${Number(roomType.count) === 1 ? "room" : "rooms"} left`;
+            document.querySelector(`#${roomType.code}FirstCell`).appendChild(redStatement);
+        }
+    });
+}
 
-    // console.log(`Length of stay: ${originalDates["numberOfNights"]} nights`);
+function populateForm2() {
+    document.querySelector("#checkInDateForm2").value = originalDates["check-in"].toLocaleDateString("en-us");
+    document.querySelector("#checkOutDateForm2").value = originalDates["check-out"].toLocaleDateString("en-us");
 
     document.querySelector("#adultsCountForm2").value = originalGuests["adultsCount"];
     document.querySelector("#childrenCountForm2").value = originalGuests["childrenCount"];
     document.querySelector("#infantsCountForm2").value = originalGuests["infantsCount"];
-
-    document.querySelector("#originalPriceForm").value = TotalPrice;
-    document.querySelector("#discountForm").value = Discount;
-    document.querySelector("#totalPriceForm").value = TotalPriceWithDiscount?TotalPriceWithDiscount:TotalPrice;
 }
 
 function populateForm1() {
-    document.querySelector("#checkInDateForm1").value = dates["check-in"].toLocaleDateString();
-    document.querySelector("#checkOutDateForm1").value = dates["check-out"].toLocaleDateString();
+    document.querySelector("#checkInDateForm1").value = dates["check-in"]? dates["check-in"].toLocaleDateString("en-us"):originalDates["check-in"].toLocaleDateString("en-us");
+    document.querySelector("#checkOutDateForm1").value = dates["check-out"]?dates["check-out"].toLocaleDateString("en-us"):originalDates["check-out"].toLocaleDateString("en-us");
     document.querySelector("#adultsCountForm1").value = guests["adultsCount"];
     document.querySelector("#childrenCountForm1").value = guests["childrenCount"];
     document.querySelector("#infantsCountForm1").value = guests["infantsCount"];
-}
-
-async function fetchRoomtypes () {
-    const response = await fetch(`/api/roomTypes`);
-    const data = await response.json();
-    
-    for (let roomType of data) {
-        roomTypes.push([roomType,0]);
-    }
-}
-
-async function fetchAccount() {
-    const response = await fetch(`/api/account/${accountEmail}`);
-    account = await response.json();
 }
 
 function populateModal(event) {
     const linkClicked = event.target.id.split("-")[0];
 
     const roomType = roomTypes.find((roomType) => roomType[0].code === linkClicked)[0];
-    const carouselIndicatorContainer = document.querySelector("#carousel_indicator_container");
-    const carouselInner = document.querySelector("#carousel-inner");
-    const roomTypeName = document.querySelector("#room_type_name");
-    const roomTypeSize = document.querySelector("#room_type_size");
-    const roomTypeCapacity = document.querySelector("#room_type_capacity");
-    const roomTypePrice = document.querySelector("#room_type_price");
-    const roomTypeAmenities = document.querySelector("#room_type_amenities");
-
-    carouselIndicatorContainer.innerHTML="";
-    carouselInner.innerHTML="";
-    roomTypeAmenities.innerHTML="";
-
-   for (let i=0; i<roomType.photos.length; i++) {
-        let newButton = document.createElement("button");
-        let newCarouselItem = document.createElement("div");
-        let newImage = document.createElement("img");
-        
-        newButton.setAttribute("type","button");
-        newButton.setAttribute("data-bs-target","#introCarousel");
-        newButton.setAttribute("data-bs-slide-to",`${i}`);
-        newButton.setAttribute("aria-label",`Photo ${i+1}`);
-        newCarouselItem.classList.add("carousel-item")
-        newImage.setAttribute("src",roomType.photos[i].source);
-        newImage.classList.add("d-block");
-        newImage.classList.add("w-100");
-        newImage.setAttribute("alt",roomType.photos[i].desription);
-        
-        if (i === 0) {
-            newButton.classList.add("active");
-            newButton.setAttribute("aria-current","true");
-            newCarouselItem.classList.add("active")
-        }
-
-        carouselIndicatorContainer.appendChild(newButton);
-        newCarouselItem.appendChild(newImage);
-        carouselInner.appendChild(newCarouselItem);
-   }
-    
-   roomTypeName.textContent = roomType.name;
-   roomTypeSize.innerHTML = `${roomType.size} m<sup>2</sup>`;
-   roomTypeCapacity.innerHTML = `${roomType.capacity} ${(roomType.capacity === 1)?"person":"people"}`;
-   roomTypePrice.innerHTML = `${roomType.price}&euro;`;
-
-   for (let i=0; i<roomType.amenities.length; i++) {
-         let newListItem = document.createElement("li");
-         newListItem.classList.add("col-lg-6");
-         newListItem.classList.add("pe-0");
-         newListItem.textContent = roomType.amenities[i];
-         roomTypeAmenities.appendChild(newListItem);
-   }
+    populateRoomTypeModal(roomType);
 }
 
-function updateRooms(room, symbol) {
-    const lowerLimit = 0;
-    (symbol === "Minus") ? room[1]-- : room[1]++;
+function initializePlusButtons(roomType) {
+    const upperLimit = Number(availableRoomTypes.find((availableRoomType) => availableRoomType.code === roomType[0].code).count);
+    const tooltip = bootstrap.Tooltip.getInstance(`#${roomType[0].code}PlusWrapper`);   
+    
+    document.querySelector(`#${roomType[0].code}CountPlus`).disabled = (roomType[1] >= upperLimit);
+    
+    if (roomType[1] >= upperLimit) 
+        tooltip.enable();
+    else 
+        tooltip.disable();
+}
 
-    document.querySelector(`#${room[0].code}CountForm`).value = room[1];
+function updateRooms(roomType, symbol) {
+    const lowerLimit = 0;
+    const upperLimit = Number(availableRoomTypes.find((availableRoomType) => availableRoomType.code === roomType[0].code).count);
+    const tooltip = bootstrap.Tooltip.getInstance(`#${roomType[0].code}PlusWrapper`);   
+
+    (symbol === "Minus") ? roomType[1]-- : roomType[1]++;
+
+    document.querySelector(`#${roomType[0].code}CountForm`).value = roomType[1];
     
-    document.querySelector(`#${room[0].code}CountMinus`).disabled = (room[1] <= lowerLimit);
-    document.querySelector(`#${room[0].code}CountPlus`).disabled = (room[1] >= 9);
-    
-    document.querySelector(`#${room[0].code}Count`).textContent = room[1];
+    document.querySelector(`#${roomType[0].code}CountMinus`).disabled = (roomType[1] <= lowerLimit);
+    document.querySelector(`#${roomType[0].code}CountPlus`).disabled = (roomType[1] >= upperLimit);
+    if (roomType[1] >= upperLimit) {
+        tooltip.enable();
+        tooltip.show();
+    }
+    else 
+        tooltip.disable();
+
+    document.querySelector(`#${roomType[0].code}Count`).textContent = roomType[1];
 }
 
 function updateTotal() {
@@ -173,10 +143,10 @@ function updateTotal() {
     let freeCancellationSelected = document.querySelector("#FreeCancellation").checked;
     let breakfastSelected = document.querySelector("#BreakfastIncluded").checked;
 
-    roomTypes.forEach((room) => TotalPrice += (originalDates["numberOfNights"] * room[1] * room[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
+    roomTypes.forEach((roomType) => TotalPrice += (originalDates["numberOfNights"] * roomType[1] * roomType[0].price * (freeCancellationSelected?freeCancellationCoefficient:1)));
     if (TotalPrice !== 0) {
         TotalPrice += breakfastSelected?(originalGuests["numberOfGuests"] * originalDates["numberOfNights"] * breakfastPriceperNightperPerson):0;
-        if (account.accountLevel.discount !== 0){
+        if (account && account.accountLevel.discount !== 0){
             Discount = TotalPrice * (account.accountLevel.discount);
             TotalPriceWithDiscount = TotalPrice - Discount;
             if (!Number.isInteger(TotalPrice))
@@ -202,8 +172,8 @@ function updateTotal() {
         document.querySelector("#offcanvasButton>span").innerHTML = `${TotalPrice}&euro;`;
         document.querySelector("#price_policies").innerHTML = `<li>All taxes are included in this price.</li><li>Every customer is entitled to one free change of dates for their booking.</li>`;
     }
-    for (let room of roomTypes)
-        totalCapacity += room[0].capacity * room[1];
+    for (let roomType of roomTypes)
+        totalCapacity += roomType[0].capacity * roomType[1];
     document.querySelector("#BookButton").disabled = (totalCapacity < originalGuests["numberOfGuests"]);
 
     const tooltip = bootstrap.Tooltip.getInstance('#BookButtonWrapper');
@@ -213,8 +183,8 @@ function updateTotal() {
     else {
         tooltip.enable();
         document.querySelector("#BookButtonWrapper").setAttribute("data-bs-title",`You need space for ${originalGuests["numberOfGuests"] - totalCapacity} more ${(originalGuests["numberOfGuests"] - totalCapacity === 1)?"person":"people"}.`);
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        const BookTooltipTriggerList = document.querySelectorAll('#BookButtonWrapper')
+        const BookTooltipList = [...BookTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     }
 } 
 
@@ -268,7 +238,7 @@ $(() => {
         (start, end) => {
             dates['check-in'] = start.toDate();
             dates['check-out'] = end.toDate();
-            document.querySelector("#daterange").innerHTML = `${dates['check-in'].toLocaleDateString("default", {"month": "short", "day": "numeric", "year": "numeric"})} &#8211 ${dates['check-out'].toLocaleDateString("default", {"month": "short", "day": "numeric", "year": "numeric"})}`
+            document.querySelector("#daterange").innerHTML = `${dates['check-in'].toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"})} &#8211 ${dates['check-out'].toLocaleDateString("en-us", {"month": "short", "day": "numeric", "year": "numeric"})}`
             checkFormChange();
         }
     );

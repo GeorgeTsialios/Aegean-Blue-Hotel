@@ -1,13 +1,33 @@
-import 'dotenv'
+import dotenv from 'dotenv';
 import express from 'express';
 import { engine } from 'express-handlebars';
-import * as Routers from './routers/index.mjs';
+import expSession from 'express-session';
+import connectPg from 'connect-pg-simple';
+import * as Routers from './routers/index.mjs'; 
+import { ApiControllers, FrontEndControllers } from './controllers/index.mjs';
+import * as DatabaseClient from './model/databaseClient.mjs';
 
+
+dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 3000;
+const pgSession = connectPg(expSession);
+
+const sessionConf = {
+    store: new pgSession({
+        conString: process.env.DATABASE_URL
+    }),
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
+    resave: false,
+    saveUninitialized: false,
+};
+
+app.use(expSession(sessionConf));
 
 app.use(express.static("public"));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.json({limit: '6mb'}));
+app.use(express.urlencoded({extended: false, limit: '6mb'}));
 
 app.engine('hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -15,8 +35,28 @@ app.set('view engine', '.hbs');
 app.use('/', Routers.FrontEndRouter.router);
 app.use('/api', Routers.ApiRouter.router);
 
-// ToDo: Add a NOT FOUND page
+app.use(Routers.FrontEndRouter.error404);
 
-const PORT = process.env.PORT || 8080;
+app.use(async (err, req, res, next) => {
+    
+    console.error(err);
+    const client = await DatabaseClient.createConnection();
+    const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+    const hotel = await ApiControllers.HotelController.returnHotel(client);
+    const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+    await DatabaseClient.endConnection(client);
+
+    res.status(500);
+    res.render(
+        'error',
+        {
+            title: "Internal server error",
+            hotel: hotel,
+            account: account,
+            roomTypes: roomTypes,
+            serverError: true
+        }
+    );
+});
 
 app.listen(PORT);

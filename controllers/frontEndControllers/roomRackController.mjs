@@ -1,10 +1,15 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
-function navigateToRoomRack(req, res, next) {
+async function navigateToRoomRack(req, res, next) {
     try {
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
-        const rooms = ApiControllers.RoomController.returnRooms();
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        const rooms = await ApiControllers.RoomController.returnRooms(client);
+        await DatabaseClient.endConnection(client);
+        
         res.render(
             "roomRack",
             {
@@ -16,8 +21,11 @@ function navigateToRoomRack(req, res, next) {
                     <script src="/js/room_rack.js"></script>
                 `,
                 rooms: rooms,
+                roomsJSON: JSON.stringify(rooms),
                 account: account,
-                hotel: hotel
+                hotel: hotel,
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             }
         );
     }

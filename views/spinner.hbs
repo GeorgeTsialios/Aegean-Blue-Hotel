@@ -1,0 +1,46 @@
+<main>
+    <form action="" method="post">
+        <div class="d-flex flex-column justify-content-center align-items-center mx-4" id="container">
+            <div class="spinner-border text-primary" role="status" id="spinner"></div>
+            <p class="mt-5 fs-4 text-center">{{message}}</p>
+        </div>
+        <input type="hidden" name="bookingInfo" id="bookingInfo">
+    </form>
+</main>
+
+<script>
+    {{#if toBank}}
+        const bookingInfo = {
+        checkInDate: new Date(`{{checkInDate}}`),
+        checkOutDate: new Date(`{{checkOutDate}}`),
+        adultsCount: Number(`{{adultsCount}}`),
+        childrenCount: Number(`{{childrenCount}}`),
+        infantsCount: Number(`{{infantsCount}}`),
+        breakfastIncluded: `{{breakfastIncluded}}` === "true",
+        freeCancellationIncluded: `{{freeCancellationIncluded}}` === "true",
+        totalPrice: Number(`{{totalPrice}}`),
+        madeByAccount: `{{accountJSON}}`? JSON.parse(`{{accountJSON}}`.replaceAll("&quot;", "\"")).email: null,
+        roomTypesForBooking: JSON.parse(`{{roomTypesForBookingJSON}}`.replaceAll("&quot;", "\"")),
+        guest: {
+            firstName: `{{firstName}}`,
+            lastName: `{{lastName}}`,
+            email: `{{email}}`,
+            phoneNumber: `{{phoneNumber}}`,
+            travelsForWork: `{{travelsForWork}}` === "true",
+            address: {
+                country: `{{country}}`,
+                city: `{{city}}`,
+                postalCode: `{{postalCode}}`,
+                street: `{{street}}`,
+                streetNo: `{{streetNo}}`
+            }
+        },
+    }
+    console.log(bookingInfo);
+    {{/if}}
+    {{#if fromBank}}
+        const newBookingID = `{{newBookingID}}`;
+    {{/if}}
+
+
+</script>

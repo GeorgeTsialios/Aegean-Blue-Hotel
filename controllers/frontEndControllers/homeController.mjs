@@ -1,9 +1,13 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
-function navigateToHome(req, res, next) {
+async function navigateToHome(req, res, next) {
     try {
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        await DatabaseClient.endConnection(client);
         res.render(
             "home",
             {
@@ -19,7 +23,9 @@ function navigateToHome(req, res, next) {
                     <script src="/js/home.js"></script>
                 `,
                 hotel: hotel,
-                account: account
+                account: account,
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             }
         );
     }

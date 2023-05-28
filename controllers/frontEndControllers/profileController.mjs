@@ -1,12 +1,14 @@
 import { ApiControllers } from "../index.mjs";
+import * as DatabaseClient from "../../model/databaseClient.mjs";
 
-function navigateToProfile(req, res, next) {
+async function navigateToProfile(req, res, next) {
     try {
-        const account = ApiControllers.AccountController.returnAccount();
-        const hotel = ApiControllers.HotelController.returnHotel();
-        const bookings = ApiControllers.BookingController.filterBookings({
-            "madeByAccount": account.email
-        });
+        const client = await DatabaseClient.createConnection();
+        const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
+        const hotel = await ApiControllers.HotelController.returnHotel(client);
+        const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+        const bookings = await ApiControllers.BookingController.filterBookings(client, { "madeByAccount": account.email });
+        await DatabaseClient.endConnection(client);
 
         res.render(
             "profile",
@@ -27,8 +29,12 @@ function navigateToProfile(req, res, next) {
                 ongoingBookings: bookings.filter(booking => booking.checkInDate <= new Date() && booking.checkOutDate >= new Date()),
                 upcomingBookings: bookings.filter(booking => booking.checkInDate > new Date()),
                 pastBookings: bookings.filter(booking => booking.checkOutDate < new Date()),
+                accountBookingsJSON: JSON.stringify(bookings),
                 account: account,
-                hotel: hotel
+                accountJSON: account ? JSON.stringify(account) : null,
+                hotel: hotel,
+                roomTypes: roomTypes,
+                roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
             }
         );
     }

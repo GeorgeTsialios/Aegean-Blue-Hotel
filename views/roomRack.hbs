@@ -15,7 +15,7 @@
                     </svg>
                 </button>
                 <h4 class="ms-3 me-auto my-0" id="calendarCurrentMonth"></h4>
-                <!-- <button type="button" class="btn btn-primary me-3">Create booking</button> -->
+                {{!-- <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#loadingModal">Create booking</button> --}}
             </div>
             <div class="table-responsive m-lg-3">
                 <table class="table">
@@ -114,3 +114,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal" id="loadingModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+        <div class="spinner-grow" role="status"></div>
+        <div class="spinner-grow" role="status"></div>
+        <div class="spinner-grow" role="status"></div>
+    </div>
+</div>
+
+<div class="modal" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="errorModalLabel">Could not move entry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">We couldn't move the entry to the requested room. Each booking can occupy a room only once.</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const rooms = JSON.parse(`{{roomsJSON}}`.replaceAll("&quot;", "\""));
+</script>

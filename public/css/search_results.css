@@ -120,19 +120,6 @@
     width: 10px; 
 }
 
-.modal img {
-    height: 400px;
-    object-fit: cover;
-}
-
-.modal-body li {
-    list-style-image: url("/assets/check-lg.svg");
-}
-
-.modal-body .btn-close {
-    z-index: 99;
-}
-
 .form-check :hover {
     cursor: pointer;
 }
@@ -149,7 +136,18 @@
     font-weight: lighter;
 }
 
+.red-statement {
+    color: #CC0000;
+    font-size: smaller; 
+    font-weight: 500;
+}
+
 .room-capacity {
     font-size: large; 
     margin-bottom: 2px;
+}
+
+#search_card {
+    margin-left: 12px; 
+    margin-right: 12px;
 }

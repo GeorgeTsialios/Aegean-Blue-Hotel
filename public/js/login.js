@@ -13,29 +13,57 @@ const repeatPassword = document.querySelector("#repeat_password");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const email = document.querySelector("#e-mail");
 let state = "login";
+let form = document.querySelector("form");
+const errors = document.querySelectorAll(".error, .success");
 
 document.addEventListener("DOMContentLoaded",() => {
+    let firstTime = true;
     document.querySelector("#toRegister").addEventListener("click",changetoRegister);
     document.querySelector("#toLogin").addEventListener("click",changetoLogin);
     document.querySelector("#toPwdForgot").addEventListener("click",changetoPwdForgot);
 
     document.querySelectorAll("#passwordList>li").forEach((item) => item.classList.add("x"));
 
-    email.addEventListener("blur",validateEmail);
+    email.addEventListener("blur",(event) => {
+        email.addEventListener("keyup",validateEmail);
+        validateEmail(event);
+    });
+
+    password.addEventListener("blur",(event) => {
+        password.addEventListener("keyup",validatePassword);
+        validatePassword(event);
+    });
+
     validate();
+    
+    repeatPassword.addEventListener("keyup",validateRepeatPassword);
+
+    if (needsAuthentication) {
+        setTimeout(() => {
+            const alert = new bootstrap.Alert("#alert");
+            if (document.querySelector("#alert"))
+                alert.close();
+        }
+        ,5000);
+    } 
+
+})
+
+function changetoRegister() {
+    state = "register";
+    form.action = "/doRegister";
+    deleteErrors();
+
     password.addEventListener("keyup",(event) => {
         validatePassword(event);
         if (state === "register")
             validateRepeatPassword(event);
     });
-})
 
-function changetoRegister() {
-    state = "register";
     document.querySelector(".invalid-feedback-register").classList.add("invalid-feedback");
     document.querySelector(".invalid-feedback-login").classList.remove("invalid-feedback");
     resetCustomValidity();
-    document.querySelector("form").classList.remove("was-validated");
+    form.classList.remove("was-validated");
     document.querySelectorAll(".register-only").forEach((element) => element.style.display = "block");
     document.querySelectorAll(".register-only>input").forEach((element) => element.required = true);
     document.querySelectorAll(".login-only").forEach((element) => element.style.display = "none");
@@ -49,10 +77,12 @@ function changetoRegister() {
 
 function changetoLogin() {
     state = 'login';
+    form.action = "/doLogin";
+    deleteErrors();
     document.querySelector(".invalid-feedback-login").classList.add("invalid-feedback");
     document.querySelector(".invalid-feedback-register").classList.remove("invalid-feedback");
     resetCustomValidity();
-    document.querySelector("form").classList.remove("was-validated");
+    form.classList.remove("was-validated");
     document.querySelectorAll(".login-only").forEach((element) => element.style.display = "block");
     document.querySelectorAll(".register-only").forEach((element) => element.style.display = "none");
     document.querySelectorAll(".register-only>input").forEach((element) => {
@@ -69,8 +99,10 @@ function changetoLogin() {
 
 function changetoPwdForgot() {
     state = "pwdforgot";
+    form.action = "/doRestorePassword";
     resetCustomValidity();
-    document.querySelector("form").classList.remove("was-validated");
+    deleteErrors();
+    form.classList.remove("was-validated");
     document.querySelector("#toPwdForgot").style.display = "none";
     
     document.querySelectorAll(".password").forEach((element) => element.style.display = "none");
@@ -87,12 +119,12 @@ function changetoPwdForgot() {
     document.querySelector(".btn-dark").textContent = "Restore";
 }
 
-function validate(){
-    form = document.querySelector("form");
-    form.addEventListener('submit', (event) => {
+function deleteErrors() {
+    errors.forEach((element) => element.innerHTML = "");
+}
 
-        email.addEventListener("keyup",validateEmail);
-        repeatPassword.addEventListener("keyup",validateRepeatPassword);
+function validate(){
+    form.addEventListener('submit', (event) => {
 
         if (!form.checkValidity()) {
             event.preventDefault();
@@ -104,7 +136,6 @@ function validate(){
             validatePassword(event);
         if (state === "register")
             validateRepeatPassword(event);
-        
 
         form.classList.add('was-validated');
     }, false);

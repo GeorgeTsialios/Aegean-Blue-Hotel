@@ -1,14 +1,14 @@
-.carousel-inner img {
+#introCarousel .carousel-inner img {
     height: calc(100vh - 126px);
     min-height: 720px;
     object-fit: cover;
 }
 
-.carousel-control-prev, .carousel-control-next {
+#introCarousel .carousel-control-prev, .carousel-control-next {
     transition: background-color .15s ease;
 }
 
-.carousel-control-prev:hover, .carousel-control-next:hover {
+#introCarousel .carousel-control-prev:hover, .carousel-control-next:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 

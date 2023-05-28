@@ -33,14 +33,9 @@ const errorMap = {
 let iti = initializeIti();
 const PhoneDropdown = document.querySelector("#iti-0__country-listbox");
 
-let account = null;
-const accountBookings = [];
 let bookingToEdit = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetchAccount();
-    fetchAccountBookings();
-    
     document.querySelector(".iti__flag-container").addEventListener("click", setPhoneDropdownSize);
     window.addEventListener('resize',setPhoneDropdownSize);
     document.querySelector("#e-mail").addEventListener("keyup", validateEmail);
@@ -64,21 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#fileInputHidden").click();
     })
     document.querySelector("#fileInputHidden").addEventListener("change", updateProfilePhoto);
-})
-
-async function fetchAccount() {
-    const response = await fetch(`/api/account/${accountEmail}`);
-    account = await response.json();
-}
-
-async function fetchAccountBookings() {
-    const response = await fetch(`/api/bookings?madeByAccount=${accountEmail}`);
-    const data = await response.json();
-    
-    for (let booking of data) {
-        accountBookings.push(booking);
-    }
-}
+});
 
 function populateProfileInfo() {
     document.querySelector("#fname").value = account.firstName;
@@ -178,8 +159,14 @@ async function handleModalResult(event) {
     }
     else if (event.currentTarget.textContent === "Confirm change") {
         if (originalDates["check-in"].getTime() !== dates["check-in"].getTime() && originalDates["check-out"].getTime() !== dates["check-out"].getTime()) {
-            await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
-            location.reload();
+            const result = await fetch(`/api/changeBookingDates/${bookingToEdit.id}/${dates["check-in"].toLocaleDateString().replaceAll('/','-')}/${dates["check-out"].toLocaleDateString().replaceAll('/','-')}`);
+            
+            if (result.status === 200) {
+                location.reload();
+            }
+            else if (result.status === 403) {
+                document.querySelector(".error").style.cssText = "display: flex !important;";
+            }
         }
     }
 }
@@ -188,11 +175,11 @@ async function handleSaveProfile() {
     const validationResult = validateProfileForm();
     if (validationResult) {
         const data = {
-            "accountId": accountEmail,
+            "accountId": account.email,
             "firstName": document.querySelector("#fname").value,
             "lastName": document.querySelector("#lname").value,
             "email": document.querySelector("#e-mail").value,
-            "phoneNumber": iti.getNumber()
+            "phoneNumber": phone.value ? iti.getNumber() : null
         };
         const response = await fetch(`/api/changeAccount`, {
             method: "POST",
@@ -214,7 +201,7 @@ async function handleChangePassword() {
     const validationResult = validateChangePasswordForm();
     if (validationResult) {
         const data = {
-            "accountId": accountEmail,
+            "accountId": account.email,
             "oldPassword": document.querySelector("#old_password").value,
             "newPassword": document.querySelector("#new_password").value
         };
@@ -240,34 +227,42 @@ async function handleChangePassword() {
 }
 
 async function updateProfilePhoto() {
-    const profilePhotoContainer = document.querySelector("#profilePhotoContainer");
-    profilePhotoContainer.innerHTML = "";
-    const img = document.createElement("img");
-    img.classList.add("card-img-top", "mt-3", "profilePhotoImg");
-    img.src = URL.createObjectURL(document.querySelector("#fileInputHidden").files[0]);
-    profilePhotoContainer.appendChild(img);
-
     const readPhoto = (blob) => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(blob);
     });
-    const file = document.querySelector("#fileInputHidden").files[0];
-    const imageData = file ? await readPhoto(file) : null;
 
-    const data = {
-        "accountId": accountEmail,
-        "profilePicture": imageData
+    const file = document.querySelector("#fileInputHidden").files[0];
+    
+    if (file.size > 5000000) {
+        document.querySelector("#fileSizeWarning").style.color = "red";
     }
-    const response = await fetch(`/api/uploadProfilePicture`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        mode: "cors",
-        body: JSON.stringify(data)
-    });
+    else {
+        document.querySelector("#fileSizeWarning").style.color = "";
+
+        const profilePhotoContainer = document.querySelector("#profilePhotoContainer");
+        profilePhotoContainer.innerHTML = "";
+        const img = document.createElement("img");
+        img.classList.add("card-img-top", "mt-3", "profilePhotoImg");
+        img.src = URL.createObjectURL(file);
+        profilePhotoContainer.appendChild(img);
+        const imageData = file ? await readPhoto(file) : null;
+    
+        const data = {
+            "accountId": account.email,
+            "profilePicture": imageData
+        }
+        await fetch(`/api/uploadProfilePicture`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+    }
 }
 
 function validateEmail() {
@@ -288,7 +283,7 @@ function validateEmail() {
 
 function validatePhone() {
     const phone = document.querySelector("#phone");
-    if (iti.isValidNumber() && phoneRegex.test(phone.value)) {
+    if ((!phone.value) || (iti.isValidNumber() && phoneRegex.test(phone.value))) {
         phone.setCustomValidity("");
         phone.parentElement.classList.remove("is-invalid");
         phone.parentElement.classList.add("is-valid");
@@ -448,7 +443,6 @@ function initializeIti() {
         utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
         initialCountry: "gr",
         preferredCountries: ["gr"],
-        // responsiveDropdown: true,
         separateDialCode: true,
         geoIpLookup: callback => {
         fetch("https://ipapi.co/json")

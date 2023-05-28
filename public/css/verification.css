@@ -1,0 +1,29 @@
+label {
+    color: gray;
+}
+
+.form-control-lg {
+    width: 55px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.error {
+    color: #CC0000;
+    font-weight: 700;
+}
+
+.error-svg, .success-svg {
+    min-width: 16px; 
+    min-height: 16px;
+}

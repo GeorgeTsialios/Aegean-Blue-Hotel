@@ -7,6 +7,17 @@
     font-size: small;
 }
 
+.error {
+    color: #CC0000;
+    font-weight: 700;
+    display: none !important;
+}
+
+.error-svg, .success-svg {
+    min-width: 16px; 
+    min-height: 16px;
+}
+
 .daterangepicker {
     position: relative !important;
     top: 0 !important;
@@ -66,4 +77,8 @@
 #passwordList li.x {
     list-style-image: url("/assets/x-lg.svg");
     color: #dc3545;
+}
+
+#fileSizeWarning {
+    color: rgb(var(--bs-secondary-rgb));
 }

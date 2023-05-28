@@ -1,3 +1,9 @@
+.iti__flag {background-image: url("/assets/flags/itiflags.png");}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti__flag {background-image: url("/assets/flags/itiflags@2x.png");}
+}
+
 body {
     background: linear-gradient(45deg, rgba(141,189,255,1) 0%, #ff7f50 100%); 
     background-repeat: no-repeat; 

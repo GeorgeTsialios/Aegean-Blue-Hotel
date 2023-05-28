@@ -29,11 +29,9 @@
                             Rooms
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Standard Single Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Executive Double Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Deluxe Double Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Superior Triple Rooms</a></li>
-                            <li><a class="dropdown-item" href="#">Penthouse Suites</a></li>
+                            {{#each roomTypes}}
+                            <li><button class="dropdown-item room-type-modal-toggles" id="{{this.code}}-modal-toggle" data-bs-toggle="modal" data-bs-target="#roomTypeModal">{{this.name}}</a></li>
+                            {{/each}}
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -52,6 +50,7 @@
                         </a>
                     </li>
                 </ul>
+                {{#unless login}}
                 {{#unless account}}
                 <div class="d-flex">
                     <a href="/login" role="button" class="btn btn-outline-dark me-3">
@@ -84,13 +83,137 @@
                         <li><h6 class="dropdown-header">Administrator options</h6></li>
                         <li><a class="dropdown-item" href="/roomRack">Room rack</a></li>
                         <li><a class="dropdown-item" href="/manageHotel">Manage hotel</a></li>
+                        <li><button class="dropdown-item" id="manageAdminsButton" data-bs-toggle="modal" data-bs-target="#manageAdminsModal">Manage admins</button></li>
                         {{/if}}
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><a class="dropdown-item" href="/doLogout">Logout</a></li>
                     </ul>
                 </div>
                 {{/if}}
+                {{/unless}}
             </div>
         </div>
     </div>
 </header>
+
+<div class="modal fade" id="manageAdminsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="manageAdminsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="manageAdminsModalLabel">Manage administrators</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#manageAdminsModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2" id="manageAdminsSearchForm">
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#8dbcff" class="bi bi-search ms-3 me-1" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        <input type="text" class="form-control me-2" id="manageAdminsSearchInput" placeholder="Search accounts">
+                    </div>
+                    <ul class="list-group list-group-flush" id="manageAdminsSearchRecommendations">
+
+                    </ul>
+                </div>
+
+                <div>
+                    <table class="table" id="accountsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#manageAdminsModal">Cancel</button>
+                <button type="button" class="btn btn-success" id="manageAdminsModalButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="roomTypeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content container-fluid p-0">
+            <div class="modal-body p-0 w-100">
+                <button type="button" class="btn-close btn-close-white position-absolute fs-5 end-0 top-0 m-2 p-2" data-bs-dismiss="modal" data-bs-target="#roomTypeModal" aria-label="Close" id="modalCloseButton"></button>
+                <div id="roomTypeCarousel" class="carousel slide w-100 m-0">
+                    <div class="carousel-indicators" id="carousel_indicator_container">
+                        
+                    </div>
+                    <div class="carousel-inner" id="carousel-inner">
+                        
+                    </div> 
+                    <button class="carousel-control-prev" type="button" data-bs-target="#roomTypeCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#roomTypeCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <h4 class="my-3 text-center" id="room_type_name"></h4>
+                <div class="d-flex justify-content-evenly mt-4 mb-5 ">
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrows-angle-expand me-3" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z"/>
+                        </svg>
+                        <div>
+                            <h6 class="text-secondary mb-0">
+                                SIZE
+                            </h6>
+                            <div id="room_type_size">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-fill me-3" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                        </svg>
+                        <div>
+                            <h6 class="text-secondary mb-0">
+                                CAPACITY
+                            </h6>
+                            <div id="room_type_capacity">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-tag-fill me-3" viewBox="0 0 16 16">
+                            <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                        <div>
+                            <h6 class="text-secondary mb-0">
+                                PRICE
+                            </h6>
+                            <div id="room_type_price">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid mb-3">
+                    <h6 class="mb-1 ms-3">Room amenities:</h6>
+                    <ul class="w-100 row m-0" id="room_type_amenities">
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const accountIsAdministrator = {{#if account}}{{account.isAdministrator}}{{/if}}{{#unless account}}false{{/unless}};
+    const roomTypes = JSON.parse(`{{roomTypesJSON}}`.replaceAll("&quot;", "\""));
+</script>
