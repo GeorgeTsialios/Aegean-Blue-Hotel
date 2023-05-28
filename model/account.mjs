@@ -126,13 +126,19 @@ class Account {
     }
 
     async changeProfilePicture(client, newProfilePicture) {
-        this.photo = newProfilePicture;
-
         try {
+            if (!this.photo) {
+                await client.query(
+                    `insert into public.photo values ($1, $2, 'profile');`,
+                    [newProfilePicture.source, newProfilePicture.description]
+                )
             await client.query(
                 'update public.account set photo_source = $1 where email = $2;',
-                [this.photo.source, this.email]
+                    [newProfilePicture.source, this.email]
             );
+            }
+
+            this.photo = newProfilePicture;
         }
         catch (err) {
             console.error(err);
