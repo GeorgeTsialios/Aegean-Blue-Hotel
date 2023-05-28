@@ -29,6 +29,7 @@ async function navigateToLogin(req, res, next) {
                 emailInUse: req.query.emailInUse,
                 restoreAccount: req.query.restoreAccount,
                 referer: req.query.referer? req.query.referer.replaceAll("_","&"): req.headers.referer,
+                needsAuthentication: req.query.needsAuthentication? true: false,
                 login: true
             } 
         ); 
