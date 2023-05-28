@@ -37,6 +37,16 @@ document.addEventListener("DOMContentLoaded",() => {
     validate();
     
     repeatPassword.addEventListener("keyup",validateRepeatPassword);
+
+    if (needsAuthentication) {
+        setTimeout(() => {
+            const alert = new bootstrap.Alert("#alert");
+            if (document.querySelector("#alert"))
+                alert.close();
+        }
+        ,5000);
+    } 
+
 })
 
 function changetoRegister() {
