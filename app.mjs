@@ -39,13 +39,13 @@ app.use(Routers.FrontEndRouter.error404);
 
 app.use(async (err, req, res, next) => {
     
-    console.log('Κάποιο σφάλμα συνέβη');
+    console.error(err);
     const client = await DatabaseClient.createConnection();
     const account = await ApiControllers.AccountController.returnAccount(client, req.session.accountId);
     const hotel = await ApiControllers.HotelController.returnHotel(client);
     const roomTypes = await ApiControllers.RoomTypeController.returnRoomTypes(client);
+    await DatabaseClient.endConnection(client);
 
-    // next(err); // καλούμε τον επόμενο χειριστή σφαλμάτων
     res.status(500);
     res.render(
         'error',
