@@ -64,14 +64,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function insertRedStatements() {
     availableRoomTypes.forEach((roomType) => {
-        if (Number(roomType.count) === 1 || Number(roomType.count) === 2) {
+        if (Number(roomType.count) <= 3) {
             const redStatement = document.createElement('div');
-            redStatement.innerHTML = `Only ${roomType.count} ${Number(roomType.count) === 1 ? "room" : "rooms"} left`;
             redStatement.classList.add("red-statement");
             redStatement.classList.add("mt-1"); 
             redStatement.classList.add("mt-lg-3");
+            if (Number(roomType.count) === 0)
+                redStatement.innerHTML = `No rooms left`;
+            else 
+                redStatement.innerHTML = `Only ${roomType.count} ${Number(roomType.count) === 1 ? "room" : "rooms"} left`;
             document.querySelector(`#${roomType.code}FirstCell`).appendChild(redStatement);
-        } 
+        }
     });
 }
 
@@ -96,56 +99,7 @@ function populateModal(event) {
     const linkClicked = event.target.id.split("-")[0];
 
     const roomType = roomTypes.find((roomType) => roomType[0].code === linkClicked)[0];
-    const carouselIndicatorContainer = document.querySelector("#carousel_indicator_container");
-    const carouselInner = document.querySelector("#carousel-inner");
-    const roomTypeName = document.querySelector("#room_type_name");
-    const roomTypeSize = document.querySelector("#room_type_size");
-    const roomTypeCapacity = document.querySelector("#room_type_capacity");
-    const roomTypePrice = document.querySelector("#room_type_price");
-    const roomTypeAmenities = document.querySelector("#room_type_amenities");
-
-    carouselIndicatorContainer.innerHTML="";
-    carouselInner.innerHTML="";
-    roomTypeAmenities.innerHTML="";
-
-   for (let i=0; i<roomType.photos.length; i++) {
-        let newButton = document.createElement("button");
-        let newCarouselItem = document.createElement("div");
-        let newImage = document.createElement("img");
-        
-        newButton.setAttribute("type","button");
-        newButton.setAttribute("data-bs-target","#introCarousel");
-        newButton.setAttribute("data-bs-slide-to",`${i}`);
-        newButton.setAttribute("aria-label",`Photo ${i+1}`);
-        newCarouselItem.classList.add("carousel-item")
-        newImage.setAttribute("src",roomType.photos[i].source);
-        newImage.classList.add("d-block");
-        newImage.classList.add("w-100");
-        newImage.setAttribute("alt",roomType.photos[i].desription);
-        
-        if (i === 0) {
-            newButton.classList.add("active");
-            newButton.setAttribute("aria-current","true");
-            newCarouselItem.classList.add("active")
-        }
-
-        carouselIndicatorContainer.appendChild(newButton);
-        newCarouselItem.appendChild(newImage);
-        carouselInner.appendChild(newCarouselItem);
-   }
-    
-   roomTypeName.textContent = roomType.name;
-   roomTypeSize.innerHTML = `${roomType.size} m<sup>2</sup>`;
-   roomTypeCapacity.innerHTML = `${roomType.capacity} ${(roomType.capacity === 1)?"person":"people"}`;
-   roomTypePrice.innerHTML = `${roomType.price}&euro;`;
-
-   for (let i=0; i<roomType.amenities.length; i++) {
-         let newListItem = document.createElement("li");
-         newListItem.classList.add("col-lg-6");
-         newListItem.classList.add("pe-0");
-         newListItem.textContent = roomType.amenities[i];
-         roomTypeAmenities.appendChild(newListItem);
-   }
+    populateRoomTypeModal(roomType);
 }
 
 function initializePlusButtons(roomType) {

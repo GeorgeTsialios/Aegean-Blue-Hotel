@@ -59,7 +59,7 @@ class RoomType {
                                                                                                                                                          from room_occupation ro
                                                                                                                                                       where ro.booking_id in (select id
                                                                                                                                                                                  from booking 
-                                                                                                                                                                                 where $1 < check_out_date and $2 > check_in_date))) as tem on rt.code = tem.room_type 						   	     
+                                                                                                                                                                                 where is_cancelled=false and $1 < check_out_date and $2 > check_in_date))) as tem on rt.code = tem.room_type 						   	     
                                                                                                  group by code 
                                                                                                  order by code) as table2`,
                                             [checkInDate, checkOutDate]);

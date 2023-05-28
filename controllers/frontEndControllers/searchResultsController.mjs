@@ -57,7 +57,6 @@ async function navigateToSearchResults(req, res, next) {
                 originalGuestsString: originalGuestsString,
                 roomTypes: roomTypes,
                 roomTypesJSON: JSON.stringify(roomTypes.map(roomType => [roomType, 0])),
-                //availableRoomTypes: availableRoomTypes,
                 availableRoomTypesJSON: JSON.stringify(availableRoomTypes)
             }
         );

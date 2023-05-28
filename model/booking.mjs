@@ -68,6 +68,9 @@ class Booking {
         try {
             const newBookingID = Booking.generateBookingID();
             let result = null;
+
+            await client.query('BEGIN TRANSACTION;');
+
             await client.query(
                 'insert into public.booking values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);',
                 [newBookingID, bookingInfo.adultsCount, bookingInfo.childrenCount, bookingInfo.infantsCount, bookingInfo.checkInDate, bookingInfo.checkOutDate, bookingInfo.breakfastIncluded, bookingInfo.freeCancellationIncluded, true, bookingInfo.totalPrice, false, new Date(), bookingInfo.madeByAccount]
@@ -104,7 +107,7 @@ class Booking {
                                                                             from room_occupation ro
                                                                          where ro.booking_id in (select id
                                                                                                     from booking 
-                                                                                                    where $2 < check_out_date and $3 > check_in_date)))) as available_rooms
+                                                                                                    where is_cancelled=false and $2 < check_out_date and $3 > check_in_date)))) as available_rooms
                         order by available_rooms."number"
                         limit 1`,
                         [roomType.code, bookingInfo.checkInDate, bookingInfo.checkOutDate]
@@ -125,7 +128,9 @@ class Booking {
                         [newBookingID, result.rows[0].number]
                     );
                 }
-            } 
+            }
+
+            await client.query('END TRANSACTION;');
 
             return newBookingID;
         }
