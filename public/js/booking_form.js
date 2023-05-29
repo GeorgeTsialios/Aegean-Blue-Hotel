@@ -43,7 +43,7 @@ function updateTotal() {
     Discount = 0;
     let totalCapacity = 0;
 
-    roomTypes.forEach((roomType) => TotalPrice += (numberOfNights * Number(roomType.count) * Number(roomType.price) * (freeCancellationSelected?freeCancellationCoefficient:1)));
+    roomTypesForBooking.forEach((roomType) => TotalPrice += (numberOfNights * Number(roomType.count) * Number(roomType.price) * (freeCancellationSelected?freeCancellationCoefficient:1)));
         TotalPrice += breakfastSelected?(numberOfGuests * numberOfNights * breakfastPriceperNightperPerson):0;
             Discount = TotalPrice * (account? account.accountLevel.discount: 0);
             TotalPriceWithDiscount = TotalPrice - Discount;

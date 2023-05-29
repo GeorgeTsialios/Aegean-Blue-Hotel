@@ -213,7 +213,7 @@
     const account = {{#if accountJSON}}JSON.parse(`{{accountJSON}}`.replaceAll("&quot;", "\"")){{/if}}{{#unless accountJSON}}null{{/unless}};
     const freeCancellationSelected = "{{freeCancellationIncluded}}" === "true";
     const breakfastSelected = "{{breakfastIncluded}}" === "true";
-    const roomTypes = JSON.parse(`{{roomTypesForBookingJSON}}`.replaceAll("&quot;", "\""));
+    const roomTypesForBooking = JSON.parse(`{{roomTypesForBookingJSON}}`.replaceAll("&quot;", "\""));
     const numberOfNights = Number("{{lengthOfStayString}}".split(" ")[0]);
     const freeCancellationCoefficient = {{hotel.freeCancellationPriceCoefficient}};
     const breakfastPriceperNightperPerson = {{hotel.breakfastPrice}};
