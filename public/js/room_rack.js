@@ -81,24 +81,24 @@ function calendarGoToToday() {
     visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(0,0,0,0));
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
     
-    updateDateCells();
     fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
+    updateDateCells();
 }
 
 function calendarGoToPrevWeek() {
     visibleStartOfWeek = visibleStartOfWeek.subtractDays(7);
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
     
-    updateDateCells();
     fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
+    updateDateCells();
 }
 
 function calendarGoToNextWeek() {
     visibleStartOfWeek = visibleStartOfWeek.addDays(7);
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
     
-    updateDateCells();
     fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
+    updateDateCells();
 }
 
 function getStartOfWeek(date) {
