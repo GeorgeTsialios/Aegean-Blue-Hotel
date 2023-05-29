@@ -18,7 +18,7 @@ class Entry {
 }
 
 let today = new Date();
-let visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(0,0,0,0));
+let visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(12,0,0,0));
 let visibleEndOfWeek = visibleStartOfWeek.addDays(6);
 
 let loadingModal;
@@ -78,7 +78,7 @@ function addBooking(date) {
 
 function calendarGoToToday() {
     today = new Date();
-    visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(0,0,0,0));
+    visibleStartOfWeek = new Date(getStartOfWeek(today).setHours(12,0,0,0));
     visibleEndOfWeek = visibleStartOfWeek.addDays(6);
     
     fetchBookings(visibleStartOfWeek, visibleEndOfWeek);
@@ -129,8 +129,8 @@ function updateVisibleEntries() {
     document.querySelectorAll("td").forEach(elem => elem.innerHTML = "");
     roomRackRows = {};
     for (let entry of allEntries) {
-        const checkInDate = new Date(new Date(entry.booking.checkInDate).setHours(0,0,0,0));
-        const checkOutDate = new Date(new Date(entry.booking.checkOutDate).setHours(0,0,0,0));
+        const checkInDate = new Date(new Date(entry.booking.checkInDate).setHours(12,0,0,0));
+        const checkOutDate = new Date(new Date(entry.booking.checkOutDate).setHours(12,0,0,0));
         if (checkInDate <= visibleEndOfWeek && checkOutDate >= visibleStartOfWeek) {
             const node = document.createElement("div");
             node.id = `entry-${entry.booking.id}-${entry.room.number}-${entry.booking.roomOccupations.indexOf(entry.room)}`;
@@ -221,7 +221,7 @@ function entryHasOverlaps(entry) {
 }
 
 function checkIfTwoEntriesOverlap(e1, e2) {
-    if (e1 !== e2 && e1.room.number === e2.room.number && (new Date(e1.booking.checkInDate)) < (new Date(e2.booking.checkOutDate)) && (new Date(e1.booking.checkOutDate)) > (new Date(e2.booking.checkInDate))) {
+    if (e1 !== e2 && e1.room.number === e2.room.number && (new Date(e1.booking.checkInDate).setHours(12,0,0,0)) < (new Date(e2.booking.checkOutDate).setHours(12,0,0,0)) && (new Date(e1.booking.checkOutDate).setHours(12,0,0,0)) > (new Date(e2.booking.checkInDate).setHours(12,0,0,0))) {
         return true;
     }
     else {
