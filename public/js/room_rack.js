@@ -129,8 +129,8 @@ function updateVisibleEntries() {
     document.querySelectorAll("td").forEach(elem => elem.innerHTML = "");
     roomRackRows = {};
     for (let entry of allEntries) {
-        const checkInDate = new Date(entry.booking.checkInDate).setHours(0,0,0,0);
-        const checkOutDate = new Date(entry.booking.checkOutDate).setHours(0,0,0,0);
+        const checkInDate = new Date(new Date(entry.booking.checkInDate).setHours(0,0,0,0));
+        const checkOutDate = new Date(new Date(entry.booking.checkOutDate).setHours(0,0,0,0));
         if (checkInDate <= visibleEndOfWeek && checkOutDate >= visibleStartOfWeek) {
             const node = document.createElement("div");
             node.id = `entry-${entry.booking.id}-${entry.room.number}-${entry.booking.roomOccupations.indexOf(entry.room)}`;
