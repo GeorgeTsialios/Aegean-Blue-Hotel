@@ -131,6 +131,7 @@
 
 #oldPrice {
     text-decoration: line-through 1.5px; 
+    -webkit-text-decoration-line: line-through;
     color: #CC0000; 
     font-size: smaller; 
     font-weight: lighter;
