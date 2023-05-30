@@ -19,11 +19,6 @@
     padding: 0 !important;
 }
 
-.guests span {
-    position: relative;
-    top: -4px;
-}
-
 #adultsCount, #childrenCount, #infantsCount {
     width: 10px; 
 }

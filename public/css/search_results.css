@@ -33,11 +33,6 @@
     padding: 0 !important;
 }
 
-.guests span {
-    position: relative;
-    top: -4px;
-}
-
 #adultsCount, #childrenCount, #infantsCount {
     width: 10px; 
 }
@@ -131,6 +126,8 @@
 
 #oldPrice {
     text-decoration: line-through 1.5px; 
+    text-decoration-line: line-through;
+    -webkit-text-decoration-line: line-through;
     color: #CC0000; 
     font-size: smaller; 
     font-weight: lighter;

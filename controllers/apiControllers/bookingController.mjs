@@ -16,10 +16,10 @@ async function filterBookings(client, query) {
         constraints["is_cancelled"] = query.isCancelled;
     }
     if ("checkInDateBefore" in query) {
-        constraints["check_in_date~before"] = new Date(query.checkInDateBefore);
+        constraints["check_in_date~before"] = new Date(new Date(query.checkInDateBefore));
     }
     if ("checkOutDateAfter" in query) {
-        constraints["check_out_date~after"] = new Date(query.checkOutDateAfter);
+        constraints["check_out_date~after"] = new Date(new Date(query.checkOutDateAfter));
     }
 
     return await Booking.queryBookings(client, constraints);

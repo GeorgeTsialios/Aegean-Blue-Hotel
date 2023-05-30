@@ -26,9 +26,9 @@ async function navigateToProfile(req, res, next) {
                     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
                     <script src="/js/profile.js"></script>
                 `,
-                ongoingBookings: bookings.filter(booking => booking.checkInDate <= new Date() && booking.checkOutDate >= new Date()),
-                upcomingBookings: bookings.filter(booking => booking.checkInDate > new Date()),
-                pastBookings: bookings.filter(booking => booking.checkOutDate < new Date()),
+                ongoingBookings: bookings.filter(booking => booking.checkInDate <= new Date() && booking.checkOutDate >= new Date()).sort((a,b) => a.checkInDate - b.checkInDate),
+                upcomingBookings: bookings.filter(booking => booking.checkInDate > new Date()).sort((a,b) => a.checkInDate - b.checkInDate),
+                pastBookings: bookings.filter(booking => booking.checkOutDate < new Date()).sort((a,b) => b.checkInDate - a.checkInDate),
                 accountBookingsJSON: JSON.stringify(bookings),
                 account: account,
                 accountJSON: account ? JSON.stringify(account) : null,

@@ -54,13 +54,17 @@
                                     </td>
                                     <td class="align-middle">
                                         <div class="col d-flex align-items-center justify-content-center my-1">
-                                            <button id="{{this.code}}CountMinus" class="btn btn-outline-primary lh-1 guests rounded-5" disabled>
-                                                <span>-</span>
+                                            <button id="{{this.code}}CountMinus" class="btn btn-outline-primary d-flex align-items-center justify-content-center guests rounded-5" disabled>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                                </svg>
                                             </button>
                                             <p id="{{this.code}}Count" class="fw-semibold my-0 mx-3 text-center">0</p>
                                             <div data-bs-toggle="tooltip" data-bs-title="" data-bs-custom-class="custom-tooltip" class="d-flex align-items-center justify-content-center" id="{{this.code}}PlusWrapper">
-                                                <button id="{{this.code}}CountPlus" class="btn btn-outline-primary lh-1 guests rounded-5">
-                                                    <span>+</span>
+                                                <button id="{{this.code}}CountPlus" class="btn btn-outline-primary d-flex align-items-center justify-content-center guests rounded-5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                                    </svg>
                                                 </button>
                                             </div>
                                         </div>
