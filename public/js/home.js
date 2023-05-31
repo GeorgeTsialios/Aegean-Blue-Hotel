@@ -49,7 +49,13 @@ $(() => {
         {
             drops: 'up',
             minDate: new Date(),
-            autoApply: true
+            autoApply: true,
+            maxSpan: {
+                "days": 30
+            },
+            minSpan: {
+                "days": 1
+            }
         },
         (start, end) => {
             dates['check-in'] = start.toDate();
