@@ -5,8 +5,8 @@ const guests = {
 }
 
 const dates = {
-    "check-in": null,
-    "check-out": null
+    "check-in": originalDates["check-in"],
+    "check-out": originalDates["check-out"]
 }
 
 let TotalPrice = 0;
@@ -233,7 +233,13 @@ $(() => {
             endDate: originalDates["check-out"],
             drops: 'down',
             minDate: new Date(),
-            autoApply: true
+            autoApply: true,
+            maxSpan: {
+                "days": 30
+            },
+            minSpan: {
+                "days": 1
+            }
         },
         (start, end) => {
             dates['check-in'] = start.toDate();
