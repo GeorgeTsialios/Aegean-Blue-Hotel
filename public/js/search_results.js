@@ -5,8 +5,8 @@ const guests = {
 }
 
 const dates = {
-    "check-in": null,
-    "check-out": null
+    "check-in": originalDates["check-in"],
+    "check-out": originalDates["check-out"]
 }
 
 let TotalPrice = 0;
