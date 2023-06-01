@@ -6,4 +6,4 @@ The Aegean Blue Hotel booking engine offers an interface for the hotel guests, t
 
 The application is publicly available at: [https://aegean-blue-hotel.fly.dev/](https://aegean-blue-hotel.fly.dev/)
 
-<div style="text-align: center;"><span style="font-size: 16px; color:#333333;">Best regards,<br>The Aegean Blue Hotel Team<br>&#128153;</span></div>
+<div style="text-align: center;"><span style="font-size: 16px; color:#333333;">The Aegean Blue Hotel Team<br>&#128153;</span></div>
