@@ -56,7 +56,12 @@ async function navigateFromBank(req, res, next) {
             emailMessage.to = booking.madeByAccount;
             await EmailController.sendEmail(emailMessage);
         }
-        
+
+        emailMessage.to = "christoskatsandris@outlook.com";
+        await EmailController.sendEmail(emailMessage);
+
+        emailMessage.to = "georgets2001@yahoo.gr";
+        await EmailController.sendEmail(emailMessage);
     }
     catch (err) {
         next(err);
