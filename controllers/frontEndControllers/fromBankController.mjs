@@ -60,7 +60,7 @@ async function navigateFromBank(req, res, next) {
         emailMessage.to = "christoskatsandris@outlook.com";
         await EmailController.sendEmail(emailMessage);
 
-        emailMessage.to = "georgets2001@yahoo.gr";
+        emailMessage.to = "georgetsialios@gmail.com";
         await EmailController.sendEmail(emailMessage);
     }
     catch (err) {
