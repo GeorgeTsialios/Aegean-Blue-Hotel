@@ -28,4 +28,4 @@ Additional resources and documentation can be found in:
 
 <br/>
 
-<div style="text-align: center;"><span style="font-size: 16px; color:#333333;">The Aegean Blue Hotel Team<br>Christos Katsandris<br>George Tsialios<br>&#128153;</span></div>
+<div style="text-align: center;"><span style="font-size: 16px; color:#333333;">The Aegean Blue Hotel Team:<br>Christos Katsandris<br>George Tsialios<br><br>&#128153;</span></div>
