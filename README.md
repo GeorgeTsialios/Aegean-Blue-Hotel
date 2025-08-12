@@ -16,7 +16,7 @@ The application is publicly available at [https://aegean-blue-hotel.fly.dev/](ht
 
 Additional resources and documentation can be found in:
 
-- [Project Report (PDF, in Greek)](https://github.com/GeorgeTsialios/Aegean-Blue-Hotel/blob/master/Report_Greek.pdf) : a detailed report in Greek describing the development process and providing a usage example.
+- [Project Report (PDF, in Greek)](https://github.com/GeorgeTsialios/Aegean-Blue-Hotel/blob/master/Report_Greek.pdf): a detailed report in Greek describing the development process and providing a usage example.
 
 - [Project Presentation (PPTX, in Greek)](https://github.com/GeorgeTsialios/Aegean-Blue-Hotel/blob/master/Presentation_Greek.pptx): a Greek presentation showcasing the application's features and design.
 
